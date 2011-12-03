@@ -1,11 +1,11 @@
 package com.fairbg.core.commands;
 /**
- * РЈРјРµРµС‚ РїРѕСѓС‡Р°С‚СЊ РєРѕРјРјР°РЅРґС‹
+ * Умеет поучать комманды
  * */
 public interface ICommandListener {
-	/** Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РєРѕРјР°РЅРґС‹ 
-	 * @param commander РѕР±СЉРµРєС‚ РїРѕСЃР»Р°РІС€РёР№ РєРѕРјР°РЅРґСѓ
-	 * @param command РєРѕРјР°РЅРґР°
+	/** Вызывается при получении команды 
+	 * @param commander объект пославший команду
+	 * @param command команда
 	 */
 	void onCommand(ICommander commander, Command command);
 }
