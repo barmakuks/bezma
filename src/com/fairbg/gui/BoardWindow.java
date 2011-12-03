@@ -26,7 +26,7 @@ import com.fairbg.core.Corel;
 import com.fairbg.core.MatchParameters;
 import com.fairbg.core.Position;
 import com.fairbg.core.Board;
-import com.fairbg.core.commands.Command;
+import com.fairbg.core.commands.UserCommand;
 import com.fairbg.core.commands.CommanderImpl;
 import com.fairbg.core.commands.ICommandListener;
 
@@ -298,7 +298,7 @@ public class BoardWindow extends Activity implements
 	}
 
 	@Override
-	public void sendCommand(Command command) {
+	public void sendCommand(UserCommand command) {
 		_commander_impl.sendCommand(command);
 	}
 

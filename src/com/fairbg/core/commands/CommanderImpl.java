@@ -14,7 +14,7 @@ public class CommanderImpl implements ICommander{
 	}
 
 	@Override
-	public void sendCommand(Command command) {
+	public void sendCommand(UserCommand command) {
 		for(ICommandListener listener : _listeners){
 			if(listener instanceof ICommandListener){
 				listener.onCommand(_owner, command);

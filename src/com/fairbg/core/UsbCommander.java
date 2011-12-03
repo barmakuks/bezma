@@ -2,7 +2,7 @@ package com.fairbg.core;
 
 import android.util.Log;
 
-import com.fairbg.core.commands.Command;
+import com.fairbg.core.commands.UserCommand;
 import com.fairbg.core.commands.CommanderImpl;
 import com.fairbg.core.commands.ICommandListener;
 
@@ -15,7 +15,7 @@ public class UsbCommander implements com.fairbg.core.commands.ICommander {
 	}
 
 	@Override
-	public void sendCommand(Command command) {
+	public void sendCommand(UserCommand command) {
 		if(_commander != null)
 			_commander.sendCommand(command);		
 	}
@@ -30,7 +30,7 @@ public class UsbCommander implements com.fairbg.core.commands.ICommander {
 		@Override
 		public void run() {
 			while(true){
-				sendCommand(new Command());
+				sendCommand(new UserCommand());
 				try {
 					Log.i("USB_COMMANDER", "Command sent");
 					Thread.sleep(5000);

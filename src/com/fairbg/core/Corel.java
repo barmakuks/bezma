@@ -1,6 +1,6 @@
 package com.fairbg.core;
 
-import com.fairbg.core.commands.Command;
+import com.fairbg.core.commands.UserCommand;
 import com.fairbg.core.commands.ICommandListener;
 import com.fairbg.core.commands.ICommander;
 
@@ -25,7 +25,7 @@ public class Corel implements ICommandListener{
 	}
 	
 	@Override
-	public void onCommand(ICommander commander, Command command) {
+	public void onCommand(ICommander commander, UserCommand command) {
 		_board.setPosition(Position.getRandomPosition());				
 	}
 	public void startListenUsb(){

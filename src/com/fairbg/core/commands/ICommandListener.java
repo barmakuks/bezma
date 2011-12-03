@@ -7,5 +7,5 @@ public interface ICommandListener {
 	 * @param commander объект пославший команду
 	 * @param command команда
 	 */
-	void onCommand(ICommander commander, Command command);
+	void onCommand(ICommander commander, UserCommand command);
 }

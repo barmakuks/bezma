@@ -9,7 +9,7 @@ public interface ICommander {
 	/** рассылает слушателям комманды 
 	 * @param command
 	 */
-	void sendCommand(Command command);
+	void sendCommand(UserCommand command);
 	/** Начинает прослушивание внешних устройств и отсылку сообщений слушателю */
 	void start();
 	/** Заканчивает прослушивание внешних устройств и отсылку сообщений слушателю */	
