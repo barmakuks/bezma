@@ -1,8 +1,9 @@
 package com.fairbg.core.model;
 
-import java.util.ArrayList;
-
-import com.fairbg.core.commands.UserCommand;
+import com.fairbg.bezma.communication.commands.UserCommand;
+import com.fairbg.bezma.core.MatchIdentifier;
+import com.fairbg.bezma.core.MatchParameters;
+import com.fairbg.bezma.store.IDatabase;
 
 /**
  * Main class for model in Model-View-Controller architecture
@@ -11,19 +12,22 @@ import com.fairbg.core.commands.UserCommand;
  */
 public final class Model {
 	private MatchParameters m_MatchParameters;
-	private IStorage m_Storage;	
+	private IDatabase m_Storage;	
 	private GameBox m_GameBox;
-	private ArrayList<IModelObserver> m_Observers = new ArrayList<IModelObserver>(); 
-	
+	//private ArrayList<IModelObserver> m_Observers = new ArrayList<IModelObserver>();
+	private Match m_Match;
+	//private ModelState m_ModelState = new ModelState();
 	
 	/************************* PUBLIC FUNCTIONS *****************************************/
 	/** Creates new match model
 	 * @param parameters Match parameters
 	 * @param storage
 	 */
-	public void create(MatchParameters parameters, IStorage storage){
+	public void create(MatchParameters parameters, IDatabase storage)
+	{
 		m_MatchParameters = parameters;
 		m_Storage = storage;
+		m_GameBox = new GameBox(m_Match);		
 		initNotStoredObjects();
 		store();
 	}
@@ -32,7 +36,8 @@ public final class Model {
 	 * @param matchId match identifier
 	 * @param storage storage
 	 */
-	public void open(MatchId matchId, IStorage storage){
+	public void open(MatchIdentifier matchId, IDatabase storage)
+	{
 		m_MatchParameters = storage.readMatchParameters(matchId);
 		m_Storage = storage;
 		restore();
@@ -43,69 +48,62 @@ public final class Model {
 	 * @param command
 	 * @return true if command is accepted and model state was changed
 	 */
-	public boolean acceptUserCommand(UserCommand command){
+	public boolean acceptUserCommand(UserCommand command)
+	{
 		boolean result = processUserCommand(command);
 		if (result)
 		{			
 			m_GameBox.writeCurrentState();
-			m_Storage.writeCurrentState(m_MatchParameters.matchId, m_GameBox.getState());
+			if (m_Storage != null)
+			{
+				m_Storage.writeCurrentState(m_MatchParameters.matchId, m_GameBox.getState());
+			}
 		}
 		return result;
 	} 
 
-	/** Subscribes object to listen Model notifications
-	 * @param listener 
-	 */
-	public void addListener(IModelObserver listener){
-		if(!m_Observers.contains(listener))
-			m_Observers.add(listener);
-	} 
-	
-	/** Unsibscribes object from listening Model notifications
-	 * @param listener
-	 */
-	public void removeListener(IModelObserver listener){
-		if(m_Observers.contains(listener))
-			m_Observers.remove(listener);
-	}
 	/************************* PRIVATE FUNCTIONS *****************************************/
 	
 	/** Stores all model in m_Storage
 	 */
-	private void store(){
-		if(m_MatchParameters.matchId == null || m_MatchParameters.matchId.isEmpty()){
-			m_MatchParameters.matchId = MatchId.generateNew();			
+	private void store()
+	{
+		
+		if (m_Storage != null)
+		{
+			if(m_MatchParameters.matchId == null || m_MatchParameters.matchId.isEmpty()){
+				m_MatchParameters.matchId = MatchIdentifier.generateNew();			
+			}
+			m_Storage.writeMatchParameters(m_MatchParameters);
+			m_Storage.writeMatch(m_MatchParameters.matchId, m_Match);
 		}
-		m_Storage.writeMatchParameters(m_MatchParameters);
-		m_Storage.writeMatch(m_MatchParameters.matchId, m_Match);
-		m_Storage.writeCurrentState(m_MatchParameters.matchId, m_ModelState);
 		
 	}
 	
 	/** Restores all model from m_Storage
 	 */
-	private void restore(){
-		m_GameBox.restore(m_Storage);
+	private void restore()
+	{
+		
+		if (m_Storage != null)
+		{
+			m_GameBox.restore(m_Storage);			
+		}
+		
 	}
 
 	/** Converts user command to model command, processes it and changes model state
 	 * @param command user command to process
 	 * @return true, if command is valid and model was changed 
 	 */
-	private boolean processUserCommand(UserCommand command) {
-		ModelCommand model_command = m_GameBox.processCommand(command);
+	public boolean processUserCommand(UserCommand command) {
+
+		
+		/*ModelCommand model_command = m_GameBox.processCommand(command);
 		if(model_command == null)
 			return processModelCommand(model_command);
-		return false;
-	}
-
-	/** Process model command, changes model state
-	 * @param model_command
-	 * @return
-	 */
-	private boolean processModelCommand(ModelCommand model_command) {
-		notifyObservers();
-		return false;
+		return false;*/
+		return m_GameBox.processCommand(command);
 	}
 	
 	/** Initializes all non stored objects
@@ -113,11 +111,8 @@ public final class Model {
 	private void initNotStoredObjects() {
 	}
 
-	/** Sends notifies to all observers
-	 */
-	private void notifyObservers(){
-		for(IModelObserver observer : m_Observers){
-			observer.updateModel(this);
-		}
+	public ModelState getState() {		
+		return m_GameBox.getState();
 	}
+
 }

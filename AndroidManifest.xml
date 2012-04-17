@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.fairbg"
+      package="com.fairbg.bezma"
       android:versionCode="1"
       android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="10" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
-        <activity android:name=".gui.BezmaMain"
-                  android:label="@string/app_name">
+        <activity android:name=".qui.StartActivity"
+                  android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name=".Settings"></activity>
-		<activity android:name=".gui.MatchParametersActivity"></activity>
-		<activity android:name=".gui.BoardWindow"></activity>
+		<activity android:name=".qui.SettingsActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".qui.MatchParametersActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".qui.PlayActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".qui.SelectDeviceActivity" android:screenOrientation="portrait"></activity>
     </application>
 </manifest>

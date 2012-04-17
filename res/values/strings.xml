@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BEZMAndroid</string>
+    <string name="app_name">BezmaAndroid</string>
     <string name="new_match">Start new match</string>
     <string name="match_continue">Continue last match</string>
     <string name="match_store">Match store</string>
@@ -34,5 +34,8 @@
         <item>Backgammon</item>
         <item>Gul Bara</item>
     </string-array>
+        <string name="select_device">Select device</string>
+        <string name="update_devices">Find Devices</string>
+        <string name="bezma_logo">BEZMA</string>
     
 </resources>

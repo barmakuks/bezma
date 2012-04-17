@@ -1,32 +1,41 @@
 package com.fairbg.core.model;
 
-import com.fairbg.core.commands.UserCommand;
+import com.fairbg.bezma.communication.commands.UserCommand;
+import com.fairbg.bezma.store.IDatabase;
 
 /**
  * This class contains all game logic and rules
  * To implement Rules for game inherit this abstract class
- * @author Vitalik
  *
  */
-public abstract class GameBox {
+public class GameBox {
 
-	public static class Parameters{
+	ModelState m_State;
+	Match m_Match;
+	
+	public GameBox(Match aMatch)
+	{
+		m_State = new ModelState();
+		m_Match = aMatch;
+	}
+	
+	public ModelState getState() {
+		return m_State;
+	}
+
+	public void writeCurrentState() {
+		// TODO Auto-generated method stub
 		
 	}
 
-	public static GameBox createBox(Parameters gameParams) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setState(ModelState m_ModelState) {
+	public void restore(IDatabase m_Storage) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public ModelCommand processCommand(UserCommand command) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean processCommand(UserCommand command) {
+		m_State.processCommand(command);
+		return true;
 	}
 
 }
