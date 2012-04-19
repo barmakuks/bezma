@@ -6,8 +6,8 @@ import com.fairbg.bezma.communication.Logger;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.UserCommand;
 import com.fairbg.bezma.communication.commands.UserCommandRequest;
+import com.fairbg.bezma.core.model.Model;
 import com.fairbg.bezma.store.IDatabase;
-import com.fairbg.core.model.Model;
 
 public class Presenter implements ICommandObserver {
 

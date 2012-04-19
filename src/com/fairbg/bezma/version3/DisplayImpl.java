@@ -6,7 +6,7 @@ import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.Logger;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.UserCommand;
-import com.fairbg.core.model.ModelState;
+import com.fairbg.bezma.core.model.ModelState;
 
 /**Устройство отображения данных на экране смартфона с android*/
 public class DisplayImpl implements IModelView{

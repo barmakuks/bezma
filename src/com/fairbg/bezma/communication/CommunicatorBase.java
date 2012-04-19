@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.UserCommand;
-import com.fairbg.core.model.ModelState;
+import com.fairbg.bezma.core.model.ModelState;
 
 /**Базовая реализация интерфеса ICommunicator*/
 public abstract class CommunicatorBase implements ICommunicator {

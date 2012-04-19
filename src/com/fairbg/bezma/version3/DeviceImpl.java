@@ -13,7 +13,7 @@ import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.Logger;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.UserCommand;
-import com.fairbg.core.model.ModelState;
+import com.fairbg.bezma.core.model.ModelState;
 
 /**Имплементация устройства 3-го покоения со связью через bluetooth*/
 public class DeviceImpl implements IModelView, IDatagramObserver {

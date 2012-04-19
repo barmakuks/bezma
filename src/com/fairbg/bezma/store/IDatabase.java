@@ -2,8 +2,8 @@ package com.fairbg.bezma.store;
 
 import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
-import com.fairbg.core.model.Match;
-import com.fairbg.core.model.ModelState;
+import com.fairbg.bezma.core.model.Match;
+import com.fairbg.bezma.core.model.ModelState;
 
 /**
  * Interface for model storage
@@ -37,4 +37,5 @@ public interface IDatabase {
 	 * @param match match to write
 	 */
 	void writeMatch(MatchIdentifier matchId, Match match);
+
 }

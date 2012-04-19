@@ -1,6 +1,6 @@
 package com.fairbg.bezma.communication;
 
-import com.fairbg.core.model.ModelState;
+import com.fairbg.bezma.core.model.ModelState;
 
 /** Интрефейс для устройств, которые могут отображать текущее состояние модели
  *	 

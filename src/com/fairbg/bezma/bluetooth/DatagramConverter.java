@@ -4,7 +4,7 @@ import com.fairbg.bezma.communication.commands.UserCommand;
 import com.fairbg.bezma.communication.commands.UserCommandLed;
 import com.fairbg.bezma.communication.commands.UserCommandRequest;
 import com.fairbg.bezma.communication.commands.UserCommandState;
-import com.fairbg.core.model.ModelState;
+import com.fairbg.bezma.core.model.ModelState;
 
 /** Класс-конвертор. Конвертирует датаграммы посылаемые внешними устройствами во внутренние команды и наоборот.
  * Используются только статические функции, Объект класса не может быть создан

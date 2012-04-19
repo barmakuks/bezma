@@ -1,14 +1,14 @@
 package com.fairbg.bezma.core.from_net;
 
-import com.fairbg.bezma.core.from_net.enums.GameFinishedAs;
+import com.fairbg.bezma.core.from_net.enums.VictoryTypes;
 import com.fairbg.bezma.core.from_net.enums.PlayerColors;
 
 public class TBzmGameResult implements Cloneable {
     private PlayerColors FWinner = PlayerColors.NONE;
     private int FCheckersRemained;
     private byte FDoubler = 1;
-    private GameFinishedAs FWinType;
-    public TBzmGameResult(PlayerColors aWinner, int aCheckersRemained, byte aDoubler, GameFinishedAs aWinType)
+    private VictoryTypes FWinType;
+    public TBzmGameResult(PlayerColors aWinner, int aCheckersRemained, byte aDoubler, VictoryTypes aWinType)
     {
         FWinType = aWinType;
         FWinner = aWinner;
@@ -29,13 +29,13 @@ public class TBzmGameResult implements Cloneable {
     }
     public boolean isPropose() 
     {
-        return FWinType == GameFinishedAs.DropDouble;
+        return FWinType == VictoryTypes.DropDouble;
     }
     public boolean isBackgammon() 
     {
-        return FWinType == GameFinishedAs.Backgammon;
+        return FWinType == VictoryTypes.Backgammon;
     }
-    public GameFinishedAs getWinType()
+    public VictoryTypes getWinType()
     {
         return FWinType; 
     }

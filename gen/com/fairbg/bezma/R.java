@@ -25,7 +25,6 @@ public final class R {
         public static final int grid_red=0x7f020008;
         public static final int icon=0x7f020009;
         public static final int round_border=0x7f02000a;
-        public static final int us=0x7f02000b;
     }
     public static final class id {
         public static final int LinearLayout01=0x7f060009;
