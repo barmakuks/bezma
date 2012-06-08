@@ -1,6 +1,6 @@
 package com.fairbg.bezma.bluetooth;
 
-import android.util.Log;
+import com.fairbg.bezma.log.BezmaLog;
 
 /** Абстрактный класс описывающий датаграммы, посылаемые и получаемые внешними устройствами
  */
@@ -53,7 +53,7 @@ public abstract class Datagram {
 		if(array[1] == DatagramType.L.code)
 			return LedDatagram.parse(array);
 
-		Log.i("PARSE", "NOT FOUND for symbol : " + array[1]);
+		BezmaLog.i("PARSE", "NOT FOUND for symbol : " + array[1]);
 		return WrongDatagram.parse(array);
 	}
 }

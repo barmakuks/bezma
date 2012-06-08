@@ -2,11 +2,11 @@ package com.fairbg.bezma.core;
 
 import com.fairbg.bezma.communication.ICommunicator;
 import com.fairbg.bezma.communication.IModelView;
-import com.fairbg.bezma.communication.Logger;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
-import com.fairbg.bezma.communication.commands.UserCommand;
-import com.fairbg.bezma.communication.commands.UserCommandRequest;
+import com.fairbg.bezma.communication.commands.CommunicationCommand;
+import com.fairbg.bezma.communication.commands.CommunicationCommandRequest;
 import com.fairbg.bezma.core.model.Model;
+import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.store.IDatabase;
 
 public class Presenter implements ICommandObserver {
@@ -51,11 +51,11 @@ public class Presenter implements ICommandObserver {
 		
 		boolean result = m_Communicator.start(); 
 		
-		if (result)
+		/*if (result)
 		{
 			m_RequestLoop.start();
 		}
-		
+		*/
 		return result; 
 	}
 
@@ -67,8 +67,7 @@ public class Presenter implements ICommandObserver {
 	}
 
 	@Override
-	public void handeEvent(UserCommand aCommand) {
-		Logger.writeln(this, "handleEvent");
+	public void handeEvent(CommunicationCommand aCommand) {		
 		processCommand(aCommand);
 		displayResults();
 	}
@@ -76,12 +75,15 @@ public class Presenter implements ICommandObserver {
 	private void displayResults() {
 		if (m_Communicator != null) {
 			m_Communicator.setModelState(m_Model.getState());
-			//m_communicator.setModelState(m_state);
 		}
 	}
 
-	private void processCommand(UserCommand userCommand) {
-		m_Model.processUserCommand(userCommand);
+	private void processCommand(CommunicationCommand command) {
+		
+		// TODO Преобразовать команду коммуникационную в команду пользовательскую
+		ModelCommand modelCommand = ModelCommand.createCommand(command);
+		
+		m_Model.processCommand(modelCommand);
 		//m_state.processCommand(userCommand);
 	}
 
@@ -99,7 +101,7 @@ public class Presenter implements ICommandObserver {
 		
 			stopped = false;
 			
-			UserCommandRequest command = new UserCommandRequest();
+			CommunicationCommandRequest command = new CommunicationCommandRequest();
 
 			while(!stopped)
 			{

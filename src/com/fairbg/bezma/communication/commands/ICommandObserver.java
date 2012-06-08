@@ -7,6 +7,6 @@ package com.fairbg.bezma.communication.commands;
 public interface ICommandObserver {
 
 	/** Вызывается когда слушатель получает сообщение о пользовательской команде*/
-	public abstract void handeEvent(UserCommand aCommand);
+	public abstract void handeEvent(CommunicationCommand aCommand);
 
 }

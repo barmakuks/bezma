@@ -9,6 +9,6 @@ public interface ICommandReceiver {
 	 * Отослать пользовательскую команду
 	 * @param command User command
 	 */
-	public abstract void sendCommand(UserCommand command);
+	public abstract void sendCommand(CommunicationCommand command);
 
 }

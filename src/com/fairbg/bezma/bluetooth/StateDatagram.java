@@ -2,7 +2,6 @@ package com.fairbg.bezma.bluetooth;
 
 import java.util.HashMap;
 
-import android.util.Log;
 
 /**Датаграмма состояния доски*/
 public class StateDatagram extends Datagram {
@@ -68,7 +67,7 @@ public class StateDatagram extends Datagram {
 		for(int i = 6; i < array.length - 1 && (int)(array[i]) != (byte)0xFF ; i+=2){
 			int index = 0xFF & array[i];
 			int value = 0xFF & array[i+1];
-			Log.i("Index + value", Integer.toString(index) + " : " + Integer.toString(value));
+			//Log.i("Index + value", Integer.toString(index) + " : " + Integer.toString(value));
 			dg.sensors.put(index, value);
 		}
 		parsePositions(dg);

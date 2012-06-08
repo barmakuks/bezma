@@ -1,6 +1,6 @@
 package com.fairbg.bezma.bluetooth;
 
-import android.util.Log;
+import com.fairbg.bezma.log.BezmaLog;
 
 /**Датаграмма для опроса внешнего устройства.
  * @details Внешнее устройство при получении такой датаграммы должно откликнутся датаграммой состояния доски*/
@@ -20,7 +20,7 @@ public class RequestDatagram extends Datagram {
 		return "REQUEST";
 	}
 	public static Datagram parse(byte[] array){
-		Log.i("PARSE", "REQUEST DATAGRAM");		
+		BezmaLog.i("PARSE", "REQUEST DATAGRAM");		
 		return new RequestDatagram();		
 	}
 	@Override

@@ -1,12 +1,13 @@
 package com.fairbg.bezma.store;
 
+import com.fairbg.bezma.log.BezmaLog;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DBAdapter {
 	int id = 0;
@@ -48,7 +49,7 @@ public class DBAdapter {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+			BezmaLog.i(TAG, "Upgrading database from version " + oldVersion + " to "
 					+ newVersion + ", which will destroy all old data");
 			db.execSQL("DROP TABLE IF EXISTS tblRandomQuotes");
 			onCreate(db);
@@ -73,16 +74,16 @@ public class DBAdapter {
 				ContentValues content = new ContentValues();
 				content.put(KEY_ROWID, key);
 				content.put(KEY_VALUE, value);
-				Log.i("INSERT "+ key, value);
+				BezmaLog.i("INSERT "+ key, value);
 				db.insert(DATABASE_TABLE, null, content);
 			} else {
 				ContentValues content = new ContentValues();
 				content.put(KEY_VALUE, value);
-				Log.i("UPDATE " + key, value);
+				BezmaLog.i("UPDATE " + key, value);
 				db.update(DATABASE_TABLE, content, "_id='" + key + "'", null);
 			}
 		} catch (SQLException ex) {
-			Log.e("SQL error", ex.getMessage());
+			BezmaLog.e("SQL error", ex.getMessage());
 		}
 	}
 	/**записывает в БД параметр типа Boolean */
@@ -106,7 +107,7 @@ public class DBAdapter {
 			cursor.close();
 			return value;
 		} catch (SQLException ex) {
-			Log.e("SQL error", ex.getMessage());
+			BezmaLog.e("SQL error", ex.getMessage());
 			return null;
 		}
 	}

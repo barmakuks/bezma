@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.fairbg.bezma.R;
+import com.fairbg.bezma.log.BezmaLog;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -12,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -101,7 +102,7 @@ public class SelectDeviceActivity extends Activity {
 		lstDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				Log.i("ITEM SELECTED", Integer.toString(position));
+				BezmaLog.i("ITEM SELECTED", Integer.toString(position));
 				String mac = (String) adapter.getItemAtPosition(position);
 				if(mac != null){
 					BluetoothDevice device = _devices.get(mac);

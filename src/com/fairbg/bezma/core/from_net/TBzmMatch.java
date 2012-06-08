@@ -8,7 +8,7 @@ import com.fairbg.bezma.core.from_net.enums.Actions;
 import com.fairbg.bezma.core.from_net.enums.GameStates;
 import com.fairbg.bezma.core.from_net.enums.VictoryTypes;
 import com.fairbg.bezma.core.from_net.enums.MatchModes;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmMatch {
     private TBzmDiceSetIterator FDiceSetIterator = null;// @todo TBzmDiceSetIterator.EmptyIterator;

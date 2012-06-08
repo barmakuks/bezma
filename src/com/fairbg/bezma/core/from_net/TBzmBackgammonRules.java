@@ -1,7 +1,7 @@
 package com.fairbg.bezma.core.from_net;
 
 import com.fairbg.bezma.core.from_net.enums.Rules;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmBackgammonRules implements IBzmRules {
 

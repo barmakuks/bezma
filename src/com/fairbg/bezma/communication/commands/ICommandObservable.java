@@ -6,7 +6,7 @@ package com.fairbg.bezma.communication.commands;
  */
 public interface ICommandObservable {
 
-	public abstract void notifyObservers(UserCommand aCommand);
+	public abstract void notifyObservers(CommunicationCommand aCommand);
 
 	public abstract void addObserver(ICommandObserver aCommandObserver);
 

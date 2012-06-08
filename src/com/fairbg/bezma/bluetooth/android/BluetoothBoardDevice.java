@@ -11,12 +11,12 @@ import java.util.UUID;
 import com.fairbg.bezma.bluetooth.Datagram;
 import com.fairbg.bezma.bluetooth.IDatagramObservable;
 import com.fairbg.bezma.bluetooth.IDatagramObserver;
+import com.fairbg.bezma.log.BezmaLog;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 /**Класс-коммуникатор с доской.
  * Умеет слушать и передавать датаграммы через Bluetooth СОМ-порт 
  * Реализация для Андроид*/
@@ -200,8 +200,7 @@ public class BluetoothBoardDevice implements IDatagramObservable {
 				try {
 					// Read from the InputStream
 					if (mmInStream != null) {
-						System.out.println("READ BYTES:" + Integer.toString(mmInStream.available()));
-						Log.i("AVAILABLE BYTES", Integer.toString(mmInStream.available()));
+						BezmaLog.i("AVAILABLE BYTES", Integer.toString(mmInStream.available()));
 						bytes = mmInStream.read(buffer);
 					}
 
@@ -221,11 +220,6 @@ public class BluetoothBoardDevice implements IDatagramObservable {
 		/**Функция записи массива байт в исходящий поток*/
 		public void write(byte[] bytes) {
 			try {
-				for(int i = 0; i < bytes.length ; i++)
-				{					
-					System.out.print(Integer.toHexString(((int) bytes[i] & 0xff)));
-				}
-				System.out.println();
 				mmOutStream.write(bytes);
 			} catch (IOException e) {
 			}

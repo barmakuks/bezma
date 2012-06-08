@@ -7,24 +7,23 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Toast;
 
 import com.fairbg.bezma.R;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
-import com.fairbg.bezma.communication.commands.UserCommand;
+import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.model.ModelState;
 import com.fairbg.bezma.core.model.Position;
+import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.version3.ConfigurationVer3;
 import com.fairbg.bezma.version3.ConfiguratorVer3;
 
@@ -95,8 +94,6 @@ public class PlayActivity extends Activity implements IModelView {
 		
 		
 		
-		
-		private final int[] _ldpi_nests = { 43, 67, 91, 116, 140, 165, 212, 236, 261, 286, 310, 335,/* BAR */188, /* OUT */367 };
 		
 		private int[] 	m_Nests;
 		private int 	m_CheckerSize;
@@ -334,7 +331,7 @@ public class PlayActivity extends Activity implements IModelView {
 			
 			if (m_current_position != null)
 			{
-				m_BoardView.drawBoard(canvas, m_current_position.getPosiiton());
+				m_BoardView.drawBoard(canvas, m_current_position.getCheckers());
 
 				m_BoardView.drawCube(canvas, m_current_position.getCubeValue(), m_current_position.getCubePosition());				
 			}
@@ -363,9 +360,9 @@ public class PlayActivity extends Activity implements IModelView {
 	public void setPosition(Position position) {
 		m_current_position = position;
 		if (position == null)
-			Log.i("POS", "EMPTY");
+			BezmaLog.i("POS", "EMPTY");
 		else
-			Log.i("POS", position.toString());
+			BezmaLog.i("POS", position.toString());
 		invalidate();
 		// view.invalidate();
 	}
@@ -384,16 +381,7 @@ public class PlayActivity extends Activity implements IModelView {
 
 			@Override
 			public void run() {
-				/*
-				 * if (line.getVisibility() == View.VISIBLE)
-				 * line.setVisibility(View.GONE); else
-				 * line.setVisibility(View.VISIBLE);
-				 */
 				m_view.invalidate();
-				/*
-				 * AlphaAnimation anim = new AlphaAnimation(1, 0.2f);
-				 * anim.setDuration(5000); view.startAnimation(anim);
-				 */
 			}
 		});
 	}
@@ -408,7 +396,7 @@ public class PlayActivity extends Activity implements IModelView {
 	}
 
 	@Override
-	public void notifyObservers(UserCommand aCommand) {
+	public void notifyObservers(CommunicationCommand aCommand) {
 		for (ICommandObserver observer : m_observers) {
 			observer.handeEvent(aCommand);
 		}
@@ -426,14 +414,15 @@ public class PlayActivity extends Activity implements IModelView {
 
 	@Override
 	public void setModelState(ModelState aModelState) {
-		// TODO Auto-generated method stub
+
 		if (aModelState != null && !aModelState.isErrorState()) {
-			setPosition(aModelState.getCurrentPosition());
+			BezmaLog.i("SET MODEL STATE", aModelState.getPosition().toString());
+			setPosition(aModelState.getPosition());
 		}
 	}
 
 	@Override
-	public void sendCommand(UserCommand command) {
+	public void sendCommand(CommunicationCommand command) {
 		// do nothing to send datagram
 	}
 

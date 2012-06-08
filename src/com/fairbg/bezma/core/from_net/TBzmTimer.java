@@ -2,7 +2,7 @@ package com.fairbg.bezma.core.from_net;
 
 import java.util.Timer;
 
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmTimer {
     private Timer FTimer = null;

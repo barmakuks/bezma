@@ -3,8 +3,8 @@ package com.fairbg.bezma.communication;
 import java.util.ArrayList;
 
 import com.fairbg.bezma.communication.commands.ICommandObserver;
-import com.fairbg.bezma.communication.commands.UserCommand;
-import com.fairbg.bezma.core.model.ModelState;
+import com.fairbg.bezma.communication.commands.CommunicationCommand;
+import com.fairbg.bezma.core.model.ModelState;;
 
 /**Базовая реализация интерфеса ICommunicator*/
 public abstract class CommunicatorBase implements ICommunicator {
@@ -12,7 +12,7 @@ public abstract class CommunicatorBase implements ICommunicator {
 	protected ArrayList<ICommandObserver> m_Observers = new ArrayList<ICommandObserver>();
 	
 	@Override
-	public void notifyObservers(UserCommand aCommand) {
+	public void notifyObservers(CommunicationCommand aCommand) {
 		for (ICommandObserver observer : m_Observers) {
 			observer.handeEvent(aCommand);
 		}
@@ -24,7 +24,7 @@ public abstract class CommunicatorBase implements ICommunicator {
 	}
 
 	@Override
-	public void handeEvent(UserCommand userCommand) {
+	public void handeEvent(CommunicationCommand userCommand) {
 		notifyObservers(userCommand);
 	}
 
@@ -79,7 +79,7 @@ public abstract class CommunicatorBase implements ICommunicator {
 	
 	/**Отсылает всем устройствам отображения пользовательскую комманду*/
 	@Override
-	public void sendCommand(UserCommand command) {
+	public void sendCommand(CommunicationCommand command) {
 
 		for(IModelView view: m_Views)
 		{

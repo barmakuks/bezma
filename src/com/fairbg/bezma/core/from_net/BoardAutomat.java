@@ -8,8 +8,8 @@ import com.fairbg.bezma.core.from_net.enums.GameStates;
 import com.fairbg.bezma.core.from_net.enums.VictoryTypes;
 import com.fairbg.bezma.core.from_net.enums.MatchWinConditions;
 import com.fairbg.bezma.core.from_net.enums.Messages;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
 import com.fairbg.bezma.core.from_net.enums.PlayerStates;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class BoardAutomat
 {
