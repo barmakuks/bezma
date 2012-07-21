@@ -1,0 +1,9 @@
+syntax: glob
+.hgignore
+*.class
+*.rej
+*~
+*.o
+tests/*.err
+bin/*
+gen/*
