@@ -2,8 +2,8 @@ package com.fairbg.bezma.core.from_net;
 
 import java.util.ArrayList;
 
-import com.fairbg.bezma.core.from_net.enums.GameFinishedAs;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
+import com.fairbg.bezma.core.from_net.enums.VictoryTypes;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmGame {
         private ArrayList<TBzmMoveBase> m_Moves = new ArrayList<TBzmMoveBase>();
@@ -101,7 +101,7 @@ public class TBzmGame {
             m_IsOver = false;
             m_IsCrawford = isCrawford;
         }
-        public void EndGame(PlayerColors aWinnerId, byte aRateLevel, int CheckersLeft, boolean IsRatePass, GameFinishedAs WinType) 
+        public void EndGame(PlayerColors aWinnerId, byte aRateLevel, int CheckersLeft, boolean IsRatePass, VictoryTypes WinType) 
         {
             m_RateLevel = aRateLevel;
             switch (WinType) 
@@ -111,7 +111,7 @@ public class TBzmGame {
                 case Backgammon:
                     m_RateLevel *= 3; break;
             }
-            if (IsRatePass) WinType = GameFinishedAs.DropDouble;
+            if (IsRatePass) WinType = VictoryTypes.DropDouble;
 
             m_GameResult = new TBzmGameResult(aWinnerId, CheckersLeft, aRateLevel, WinType);
 

@@ -6,9 +6,9 @@ import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.from_net.enums.Actions;
 import com.fairbg.bezma.core.from_net.enums.GameStates;
-import com.fairbg.bezma.core.from_net.enums.GameFinishedAs;
+import com.fairbg.bezma.core.from_net.enums.VictoryTypes;
 import com.fairbg.bezma.core.from_net.enums.MatchModes;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmMatch {
     private TBzmDiceSetIterator FDiceSetIterator = null;// @todo TBzmDiceSetIterator.EmptyIterator;
@@ -623,7 +623,7 @@ public class TBzmMatch {
         return res;
         */
     }
-    public GameStates GameEnd(PlayerColors aPlayerId, byte aRateLevel, int aCheckersLeft, boolean IsRatePass, GameFinishedAs WinType) 
+    public GameStates GameEnd(PlayerColors aPlayerId, byte aRateLevel, int aCheckersLeft, boolean IsRatePass, VictoryTypes WinType) 
     {
     	return GameStates.None;
     	/**@todo

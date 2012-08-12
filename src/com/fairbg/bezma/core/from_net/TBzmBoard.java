@@ -3,10 +3,10 @@ package com.fairbg.bezma.core.from_net;
 import java.util.ArrayList;
 
 import com.fairbg.bezma.core.from_net.enums.GameStates;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
 import com.fairbg.bezma.core.from_net.enums.PlayerStates;
 import com.fairbg.bezma.core.from_net.enums.BezmaConstants;
 import com.fairbg.bezma.core.from_net.enums.Rules;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmBoard {
     // private 

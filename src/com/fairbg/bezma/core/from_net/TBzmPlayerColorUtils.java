@@ -1,6 +1,6 @@
 package com.fairbg.bezma.core.from_net;
 
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmPlayerColorUtils {
     public static PlayerColors OtherPlayer(PlayerColors aPlayerId)

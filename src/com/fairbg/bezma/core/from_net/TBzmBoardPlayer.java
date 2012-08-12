@@ -1,8 +1,8 @@
 package com.fairbg.bezma.core.from_net;
 
 import com.fairbg.bezma.core.from_net.enums.Buttons;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
 import com.fairbg.bezma.core.from_net.enums.PlayerStates;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TBzmBoardPlayer {
     private PlayerColors FPlayerId;

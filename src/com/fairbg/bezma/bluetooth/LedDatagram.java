@@ -1,6 +1,6 @@
 package com.fairbg.bezma.bluetooth;
 
-import android.util.Log;
+import com.fairbg.bezma.log.BezmaLog;
 
 /**Датаграммы для включения/выключения лампочки на внешнем устройстве*/
 public class LedDatagram extends Datagram {
@@ -30,7 +30,7 @@ public class LedDatagram extends Datagram {
 	}
 	
 	public static Datagram parse(byte[] array){
-		Log.i("PARSE", "LED DATAGRAM");		
+		BezmaLog.i("PARSE", "LED DATAGRAM");		
 		return new LedDatagram();		
 	}
 	

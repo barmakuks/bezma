@@ -5,11 +5,11 @@ import com.fairbg.bezma.core.from_net.enums.Buttons;
 import com.fairbg.bezma.core.from_net.enums.BezmaConstants;
 import com.fairbg.bezma.core.from_net.enums.RollTypes;
 import com.fairbg.bezma.core.from_net.enums.GameStates;
-import com.fairbg.bezma.core.from_net.enums.GameFinishedAs;
+import com.fairbg.bezma.core.from_net.enums.VictoryTypes;
 import com.fairbg.bezma.core.from_net.enums.MatchWinConditions;
 import com.fairbg.bezma.core.from_net.enums.Messages;
-import com.fairbg.bezma.core.from_net.enums.PlayerColors;
 import com.fairbg.bezma.core.from_net.enums.PlayerStates;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class BoardAutomat
 {
@@ -41,7 +41,7 @@ public class BoardAutomat
         		FBoard.getRateDie().getRateLevel(), 
         		FBoard.CheckersOnBoard(FBoard.getActivePlayerId()),
         		false, 
-        		GameFinishedAs.Normal));
+        		VictoryTypes.Normal));
     }
     /// <summary>
     /// Реализация конечного автомата
@@ -84,7 +84,7 @@ public class BoardAutomat
                 		FBoard.getRateDie().getRateLevel(),
                 		FBoard.CheckersOnBoard(FBoard.getActivePlayerId()),
                 		false, 
-                		GameFinishedAs.Normal));
+                		VictoryTypes.Normal));
                 return true;
             case Start:
                 switch(FBoard.getGameState())
@@ -647,7 +647,7 @@ public class BoardAutomat
                                     FBoard.Player(BezmaConstants.ACTIVE).getSeconds(),
                                     FBoard.getPositionString(),
                                     (byte)(FBoard.getRateDie().getRateLevel() * 2), false, false);
-                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), true, GameFinishedAs.Normal));
+                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), true, VictoryTypes.Normal));
                         /// @todo FBoard.CurrentSound = TBzmSound.Pass;
                         break;
                     case Reset:
@@ -710,7 +710,7 @@ public class BoardAutomat
                                         FBoard.Player(BezmaConstants.ACTIVE).getSeconds(),
                                         FBoard.getPositionString(),
                                         (byte)(FBoard.getRateDie().getRateLevel() * 2), false, false);
-                            FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), true, GameFinishedAs.Normal));
+                            FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), true, VictoryTypes.Normal));
                             /// @todo FBoard.CurrentSound = TBzmSound.Pass;
                         }                            
                         break;
@@ -745,7 +745,7 @@ public class BoardAutomat
                                     FBoard.getPositionString(),
                                     FBoard.getRateDie().getRateLevel(), false, true);
                         //FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().RateLevel, FBoard.CheckersOnBoard(FBoard.PassivePlayerId), true, TBzmGameWinType.Normal);
-                        FBoard.setGameState(FMatch.GameEnd(FBoard.getPassivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getActivePlayerId()), true, GameFinishedAs.Normal));
+                        FBoard.setGameState(FMatch.GameEnd(FBoard.getPassivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getActivePlayerId()), true, VictoryTypes.Normal));
                         /// @todo FBoard.CurrentSound = TBzmSound.Pass;
                         break;
                 }
@@ -760,12 +760,12 @@ public class BoardAutomat
                             /// @todo FBoard.Player(TBzmConst.PASSIVE).GetDice(out aDie1, out aDie2);
                             FMatch.getCurrentGame().AddDice(aDie1, aDie2);
                         }
-                        GameFinishedAs WinType = GameFinishedAs.Normal;
+                        VictoryTypes WinType = VictoryTypes.Normal;
                         if (FBoard.IsGammon(FBoard.getActivePlayerId()))
                         {
-                            WinType = GameFinishedAs.Gammon;
+                            WinType = VictoryTypes.Gammon;
                             if (FBoard.IsBackgammon(FBoard.getActivePlayerId()))
-                                WinType = GameFinishedAs.Backgammon;
+                                WinType = VictoryTypes.Backgammon;
                         }
                         FBoard.setGameState(FMatch.GameEnd(FBoard.getPassivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getActivePlayerId()), false, WinType));
                         /// @todo FBoard.CurrentSound = TBzmSound.GameOver;                            
@@ -785,7 +785,7 @@ public class BoardAutomat
                 switch (msg) 
                 {
                     case Ok:
-                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), false, GameFinishedAs.Normal));
+                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), false, VictoryTypes.Normal));
                         /// @todo FBoard.CurrentSound = TBzmSound.GameOver;
                         break;
                     case Reset:
@@ -826,7 +826,7 @@ public class BoardAutomat
                 switch (msg)
                 {
                     case Ok:
-                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), false, GameFinishedAs.Gammon));
+                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), false, VictoryTypes.Gammon));
                         /// @todo FBoard.CurrentSound = TBzmSound.GameOver;
                         break;
                     case Reset:
@@ -842,7 +842,7 @@ public class BoardAutomat
                 switch (msg)
                 {
                     case Ok:
-                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), false, GameFinishedAs.Normal));
+                        FBoard.setGameState(FMatch.GameEnd(FBoard.getActivePlayerId(), FBoard.getRateDie().getRateLevel(), FBoard.CheckersOnBoard(FBoard.getPassivePlayerId()), false, VictoryTypes.Normal));
                         /// @todo FBoard.CurrentSound = TBzmSound.GameOver;
                         break;
                     case Reset:

@@ -113,7 +113,8 @@ public class StartActivity extends Activity {
 			{
 				case REQUEST_MATCH_PARAMETERS:
 					saveMatchParameters((MatchParameters) data.getSerializableExtra(MatchParameters.class.getCanonicalName()));
-					startSelectDeviceActivity();
+					startPlayActivity(null);
+					//startSelectDeviceActivity();
 					break;
 				case REQUEST_BLUETOOTH_DEVICE:
 					startPlayActivity((DeviceInfo) data.getSerializableExtra(DeviceInfo.class.getCanonicalName()));
@@ -131,7 +132,7 @@ public class StartActivity extends Activity {
 		Intent intent = new Intent(this, PlayActivity.class);
 		ConfigurationVer3  c3 = new ConfigurationVer3();
 		c3.setMatchParameters(getMatchParameters());
-		c3.deviceMAC = deviceInfo.bluetoothDeviceMAC;
+		//c3.deviceMAC = deviceInfo.bluetoothDeviceMAC;
 		intent.putExtra(ConfigurationVer3.class.getCanonicalName(), c3);
 		startActivity(intent);
 	}
