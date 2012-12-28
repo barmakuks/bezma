@@ -4,7 +4,7 @@ import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.CommunicationCommandLed;
 import com.fairbg.bezma.communication.commands.CommunicationCommandRequest;
 import com.fairbg.bezma.communication.commands.CommunicationCommandState;
-import com.fairbg.bezma.core.model.ModelState;
+import com.fairbg.bezma.core.model.ModelSituation;
 import com.fairbg.bezma.log.BezmaLog;
 
 /** Класс-конвертор. Конвертирует датаграммы посылаемые внешними устройствами во внутренние команды и наоборот.
@@ -57,12 +57,14 @@ final public class DatagramConverter {
 			led_datagram.button = led_cmd.button;
 			led_datagram.state = led_cmd.state;
 			return led_cmd;
+        default:
+            break;
 		}
 		return null;
 	}
 	
 	/**Возвращает массив датаграм для отображения текущего состояния модели на внешнем устройстве*/
-	public static Datagram[] modelStateToDatagrams(ModelState modelState)
+	public static Datagram[] modelStateToDatagrams(ModelSituation modelState)
 	{
 		return null;
 	} 

@@ -75,8 +75,9 @@ public class StateDatagram extends Datagram
         dg.id = (array[2] << 24) | (array[3] << 16) | (array[4] << 8) | (array[5]);
         for (int i = 6; i < array.length - 1 && (int) (array[i]) != (byte) 0xFF; i += 2)
         {
-            int index = 0xFF & array[i];
-            int value = 0xFF & array[i + 1];
+            int index = 0x000000FF & array[i];
+            assert index >= 0; 
+            int value = 0x000000FF & array[i + 1];
             // Log.i("Index + value", Integer.toString(index) + " : " +
             // Integer.toString(value));
             dg.sensors.put(index, value);

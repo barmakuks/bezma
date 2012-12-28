@@ -24,8 +24,8 @@ import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
-import com.fairbg.bezma.core.model.ModelState;
-import com.fairbg.bezma.core.model.Position;
+import com.fairbg.bezma.core.backgammon.Position;
+import com.fairbg.bezma.core.model.ModelSituation;
 import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.version3.ConfigurationVer3;
 import com.fairbg.bezma.version3.ConfiguratorVer3;
@@ -215,7 +215,7 @@ public class PlayActivity extends Activity implements IModelView
             /* BAR */218,
             /* OUT */-52 };
             m_CheckerSize = 36;
-            m_CheckerSideSize = 11; 
+            m_CheckerSideSize = 11;
             m_MinY = 53;
             m_MaxY = 427;
             m_MinBarX = 226;
@@ -297,14 +297,14 @@ public class PlayActivity extends Activity implements IModelView
                 int checkers_on_line = 0;
                 int max_checkers = 5;
                 int shift = 0;
-                
+
                 for (int j = 0; j > checkers[i]; j--)
                 {
                     if (checkers_on_line >= max_checkers)
                     {
                         checkers_on_line = 0;
                         shift += m_CheckerSize / 2;
-                        max_checkers--;                        
+                        max_checkers--;
                     }
                     int posX = x + shift + checkers_on_line * m_CheckerSize;
                     canvas.drawBitmap(m_checker_black_bmp, posX, y, null);
@@ -320,7 +320,7 @@ public class PlayActivity extends Activity implements IModelView
                     {
                         checkers_on_line = 0;
                         shift += m_CheckerSize / 2;
-                        max_checkers--;                        
+                        max_checkers--;
                     }
                     int posX = x - shift - checkers_on_line * m_CheckerSize;
                     canvas.drawBitmap(m_checker_white_bmp, posX, y, null);
@@ -346,14 +346,14 @@ public class PlayActivity extends Activity implements IModelView
 
             for (int j = 0; j < checkers[26]; j++)
             {
-                canvas.drawBitmap(m_checker_white_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5,  m_NestsY[13], null);
+                canvas.drawBitmap(m_checker_white_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5, m_NestsY[13], null);
             }
 
             x = m_MinY;
 
             for (int j = 0; j > checkers[27]; j--)
             {
-                canvas.drawBitmap(m_checker_black_side_bmp, x - j * m_CheckerSideSize  - j / 5 * 5, m_NestsY[13], null);
+                canvas.drawBitmap(m_checker_black_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5, m_NestsY[13], null);
             }
 
             canvas.translate(-m_Left, -m_Top);
@@ -437,20 +437,19 @@ public class PlayActivity extends Activity implements IModelView
             DrawingUtils.drawText(canvas, "0", 340, 98, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
             // DEBUG version
-//            int[] _checkers = new int[] {-3, 
-//                      5,  6,  7,  8,  9, 10, // 
-//                     11, 12, 13, 14, 15,  0, //
-//                     -4, -5, -6, -7, -8, -9, //
-//                    -10,-11,-12,-13,-14,-15, //
-//                      3, 
-//                      15, -1 };
-//            m_BoardView.drawBoard(canvas, _checkers);
+            // int[] _checkers = new int[] {-3,
+            // 5, 6, 7, 8, 9, 10, //
+            // 11, 12, 13, 14, 15, 0, //
+            // -4, -5, -6, -7, -8, -9, //
+            // -10,-11,-12,-13,-14,-15, //
+            // 3,
+            // 15, -1 };
+            // m_BoardView.drawBoard(canvas, _checkers);
 
             if (m_current_position != null)
             {
                 // release version
-                 m_BoardView.drawBoard(canvas,
-                 m_current_position.getCheckers());
+                m_BoardView.drawBoard(canvas, m_current_position.getCheckers());
 
                 m_BoardView.drawCube(canvas, m_current_position.getCubeValue(), m_current_position.getCubePosition());
             }
@@ -543,7 +542,7 @@ public class PlayActivity extends Activity implements IModelView
     }
 
     @Override
-    public void setModelState(ModelState aModelState)
+    public void setModelState(ModelSituation aModelState)
     {
 
         if (aModelState != null && !aModelState.isErrorState())

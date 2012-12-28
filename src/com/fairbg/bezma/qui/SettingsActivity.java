@@ -8,39 +8,47 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class SettingsActivity extends Activity {
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings);
-		registerButton(R.id.btn_ok);
-		registerButton(R.id.btn_cancel);
-	}
-    /** Захватывает кнопку из макета и регистрирует приемник OnClick
-     * @param id идентификатор кнопки
+public class SettingsActivity extends Activity
+{
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.settings);
+        registerButton(R.id.btn_ok);
+        registerButton(R.id.btn_cancel);
+    }
+
+    /**
+     * Захватывает кнопку из макета и регистрирует приемник OnClick
+     * 
+     * @param id
+     *            идентификатор кнопки
      */
-    private void registerButton(int id){
+    private void registerButton(int id)
+    {
         // Захватывает кнопку из макета
-        Button btn = (Button)findViewById(id);
+        Button btn = (Button) findViewById(id);
         // Регистрирует приемник OnClick
         btn.setOnClickListener(mAddListener);
     }
 
-    /**Создает анонимную реализацию OnClickListener
-	 */
+    /**
+     * Создает анонимную реализацию OnClickListener
+     */
     private OnClickListener mAddListener = new OnClickListener()
     {
-    	public void onClick(View v)
-    	{
-    		switch(v.getId())
-    		{
-    		case R.id.btn_ok:
-				break;
-    		case R.id.btn_cancel:
-    			finish();
-    			break;
-    		}
-		}
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+            case R.id.btn_ok:
+                break;
+            case R.id.btn_cancel:
+                finish();
+                break;
+            }
+        }
     };
 
 }

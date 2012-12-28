@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
-import com.fairbg.bezma.core.model.ModelState;;
+import com.fairbg.bezma.core.model.ModelSituation;;
 
 /**Устройство отображения данных на экране смартфона с android*/
 public class DisplayImpl implements IModelView{
@@ -13,7 +13,7 @@ public class DisplayImpl implements IModelView{
 	private ArrayList<ICommandObserver> observers = new ArrayList<ICommandObserver>();
 	
 	@Override
-	public void setModelState(ModelState modelState) {
+	public void setModelState(ModelSituation modelState) {
 	}
 
 	@Override

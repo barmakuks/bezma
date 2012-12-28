@@ -12,4 +12,8 @@ public class AndroidLogger implements ILogger {
 		android.util.Log.e(tag, text);
 	}
 
+	@Override
+	public void setShowTag(boolean showTag)
+	{
+	}
 }

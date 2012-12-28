@@ -1,105 +1,103 @@
 package com.fairbg.bezma.core.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fairbg.bezma.core.backgammon.BackgammonAutomat;
 import com.fairbg.bezma.store.IDatabase;
 
 /**
- * This class contains all game logic and rules
- * To implement Rules for game inherit this abstract class
- *
+ * This class contains all game logic and rules To implement Rules for game
+ * inherit this abstract class
+ * 
  */
-public class GameBox {
+public class GameBox implements IGameBox
+{
 
-	/// Отображает текущее состояние игры
-	private ModelState m_ModelState;
-	
-	private BackgammonRules m_GameRules;
-	
-	private Map<AutomatStates, IAutomatState> m_AutomatStates = new HashMap<AutomatStates, IAutomatState>();
-	private IAutomatState m_AutomatState;
+    // / Отображает текущее состояние игры
+    private ModelSituation m_ModelState;
 
-	
-	/// Текущий матч
-	private Match m_Match;
-	
-	public GameBox(Match aMatch)
-	{
-		m_ModelState = null;
-		m_Match = aMatch;
-		m_GameRules = new BackgammonRules();
-		
-		m_AutomatStates.put(AutomatStates.BEGIN, new BeginState());
-		m_AutomatStates.put(AutomatStates.MOVE, new MoveState());
-		m_AutomatStates.put(AutomatStates.DICE, new DiceState());
-		
-		m_AutomatState = selectAutomatState(AutomatStates.BEGIN);
-		
-	}
-	
-	public BackgammonRules getGameRules() {
-		return m_GameRules;
-	}
+    private IGameAutomat  m_GameAutomat;
 
-	public ModelState getModelState() {
-		return m_ModelState;
-	}
-	
-	public void setModelState(ModelState state)
-	{
-		m_ModelState = state;		
-	}
+    // / Текущий матч
+    private Match m_Match;
 
-	public void writeCurrentState() {
-		// TODO Auto-generated method stub
-		
-	}
+    public GameBox(Match aMatch)
+    {
+        m_ModelState = null;
+        m_Match = aMatch;
+        
+        m_GameAutomat = new BackgammonAutomat(this);
+    }
 
-	public void restore(IDatabase m_Storage) {
-		// TODO Auto-generated method stub
-		
-	}
+    public ModelSituation getModelState()
+    {
+        return m_ModelState;
+    }
 
-	public boolean processCommand(ModelCommand modelCommand) {
-		return m_AutomatState.processCommand(this, modelCommand);
-	}
+    public void setModelState(ModelSituation state)
+    {
+        m_ModelState = state;
+    }
 
-	public Match getMatch(){
-		return m_Match;
-	}
+    public boolean processCommand(ModelCommand modelCommand)
+    {
+        return m_GameAutomat.processCommand(this, modelCommand);
+    }
 
-	public boolean checkStartPosition(Position position) {
-		return m_GameRules.checkStartPosition(position);		
-	}
-	
-	public IAutomatState selectAutomatState(AutomatStates state)
-	{
-		return m_AutomatStates.get(state);
-	}
-	
+    public Match getMatch()
+    {
+        return m_Match;
+    }
 
-	public IAutomatState getCurrentAutomatState()
-	{
-		return m_AutomatState;
-	}
-	
-	public void setCurrentAutomatState(IAutomatState state)
-	{
-		m_AutomatState = state;
-	}
+    @Override
+    public void appendMove(IMove move)
+    {
+        m_Match.appendMove(move);
+        // TODO Auto-generated method stub
+    }
 
-	public Move findMove(Position destPosition, PlayerColors player) 
-	{
-		int die1 = 0;
-		int die2 = 0;
-		return m_GameRules.findMove(die1, die2, m_ModelState.getPosition(), destPosition, player);
-	}
+    public void writeCurrentState()
+    {
+        // TODO Auto-generated method stub
+        
+    }
 
-	public void appendMove(Move move) {
-		m_Match.appendMove(move);
-		// TODO Auto-generated method stub
-		
-	}
-	
+    public void restore(IDatabase m_Storage)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void nextGame()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void finishGame()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public boolean isMatchFinished()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void finishMatch()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void nextMatch()
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

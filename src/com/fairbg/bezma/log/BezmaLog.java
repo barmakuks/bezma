@@ -13,7 +13,8 @@ public class BezmaLog {
 		m_Logger = logger;
 	}
 
-	public static void i(String tag, String text) {
+	public static void i(String tag, String text) 
+	{
 		if (tagAllowed(tag))
 		{
 			m_Logger.i(tag, text);			
@@ -22,8 +23,14 @@ public class BezmaLog {
 	}
 
 	
-	private static boolean tagAllowed(String tag) {
-		return m_Tags.size() == 0 || tag == null || tag.isEmpty() || m_Tags.contains(tag.toUpperCase());
+	private static boolean tagAllowed(String tag) 
+	{
+		return m_Tags.contains(tag.toUpperCase());
+	}
+	
+	public static void setShowTag(boolean showTag)
+	{
+	    m_Logger.setShowTag(showTag);	    
 	}
 	
 	public static void allowTag(String tag)

@@ -1,4 +1,7 @@
-package com.fairbg.bezma.core.model;
+package com.fairbg.bezma.core.backgammon;
+
+import com.fairbg.bezma.core.model.IMoveVisitor;
+import com.fairbg.bezma.core.model.PlayerColors;
 
 public class Movement implements Cloneable{
     public int MoveFrom = 0, MoveTo = 0;

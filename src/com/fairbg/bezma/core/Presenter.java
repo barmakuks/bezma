@@ -9,115 +9,129 @@ import com.fairbg.bezma.core.model.Model;
 import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.store.IDatabase;
 
-public class Presenter implements ICommandObserver {
+public class Presenter implements ICommandObserver
+{
 
-	private ICommunicator m_Communicator = null;
-	
-	private IDatabase m_Storage = null;
-	
-	private RequestViewLoop m_RequestLoop = null;
+    private ICommunicator m_Communicator = null;
 
-	private Model m_Model = new Model();
+    private IDatabase m_Storage = null;
 
-	public Presenter(IConfigurator configurator, Configuration configuration) {
-		try {
+    private RequestViewLoop m_RequestLoop = null;
 
-			m_Communicator = configurator.createCommunicator(configuration);
+    private Model m_Model = new Model();
 
-			m_Communicator.removeObserver(this);
+    public Presenter(IConfigurator configurator, Configuration configuration)
+    {
+        try
+        {
+            m_Communicator = configurator.createCommunicator(configuration);
+            m_Communicator.removeObserver(this);
+            m_Communicator.addObserver(this);
 
-			m_Communicator.addObserver(this);
-			
-			m_RequestLoop = new RequestViewLoop();
-			
-			m_Storage = configurator.createDatabase(configuration);
-			
-			m_Model.create(configuration.getMatchParameters(), m_Storage);
-			
-		} catch (WrongConfigurationException e) {
-			e.printStackTrace();
-		}
-	}
+            m_RequestLoop = new RequestViewLoop();
 
-	public void addView(IModelView view) {
-		m_Communicator.addView(view);
-	}
+            m_Storage = configurator.createDatabase(configuration);
 
-	public void removeView(IModelView view) {
-		m_Communicator.removeView(view);
-	}
+            m_Model.create(configuration.getMatchParameters(), m_Storage);
+        }
+        catch (WrongConfigurationException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-	public boolean start() {
-		
-		boolean result = m_Communicator.start(); 
-		
-		/*if (result)
-		{
-			m_RequestLoop.start();
-		}
-		*/
-		return result; 
-	}
+    public void addView(IModelView view)
+    {
+        m_Communicator.addView(view);
+    }
 
-	public void stop() {
-		
-		m_RequestLoop.stopLoop();
-		
-		m_Communicator.stop();
-	}
+    public void removeView(IModelView view)
+    {
+        m_Communicator.removeView(view);
+    }
 
-	@Override
-	public void handeEvent(CommunicationCommand aCommand) {		
-		processCommand(aCommand);
-		displayResults();
-	}
+    public boolean start()
+    {
 
-	private void displayResults() {
-		if (m_Communicator != null) {
-			m_Communicator.setModelState(m_Model.getState());
-		}
-	}
+        boolean result = m_Communicator.start();
 
-	private void processCommand(CommunicationCommand command) {
-		
-		// TODO Преобразовать команду коммуникационную в команду пользовательскую
-		ModelCommand modelCommand = ModelCommand.createCommand(command);
-		
-		m_Model.processCommand(modelCommand);
-		//m_state.processCommand(userCommand);
-	}
+        /*
+         * if (result) { m_RequestLoop.start(); }
+         */
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "ModelPresenter";
-	}
-	
-	private class RequestViewLoop extends Thread {
-		
-		private boolean stopped = true;
-		
-		@Override
-		public void run() {
-		
-			stopped = false;
-			
-			CommunicationCommandRequest command = new CommunicationCommandRequest();
+    public void stop()
+    {
 
-			while(!stopped)
-			{
-				m_Communicator.sendCommand(command);
-				
-				try {
-					sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		public void stopLoop()
-		{
-			stopped = true;
-		}
-	}
+        m_RequestLoop.stopLoop();
+
+        m_Communicator.stop();
+    }
+
+    @Override
+    public void handeEvent(CommunicationCommand aCommand)
+    {
+        processCommand(aCommand);
+        displayResults();
+    }
+
+    private void displayResults()
+    {
+        if (m_Communicator != null)
+        {
+            m_Communicator.setModelState(m_Model.getState());
+        }
+    }
+
+    private void processCommand(CommunicationCommand command)
+    {
+
+        // TODO Преобразовать команду коммуникационную в команду
+        // пользовательскую
+        ModelCommand modelCommand = ModelCommand.createCommand(command);
+
+        m_Model.processCommand(modelCommand);
+        // m_state.processCommand(userCommand);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ModelPresenter";
+    }
+
+    private class RequestViewLoop extends Thread
+    {
+
+        private boolean stopped = true;
+
+        @Override
+        public void run()
+        {
+
+            stopped = false;
+
+            CommunicationCommandRequest command = new CommunicationCommandRequest();
+
+            while (!stopped)
+            {
+                m_Communicator.sendCommand(command);
+
+                try
+                {
+                    sleep(2000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void stopLoop()
+        {
+            stopped = true;
+        }
+    }
 }

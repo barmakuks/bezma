@@ -147,8 +147,7 @@ public class BluetoothBoardDevice implements IDatagramObservable {
 						
 						if (buf[i] == (byte) 0xFF) {
 							byte[] array = new byte[buffer.size()];
-							for (int j = 0; j < buffer.size(); array[j] = buffer.get(j++))
-								;
+							for (int j = 0; j < buffer.size(); array[j] = buffer.get(j++));
 							datagramRecieved(array);
 							buffer.clear();
 							current_message.setLength(0);

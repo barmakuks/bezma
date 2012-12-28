@@ -1,15 +1,25 @@
 package com.fairbg.bezma.log;
 
-public class ConsoleLogger implements ILogger {
+public class ConsoleLogger implements ILogger
+{
 
-	@Override
-	public void i(String tag, String text) {
-		System.out.println("INFO:" + tag + " : " + text);
-	}
+    private boolean m_showTag;
 
-	@Override
-	public void e(String tag, String text) {
-		System.out.println("ERROR:" + tag + " : " + text);
-	}
+    @Override
+    public void i(String tag, String text)
+    {
+        System.out.println((m_showTag ? tag + " : " : "") + text);
+    }
 
+    @Override
+    public void e(String tag, String text)
+    {
+        System.err.println((m_showTag ? tag + " : " : "") + text);
+    }
+
+    @Override
+    public void setShowTag(boolean showTag)
+    {
+        m_showTag = showTag;
+    }
 }
