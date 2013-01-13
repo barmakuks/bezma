@@ -283,6 +283,12 @@ public class PlayActivity extends Activity implements IModelView
 
             canvas.translate(m_Left, m_Top);
 
+            
+//            for (int i = 1; i < 10; i++)
+//            {
+//                canvas.drawBitmap(m_checker_white_bmp, i * m_CheckerSize, 0, null);
+//                canvas.drawBitmap(m_checker_black_bmp, 1, i * m_CheckerSize, null);
+//            }
             int y = 0;
             int x = 0;
 
@@ -294,38 +300,12 @@ public class PlayActivity extends Activity implements IModelView
 
                 y = (i < 13) ? m_NestsY[(i - 1) % 12] : m_NestsY[11 - (i - 1) % 12];
 
-                int checkers_on_line = 0;
-                int max_checkers = 5;
-                int shift = 0;
+                Bitmap checker = checkers[i] > 0 ? m_checker_black_bmp : m_checker_white_bmp;
+                
+                int checkersCount = Math.abs(checkers[i]);
+                
+                DrawCheckersNest(canvas, checker, checkersCount, x, y, i < 13);
 
-                for (int j = 0; j > checkers[i]; j--)
-                {
-                    if (checkers_on_line >= max_checkers)
-                    {
-                        checkers_on_line = 0;
-                        shift += m_CheckerSize / 2;
-                        max_checkers--;
-                    }
-                    int posX = x + shift + checkers_on_line * m_CheckerSize;
-                    canvas.drawBitmap(m_checker_black_bmp, posX, y, null);
-                    checkers_on_line++;
-                }
-
-                checkers_on_line = 0;
-                max_checkers = 5;
-                shift = 0;
-                for (int j = 0; j < checkers[i]; j++)
-                {
-                    if (checkers_on_line >= max_checkers)
-                    {
-                        checkers_on_line = 0;
-                        shift += m_CheckerSize / 2;
-                        max_checkers--;
-                    }
-                    int posX = x - shift - checkers_on_line * m_CheckerSize;
-                    canvas.drawBitmap(m_checker_white_bmp, posX, y, null);
-                    checkers_on_line++;
-                }
             }
 
             // рисуем фишки на баре
@@ -355,11 +335,34 @@ public class PlayActivity extends Activity implements IModelView
             {
                 canvas.drawBitmap(m_checker_black_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5, m_NestsY[13], null);
             }
-
             canvas.translate(-m_Left, -m_Top);
 
         }
 
+        public void DrawCheckersNest(Canvas canvas, Bitmap checker, int checkersCount, int nestX, int nestY, boolean direction)
+        {
+            int max_checkers = 5;
+
+            int checkers_on_line = 0;
+            int shift = 0;
+            int mult = direction ? -1 : 1;
+
+            for (int j = 0; j < checkersCount; j++)
+            {
+                if (checkers_on_line >= max_checkers)
+                {
+                    checkers_on_line = 0;
+                    shift = m_CheckerSize / 2;
+                    max_checkers--;
+                }
+                
+                int posX = nestX + mult * (shift + checkers_on_line * m_CheckerSize);
+
+                canvas.drawBitmap(checker, posX, nestY, null);
+                checkers_on_line++;
+            }
+        }
+        
         public void drawCube(Canvas canvas, int cubeValue, int cubePosition)
         {
             if (m_current_position != null)
@@ -484,6 +487,7 @@ public class PlayActivity extends Activity implements IModelView
         invalidate();
         // view.invalidate();
     }
+
 
     public void drawCube(Canvas canvas, int cubeValue, int cubePosition)
     {

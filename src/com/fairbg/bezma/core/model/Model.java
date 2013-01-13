@@ -114,7 +114,7 @@ public final class Model
      *            user command to process
      * @return true, if command is valid and model was changed
      */
-    public boolean processCommand(ModelCommand modelCommand)
+    private boolean processCommand(ModelCommand modelCommand)
     {
         return m_GameBox.processCommand(modelCommand);
     }

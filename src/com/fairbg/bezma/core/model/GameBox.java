@@ -1,6 +1,8 @@
 package com.fairbg.bezma.core.model;
 
 import com.fairbg.bezma.core.backgammon.BackgammonAutomat;
+import com.fairbg.bezma.core.backgammon.Position;
+import com.fairbg.bezma.log.BezmaDebug;
 import com.fairbg.bezma.store.IDatabase;
 
 /**
@@ -39,7 +41,20 @@ public class GameBox implements IGameBox
 
     public boolean processCommand(ModelCommand modelCommand)
     {
-        return m_GameAutomat.processCommand(this, modelCommand);
+        if (BezmaDebug.checkPositionMode)
+        {
+            //m_ModelState = new ModelSituation(modelCommand.getPosition(), "");
+            Position position = modelCommand.getPosition();
+            //int startA[] = { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
+            //position.setCheckers(startA);
+            
+            m_ModelState = new ModelSituation(position, "");
+            return true;
+        }
+        else
+        {
+            return m_GameAutomat.processCommand(this, modelCommand);            
+        }
     }
 
     public Match getMatch()

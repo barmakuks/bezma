@@ -7,6 +7,7 @@ import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.CommunicationCommandRequest;
 import com.fairbg.bezma.core.model.Model;
 import com.fairbg.bezma.core.model.ModelCommand;
+import com.fairbg.bezma.log.BezmaDebug;
 import com.fairbg.bezma.store.IDatabase;
 
 public class Presenter implements ICommandObserver
@@ -55,9 +56,11 @@ public class Presenter implements ICommandObserver
 
         boolean result = m_Communicator.start();
 
-        /*
-         * if (result) { m_RequestLoop.start(); }
-         */
+        if (result && BezmaDebug.requestPositions)
+        {
+            m_RequestLoop.start();
+        }
+
         return result;
     }
 
@@ -91,8 +94,8 @@ public class Presenter implements ICommandObserver
         // пользовательскую
         ModelCommand modelCommand = ModelCommand.createCommand(command);
 
-        m_Model.processCommand(modelCommand);
-        // m_state.processCommand(userCommand);
+        m_Model.acceptCommand(modelCommand);
+        
     }
 
     @Override
