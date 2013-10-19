@@ -68,6 +68,7 @@
                             <TextView android:id="@+id/TextView04" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="@string/seconds_per_move" android:layout_width="wrap_content"></TextView>
                             <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="120px" android:text="60" android:id="@+id/edtMoveLimit"></EditText>
                         </TableRow>
+                        
                     </TableLayout>
                 </LinearLayout>
             </LinearLayout>

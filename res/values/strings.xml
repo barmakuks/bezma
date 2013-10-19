@@ -7,7 +7,7 @@
     <string name="settings">Settings</string>
     <string name="exit">Exit</string>
     <string name="owner_name">Owner Name</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="player_1">Player 1</string>
     <string name="player_2">Player 2</string>
@@ -24,8 +24,8 @@
     <string name="calculate_rools">Calculate Rolls</string>
     <string name="exactly">Exactly</string>
     <string name="approximately">Approximately</string>
-    <string name="minutes_per_match">Match Limit (minutes)</string>
-    <string name="seconds_per_move">Move Limit (seconds)</string>
+    <string name="minutes_per_match">Match Limit (min)</string>
+    <string name="seconds_per_move">Move Limit (sec)</string>
     <string name="use_timer">Use Timer</string>
     <string name="timer_params">Timer Parameters</string>
     <string name="backgammon">Backgammon</string>
