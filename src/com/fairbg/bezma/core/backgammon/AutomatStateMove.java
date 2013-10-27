@@ -6,40 +6,40 @@ public class AutomatStateMove implements IAutomatState
 {
 
     @Override
-    public boolean processCommand(IBackgammonAutomat gameBox, ModelCommand command)
+    public boolean processCommand(IBackgammonAutomat gameAutomat, ModelCommand command)
     {
 
         Position position = command.getPosition();
         
-        if (gameBox.canDouble(position)) // Посмотреть, изменилось ли положение кубика стоимости
+        if (gameAutomat.canDouble(position)) // Cube position is changed?
         {
-            gameBox.proposeDouble();
-            gameBox.setAutomatState(AutomatStates.DOUBLE);
+            gameAutomat.proposeDouble();
+            gameAutomat.setAutomatState(AutomatStates.DOUBLE);
             
             return true;
         }        
-        else // Кубик стоимости не переместился 
+        else // Cube position is not changed
         {
-            if (gameBox.findAndAcceptMove(position))
+            if (gameAutomat.findAndAcceptMove(position))
             {
-                if (gameBox.isGameFinished())
+                if (gameAutomat.isGameFinished())
                 {
-                    gameBox.finishGame();
+                    gameAutomat.finishGame();
                     
-                    if (gameBox.isMatchFinished())
+                    if (gameAutomat.isMatchFinished())
                     {
-                        gameBox.finishMatch();
-                        gameBox.setAutomatState(AutomatStates.END);
+                        gameAutomat.finishMatch();
+                        gameAutomat.setAutomatState(AutomatStates.END);
                     }
                     else
                     {
-                        gameBox.nextGame();
-                        gameBox.setAutomatState(AutomatStates.START);
+                        gameAutomat.nextGame();
+                        gameAutomat.setAutomatState(AutomatStates.START);
                     }
                 }
                 else
                 {
-                    gameBox.setAutomatState(AutomatStates.MOVE);                    
+                    gameAutomat.setAutomatState(AutomatStates.MOVE);                    
                 }                
             }
             

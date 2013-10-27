@@ -6,7 +6,7 @@ public class AutomatStateEnd implements IAutomatState
 {
 
     @Override
-    public boolean processCommand(IBackgammonAutomat gameBox, ModelCommand modelCommand)
+    public boolean processCommand(IBackgammonAutomat gameAutomat, ModelCommand modelCommand)
     {        
         // TODO Auto-generated method stub
         return false;

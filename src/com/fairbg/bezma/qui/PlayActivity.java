@@ -551,7 +551,7 @@ public class PlayActivity extends Activity implements IModelView
 
         if (aModelState != null && !aModelState.isErrorState())
         {
-            BezmaLog.i("SET MODEL STATE", aModelState.getPosition().toString());
+	    BezmaLog.i("SET MODEL STATE", aModelState.getPosition().toString());
             setPosition(aModelState.getPosition());
         }
     }

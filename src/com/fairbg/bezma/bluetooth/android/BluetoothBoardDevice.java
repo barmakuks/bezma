@@ -19,18 +19,18 @@ import android.os.Handler;
 import android.os.Message;
 
 /**
- * Класс-коммуникатор с доской. Умеет слушать и передавать датаграммы через
- * Bluetooth СОМ-порт Реализация для Андроид
+ * Communicates with board. Can listen and send datagrams through
+ * Bluetooth СОМ-port. Android implementation of IDatagramObservable
  */
 public class BluetoothBoardDevice implements IDatagramObservable
 {
 
-    /** Устойство для связи через Bluetooth */
+    /** Communication with Bluetooth */
     private BluetoothDevice m_Device = null;
-    /** Идентификатор СОМ-службы */
+    /** СОМ-service identifier */
     UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    /** Поток чтения-записи информации */
+    /** read-write thread */
     CommunicationThread m_CommunicationThread = null;
 
     public BluetoothBoardDevice(BluetoothDevice device)
@@ -38,7 +38,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
         m_Device = device;
     }
 
-    /** Список слушателей о поступлении датаграмм */
+    /** Datagram listeners list*/
     private ArrayList<IDatagramObserver> m_Observers = new ArrayList<IDatagramObserver>();
 
     @Override
@@ -62,7 +62,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
         }
     }
 
-    /** Запускает поток чтения информации */
+    /** Runs read-write data thread*/
     public boolean startListen() throws IOException
     {
         // BluetoothSocket socket =
@@ -115,7 +115,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
         return true;
     }
 
-    /** Останавливает поток чтения информации */
+    /** Stop data read-write thread */
     public void stopListen()
     {
         if (m_CommunicationThread != null)
@@ -126,12 +126,10 @@ public class BluetoothBoardDevice implements IDatagramObservable
     }
 
     /**
-     * Вызывается из потока чтения информации, когда на вход получен поток байт
-     * 
-     * @details Пытается разпарсить полученную датаграмму и, в случае успеха,
-     *          отсылает слушателям сообщение о получении датаграммы
+     * Read-write thread callback functions. Is called when datagram data received.
+     * @details Try to parse incoming data into datagram. If parse success notifies all listeners about datagram received.
      * */
-    private void datagramRecieved(byte[] array)
+    private void datagramReceived(byte[] array)
     {
         Datagram dg = Datagram.parse(array);
 
@@ -142,10 +140,9 @@ public class BluetoothBoardDevice implements IDatagramObservable
     }
 
     /**
-     * Отправляет датаграмму в поток чтения/записи
+     * Sends datagram as byte array into outgoing stream
      * 
-     * @details преобразовывает датаграмму в поток байт и пересылает их
-     *          устройству через СОМ-порт
+     * @details Converts datagram into byte array and sends it into COM port
      */
     public void sendDatagram(Datagram datagram)
     {
@@ -163,7 +160,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
     private StringBuilder current_message = new StringBuilder();
     ArrayList<Byte> buffer = new ArrayList<Byte>();
 
-    /** Хендлер для полученных данных */
+    /** Handler for received data */
     private Handler mHandler = new Handler(new Handler.Callback()
     {
         @Override
@@ -194,7 +191,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
                             byte[] array = new byte[buffer.size()];
                             for (int j = 0; j < buffer.size(); array[j] = buffer.get(j++))
                                 ;
-                            datagramRecieved(array);
+                            datagramReceived(array);
                             buffer.clear();
                             current_message.setLength(0);
                         }
@@ -205,7 +202,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
         }
     });
 
-    /** Класс потока чтения/записи данных */
+    /** Read-write data thread*/
     private class CommunicationThread extends Thread
     {
         private final BluetoothSocket mmSocket;
@@ -237,7 +234,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
             mmOutStream = tmpOut;
         }
 
-        /** Основной поток чтения данных */
+        /** Main thread for read data*/
         public void run()
         {
             byte[] buffer = new byte[1024]; // buffer store for the stream
@@ -276,7 +273,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
             }
         }
 
-        /** Функция записи массива байт в исходящий поток */
+        /** Writes byte array into outgoing stream*/
         public void write(byte[] bytes)
         {
             try
@@ -288,7 +285,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
             }
         }
 
-        /** Остановка потока чтения/записи */
+        /** Stop read-write thread*/
         public void stopListen()
         {
             try

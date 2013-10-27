@@ -5,25 +5,38 @@ import java.util.Random;
 import com.fairbg.bezma.core.model.PlayerColors;
 import com.fairbg.bezma.log.BezmaLog;
 
-/** Описывает положение фишек и куба стоимости на доске */
+/** Describes checkers positions and cube state*/
 public class Position implements Cloneable
 {
-    /** Кубик стоимости отсутствует */
+    /**
+     * Describes direction of checkers movement for bottom player*/
+    public enum Direction{
+        /** Board direction is not defined*/
+        None, 
+        /** Board for white player (player in the bottom place), movements counter clockwise*/
+        WhiteCCW,
+        /** Board for white player, movements clockwise*/
+        WhiteCW,
+        /** Board for black player, movements counter clockwise*/
+        BlackCCW,
+        /** Board for black player, movements clockwise*/
+        BlackCW
+    }
+
+    /** No cube on board */
     public static final int CUBE_CRAWFORD = -1;
-    /** Кубик стоимости в центре доски */
+    /** Cube in the middle */
     public static final int CUBE_CENTER = 0;
-    /** Кубик стоимости у белого игрока, в нижней части доски */
+    /** White player owns the cube in the bottom of the board */
     public static final int CUBE_WHITE = 1;
-    /** Кубик стоимости у черного игрока, в верхней части доски */
+    /** Black player owns cube on the top of the board*/
     public static final int CUBE_BLACK = 2;
     /**
-     * Кубик стоимости предложен черному игроку и находится на правой стороне
-     * доски
+     * Cube is proposed to the black player and placed into the right part of the board
      */
     public static final int CUBE_RIGHT = 3;
     /**
-     * Кубик стоимости предложен белому игроку и находится на левой стороне
-     * доски
+     * Cube is proposed to the white player and placed into the left part of the board
      */
     public static final int CUBE_LEFT = 4;
     public static final int MAX_CHECKERS_IN_POSITION = 5;

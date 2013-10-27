@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.fairbg.bezma.R;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.from_net.enums.RollTypes;
+import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.store.DBAdapter;
 import com.fairbg.bezma.version3.ConfigurationVer3;
 
@@ -23,6 +24,8 @@ public class StartActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+	BezmaLog.allowTag("BEZMA");
+	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
         registerButton(R.id.btn_match_new);
@@ -40,13 +43,13 @@ public class StartActivity extends Activity
      */
     private void registerButton(int id)
     {
-        // Захватывает кнопку из макета
+        // Get button from mock up
         Button btn = (Button) findViewById(id);
-        // Регистрирует приемник OnClick
+        // Set callback for OnClick
         btn.setOnClickListener(mAddListener);
     }
 
-    // Создает анонимную реализацию OnClickListener
+    // Create unnamed implementation of OnClickListener
     private OnClickListener mAddListener = new OnClickListener()
     {
         public void onClick(View v)
@@ -137,13 +140,13 @@ public class StartActivity extends Activity
             case REQUEST_BLUETOOTH_DEVICE:
                 startPlayActivity((DeviceInfo) data.getSerializableExtra(DeviceInfo.class.getCanonicalName()));
             default:
-                // неизвестно откуда пришли данные
+                // unknown data source
                 break;
             }
         }
         else
         {
-            // операция отменена пользователем
+            // operation is canceled by user
         }
     }
 
@@ -165,7 +168,7 @@ public class StartActivity extends Activity
 
     private void saveMatchParameters(MatchParameters params)
     {
-        // здесь сохраняем в БД параметры
+        // write parameters into Database
         DBAdapter adapter = new DBAdapter(this);
         adapter.open();
         adapter.putValue("PLAYER1", params.Player1);

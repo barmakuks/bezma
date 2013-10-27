@@ -10,37 +10,51 @@ public class BackgammonRules
 
     private ArrayList<Move> m_FoundMoves = new ArrayList<Move>();
 
-    /**
-     * Check if position is start position
-     * 
-     * @param position
-     *            position to check
-     * @return true if position is start position
-     */
-    public boolean checkStartPosition(Position position)
+    public static int[] getStartPosition(Position.Direction direction)
     {
-        int startA[] = { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
-        int startB[] = { 0, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 0, 0, 0 };
-        int startAi[] = { 0, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, 0, 0, 0 };
-        int startBi[] = { 0, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 0, 0, 0 };
-
-        boolean equalA = true;
-        boolean equalB = true;
-        boolean equalAi = true;
-        boolean equalBi = true;
-
-        int pos[] = position.getCheckers();
-
-        BezmaLog.i("RULES", "Checking start position :\n" + position.toString());
-        for (int i = 0; i < pos.length; ++i)
-        {
-            equalA = equalA && (startA[i] == pos[i]);
-            equalB = equalB && (startB[i] == pos[i]);
-            equalAi = equalAi && (startAi[i] == pos[i]);
-            equalBi = equalBi && (startBi[i] == pos[i]);
-        }
-
-        return equalA || equalB || equalAi || equalBi;
+	switch(direction)
+	{
+	case BlackCCW:
+	    return new int[] { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
+	case BlackCW:
+	    return new int[] { 0, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 0, 0, 0 };
+	case WhiteCW:
+	    return new int[] { 0, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, 0, 0, 0 }; 
+	case WhiteCCW:
+	    return new int[] { 0, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 0, 0, 0 }; 
+	    default:
+		return null;
+	}
+    } 
+    
+    /**
+     * Check if position is start position, and returns board position direction
+     * if it is not a start position returns BoardDirection.None
+     * @param position Position to check
+     */
+    public Position.Direction getStartPositionDirection(Position position)
+    {
+	int pos[] = position.getCheckers();
+	
+	for (Position.Direction direction : Position.Direction.values())
+	{
+	    int start[] = BackgammonRules.getStartPosition(direction);	    
+	    
+	    if (start != null)
+	    {
+		boolean equal = true;
+	        for (int i = 0; equal && i < pos.length; ++i)
+	        {
+	            equal = equal && (start[i] == pos[i]);
+	        }		
+	        if (equal)
+	        {
+	            return direction;
+	        }
+	    }
+	}
+	
+	return Position.Direction.None;
     }
 
     /**

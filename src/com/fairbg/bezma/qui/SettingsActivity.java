@@ -20,21 +20,20 @@ public class SettingsActivity extends Activity
     }
 
     /**
-     * Захватывает кнопку из макета и регистрирует приемник OnClick
+     * Get button from mock up and set callback function OnClick
      * 
-     * @param id
-     *            идентификатор кнопки
+     * @param id button identifier
      */
     private void registerButton(int id)
     {
-        // Захватывает кнопку из макета
+        // get button from mock up
         Button btn = (Button) findViewById(id);
-        // Регистрирует приемник OnClick
+        // set up call back for OnClick
         btn.setOnClickListener(mAddListener);
     }
 
     /**
-     * Создает анонимную реализацию OnClickListener
+     * Create unnamed implementation of OnClickListener
      */
     private OnClickListener mAddListener = new OnClickListener()
     {

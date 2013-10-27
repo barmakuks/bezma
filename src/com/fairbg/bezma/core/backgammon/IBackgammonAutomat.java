@@ -5,7 +5,7 @@ import com.fairbg.bezma.core.model.PlayerColors;
 
 public interface IBackgammonAutomat
 {
-    public boolean isStartPosition(Position position);
+    public Position.Direction getStartPositionDirection(Position position);
     public void nextGame();
     
     public boolean canDouble(Position position);
@@ -14,6 +14,7 @@ public interface IBackgammonAutomat
     public boolean isDoubleAccepted(Position position);
     public void acceptDouble();
     
+    public void startGame(Position.Direction direction);
     public boolean isGameFinished();
     public void finishGame();
     

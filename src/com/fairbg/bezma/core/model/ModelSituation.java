@@ -3,14 +3,14 @@ package com.fairbg.bezma.core.model;
 import com.fairbg.bezma.core.backgammon.Position;
 
 /**
- * Класс описывающий текущее состояние модели
+ * Current model state
  * */
 public class ModelSituation
 {
 
-    /** Текущая позиция на доске */
+    /** Current checkers position */
     private Position m_Position = null;
-    /** Последнее сообщение об ошибке */
+    /** Last error message */
     private String m_ErrorMsg = "";
 
     public ModelSituation(Position position, String errorMsg)
@@ -27,21 +27,20 @@ public class ModelSituation
         m_ErrorMsg = errorMsg;
     }
 
-    /** Возвращает текущую позицию на доске */
+    /** get current checkers position */
     public Position getPosition()
     {
         return m_Position;
     }
 
-    /** Возвращает последнее сообщение об ошибке */
+    /** get last error message */
     public String getErrorMessage()
     {
         return m_ErrorMsg;
     }
 
     /**
-     * Возвращает TRUE, если в процессе обработки пользовательской команды
-     * возникла ошибка
+     * TRUE if last command was processed with error
      */
     public boolean isErrorState()
     {

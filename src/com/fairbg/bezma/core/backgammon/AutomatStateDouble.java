@@ -6,18 +6,18 @@ public class AutomatStateDouble implements IAutomatState
 {
 
     @Override
-    public boolean processCommand(IBackgammonAutomat gameBox, ModelCommand command)
+    public boolean processCommand(IBackgammonAutomat gameAutomat, ModelCommand command)
     {
-        if (!gameBox.isCurrentPlayer(command.player))
+        if (!gameAutomat.isCurrentPlayer(command.player))
         {
             return false;
         }
 
-        if (gameBox.isDoubleAccepted(command.getPosition()))
+        if (gameAutomat.isDoubleAccepted(command.getPosition()))
         {
-            gameBox.acceptDouble();
+            gameAutomat.acceptDouble();
             
-            gameBox.setAutomatState(AutomatStates.MOVE);
+            gameAutomat.setAutomatState(AutomatStates.MOVE);
             
             return true;
         }

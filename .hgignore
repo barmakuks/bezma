@@ -4,7 +4,8 @@ syntax: glob
 *.rej
 *~
 *.o
+*.log
 tests/*.err
-bin/*
+bin
 gen/*
 docs/html

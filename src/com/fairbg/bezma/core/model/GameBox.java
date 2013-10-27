@@ -1,6 +1,7 @@
 package com.fairbg.bezma.core.model;
 
 import com.fairbg.bezma.core.backgammon.BackgammonAutomat;
+import com.fairbg.bezma.core.backgammon.BackgammonRules;
 import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.log.BezmaDebug;
 import com.fairbg.bezma.store.IDatabase;
@@ -12,13 +13,12 @@ import com.fairbg.bezma.store.IDatabase;
  */
 public class GameBox implements IGameBox
 {
-
-    // / Отображает текущее состояние игры
+    /** Current game state */
     private ModelSituation m_ModelState;
 
     private IGameAutomat  m_GameAutomat;
 
-    // / Текущий матч
+    /** Current match */
     private Match m_Match;
 
     public GameBox(Match aMatch)
@@ -43,11 +43,7 @@ public class GameBox implements IGameBox
     {
         if (BezmaDebug.checkPositionMode)
         {
-            //m_ModelState = new ModelSituation(modelCommand.getPosition(), "");
             Position position = modelCommand.getPosition();
-            //int startA[] = { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
-            //position.setCheckers(startA);
-            
             m_ModelState = new ModelSituation(position, "");
             return true;
         }
@@ -66,7 +62,7 @@ public class GameBox implements IGameBox
     public void appendMove(IMove move)
     {
         m_Match.appendMove(move);
-        // TODO Auto-generated method stub
+        m_ModelState = new ModelSituation(m_GameAutomat.getCurrentPosition(), "");
     }
 
     public void writeCurrentState()
@@ -83,9 +79,16 @@ public class GameBox implements IGameBox
 
     @Override
     public void nextGame()
-    {
+    {	
         // TODO Auto-generated method stub
-        
+    }
+    
+    @Override public void startGame(Position.Direction direction) 
+    {
+	Position pos = new Position();
+	pos.setCheckers(BackgammonRules.getStartPosition(direction));
+	
+	m_ModelState = new ModelSituation(pos, "");
     }
 
     @Override
