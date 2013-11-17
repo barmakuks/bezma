@@ -129,13 +129,13 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         {
             move = m_Rules.findMove(die1, die2, m_LastPosition, position, m_CurrentPlayer);
         }
-        
 
         if (move != null)
         {
             BezmaLog.i("BEZMA", "found move");
             m_LastPosition.applyMove(move);
             m_GameBox.appendMove(move);
+            m_CurrentPlayer = PlayerColors.getAltColor(m_CurrentPlayer); 
             BezmaLog.i("BEZMA", "move accepted");            
             return true;            
         }

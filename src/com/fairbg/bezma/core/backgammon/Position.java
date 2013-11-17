@@ -299,28 +299,21 @@ public class Position implements Cloneable
 
     public boolean approxEquals(Position other)
     {
-        for (int i = 0; i <= 25; i++)
+	boolean equals = true;
+        
+	for (int i = 0; equals && i <= 25; i++)
         {
-            final int count = getCheckerCount(i, PlayerColors.BLACK);
-            final int other_count = other.getCheckerCount(i, PlayerColors.BLACK);
-            final PlayerColors color = getCheckerColor(i, PlayerColors.BLACK);
-            final PlayerColors other_color = other.getCheckerColor(i, PlayerColors.BLACK);
+            int count = getCheckerCount(i, PlayerColors.BLACK);
+            int other_count = other.getCheckerCount(i, PlayerColors.BLACK);
+            PlayerColors color = getCheckerColor(i, PlayerColors.BLACK);
+            PlayerColors other_color = other.getCheckerColor(i, PlayerColors.BLACK);
 
-            if (other_color != PlayerColors.NONE && color != PlayerColors.NONE && other_color != color)
-            {
-                return false;
-            }
+            equals = equals && (other_color == color || other_color == PlayerColors.NONE || color == PlayerColors.NONE);
 
-            boolean equals = count == other_count || (count >= other_count && (other_count == MAX_CHECKERS_IN_POSITION));
-
-            if (!equals)
-            {
-                return false;
-            }
-
+            equals = equals && (count == other_count) || (count >= other_count && (other_count == MAX_CHECKERS_IN_POSITION));
         }
 
-        return true;
+        return equals;
     }
 
     public int getCheckerCount(int position, PlayerColors player)

@@ -2,7 +2,6 @@ package com.fairbg.bezma.log;
 
 public class ConsoleLogger implements ILogger
 {
-
     private boolean m_showTag;
 
     @Override

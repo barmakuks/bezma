@@ -219,7 +219,7 @@ public class BackgammonRules
                         {
                             BezmaLog.i("FOUND STATE", "still can do movement. continue search from : " + aPositionFromCopy);
                             BezmaLog.i("FOUND STATE", "to : " + toPosition);
-                            findPosibleMoves(move_copy, aPositionFromCopy, toPosition, player);
+                            return findPosibleMoves(move_copy, aPositionFromCopy, toPosition, player);
                         }
                         else
                         {
@@ -236,6 +236,8 @@ public class BackgammonRules
                                 {
                                     m_FoundMoves.add((Move) move_copy.clone());
                                 }
+                                
+                                return true;
                             }
                         }
                     }

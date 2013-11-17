@@ -7,7 +7,7 @@ import java.util.Set;
 public class BezmaLog
 {
 
-    private static ILogger m_Logger = new AndroidLogger();
+    private static ILogger m_Logger = new ConsoleLogger();// new AndroidLogger();
     private static Set<String> m_Tags = new HashSet<String>();
 
     public static void setLogger(ILogger logger)
@@ -21,7 +21,6 @@ public class BezmaLog
 	{
 	    m_Logger.i(tag, text);
 	}
-
     }
 
     @SuppressLint("DefaultLocale")
