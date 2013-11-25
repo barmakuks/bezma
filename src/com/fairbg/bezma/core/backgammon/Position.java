@@ -169,8 +169,10 @@ public class Position implements Cloneable
         {
             res.append(count > 0 ? '0' : 'X');
         }
+
         res.append(" : ");
         count = m_Checkers[25];
+
         for (int i = 0; i < Math.abs(count); i++)
         {
             res.append(count > 0 ? '0' : 'X');
@@ -234,7 +236,6 @@ public class Position implements Cloneable
 
     public void applyMove(Move move)
     {
-
         for (Movement movement : move.getMovements())
         {
             applayMovement(movement.MoveFrom, movement.MoveTo, movement.Color);
@@ -243,7 +244,6 @@ public class Position implements Cloneable
 
     public void applayMovement(int moveFrom, int moveTo, PlayerColors player)
     {
-
         moveFrom = getIndex(moveFrom, player);
         moveTo = getIndex(moveTo, player);
         final int OPP_BAR_POSITION = getIndex(Position.BAR_POSITION, PlayerColors.getAltColor(player));
@@ -282,6 +282,7 @@ public class Position implements Cloneable
     {
         final int index = getIndex(position, player);
         int color = m_Checkers[index] * getPLayerSign(PlayerColors.WHITE);
+        
         return color == 0 ? PlayerColors.NONE : color > 0 ? PlayerColors.WHITE : PlayerColors.BLACK;
     }
 

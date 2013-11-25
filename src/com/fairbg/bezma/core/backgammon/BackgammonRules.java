@@ -174,7 +174,6 @@ public class BackgammonRules
 
     private boolean findPosibleMoves(final Move move, final Position fromPosition, final Position toPosition, PlayerColors player) throws CloneNotSupportedException
     {
-
         Position aPositionFromCopy = null;
         Move move_copy = null;
         int from_index = Position.BAR_POSITION + 1;// 26;
@@ -197,7 +196,7 @@ public class BackgammonRules
                 {
                     final int dest_index = from_index - currentDie;
 
-                    if (canApplayMovement(fromPosition, from_index, dest_index, player))
+                    if (canApplayMovement(aPositionFromCopy, from_index, dest_index, player))
                     {
 
                         boolean isStrike = false;
@@ -219,7 +218,7 @@ public class BackgammonRules
                         {
                             BezmaLog.i("FOUND STATE", "still can do movement. continue search from : " + aPositionFromCopy);
                             BezmaLog.i("FOUND STATE", "to : " + toPosition);
-                            return findPosibleMoves(move_copy, aPositionFromCopy, toPosition, player);
+                            findPosibleMoves(move_copy, aPositionFromCopy, toPosition, player);
                         }
                         else
                         {
@@ -343,7 +342,6 @@ public class BackgammonRules
 
     private int findFirstMovedChecker(Position from, Position to, PlayerColors player, int start_from)
     {
-
         for (int i = start_from - 1; i >= 0; i--)
         {
             if (from.getCheckerColor(i, player) == player && (from.getCheckerCount(i, player) > to.getCheckerCount(i, player) || from.getCheckerCount(i, player) >= Position.MAX_CHECKERS_IN_POSITION))
@@ -351,6 +349,7 @@ public class BackgammonRules
                 return i;
             }
         }
+
         return -1;
     }
 
