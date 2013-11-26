@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
+import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
 
 public class TestModelOut implements IModelView
@@ -15,7 +16,6 @@ public class TestModelOut implements IModelView
     @Override
     public void notifyObservers(CommunicationCommand userCommand)
     {
-	System.out.println("View model sends command");
 	for (ICommandObserver observer : m_Observers)
 	{
 	    observer.handeEvent(userCommand);
@@ -55,7 +55,6 @@ public class TestModelOut implements IModelView
     @Override
     public void setModelState(ModelSituation aModelState)
     {
-	System.out.print("Model set state: ");
 	if (aModelState != null)
 	{
 	    System.out.println(aModelState.getPosition());
@@ -65,4 +64,9 @@ public class TestModelOut implements IModelView
 	}
     }
 
+    @Override
+    public void appendMove(IMove move)
+    {
+	move.accept(new MovePrinter());
+    }
 }

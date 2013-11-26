@@ -12,14 +12,12 @@ import com.fairbg.bezma.bluetooth.android.BluetoothBoardDevice;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
+import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
-
-;
 
 /** Имплементация устройства 3-го покоения со связью через bluetooth */
 public class DeviceImpl implements IModelView, IDatagramObserver
 {
-
     /** Связь через bluetooth */
     private BluetoothBoardDevice m_BoardDevice = null;
 
@@ -99,5 +97,11 @@ public class DeviceImpl implements IModelView, IDatagramObserver
     {
 	Datagram datagram = DatagramConverter.commandToDatagram(command);
 	m_BoardDevice.sendDatagram(datagram);
+    }
+
+    @Override
+    public void appendMove(IMove move)
+    {
+	// TODO Auto-generated method stub	
     }
 }

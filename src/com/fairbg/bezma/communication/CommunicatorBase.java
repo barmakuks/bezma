@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
+import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
 
 ;
@@ -100,11 +101,19 @@ public abstract class CommunicatorBase implements ICommunicator
     @Override
     public void sendCommand(CommunicationCommand command)
     {
-
 	for (IModelView view : m_Views)
 	{
 	    view.sendCommand(command);
 	}
-
     }
+
+    @Override
+    public void appendMove(IMove move)
+    {
+	for (IModelView view : m_Views)
+	{
+	    view.appendMove(move);	    
+	}
+    }
+
 }

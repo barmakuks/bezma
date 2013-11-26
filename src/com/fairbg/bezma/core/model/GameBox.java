@@ -1,5 +1,7 @@
 package com.fairbg.bezma.core.model;
 
+import java.lang.ref.WeakReference;
+
 import com.fairbg.bezma.core.backgammon.BackgammonAutomat;
 import com.fairbg.bezma.core.backgammon.BackgammonRules;
 import com.fairbg.bezma.core.backgammon.Position;
@@ -18,13 +20,13 @@ public class GameBox implements IGameBox
 
     private IGameAutomat  m_GameAutomat;
 
-    /** Current match */
-    private Match m_Match;
+    /** Current model*/
+    private WeakReference<Model> m_Model;
 
-    public GameBox(Match aMatch)
+    public GameBox(Model aModel)
     {
         m_ModelState = null;
-        m_Match = aMatch;
+        m_Model = new WeakReference<Model>(aModel);
         
         m_GameAutomat = new BackgammonAutomat(this);
     }
@@ -53,28 +55,21 @@ public class GameBox implements IGameBox
         }
     }
 
-    public Match getMatch()
-    {
-        return m_Match;
-    }
-
     @Override
     public void appendMove(IMove move)
     {
-        m_Match.appendMove(move);
+        m_Model.get().appendMove(move);
         m_ModelState = new ModelSituation(m_GameAutomat.getCurrentPosition(), "");
     }
 
     public void writeCurrentState()
     {
         // TODO Auto-generated method stub
-        
     }
 
     public void restore(IDatabase m_Storage)
     {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -95,7 +90,6 @@ public class GameBox implements IGameBox
     public void finishGame()
     {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -109,13 +103,11 @@ public class GameBox implements IGameBox
     public void finishMatch()
     {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void nextMatch()
     {
         // TODO Auto-generated method stub
-        
     }
 }

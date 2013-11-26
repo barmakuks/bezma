@@ -48,7 +48,7 @@ class MovePrinter implements IMoveVisitor
 
 public class Runner
 {
-    private class MoveData
+    class MoveData
     {
 	int die1, die2;
 	int position[];
@@ -70,7 +70,7 @@ public class Runner
 	}
     };
 
-    private MoveData fakeGame[] = {
+    MoveData fakeGame[] = {
 	    new MoveData(new int[] { 0, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5,
 		    -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 0, 0, 0 },
 		    PlayerColors.NONE), // 0. start position
@@ -113,7 +113,7 @@ public class Runner
 		    PlayerColors.WHITE), // 11. [5:5] 13/8 13/8 8/3 8/3
     };
 
-    private MoveData fornazirKrasovGame2[] = {
+    MoveData fornazirKrasovGame2[] = {
 	    // черные - отрицательные, движение влево
 	    // - BLACK |W| | 1| 2| 3| 4| 5| 6| | 7| 8| 9|10|11|12|
 	    // |13|14|15|16|17|18| |19|20|21|22|23|24| | B|
@@ -271,7 +271,7 @@ public class Runner
 
     };
 
-    private void testFindMove(MoveData testData[])
+    void testFindMove(MoveData testData[])
     {
 	System.out.println("*********** test find move ********");
 	BackgammonRules rules = new BackgammonRules();
@@ -302,7 +302,7 @@ public class Runner
 
     }
 
-    private void testModel(MoveData testData[])
+    void testModel(MoveData testData[])
     {
 	System.out.println("*********** test model **************");
 	Model model = new Model();
@@ -336,6 +336,7 @@ public class Runner
      */
     public static void main(String[] args)
     {
+//	BezmaLog.allowTag("MOVE");
 	IModelView view = new TestModelOut();
 	IModelView commandsProvider = new TestModelCommandsProvider();
 

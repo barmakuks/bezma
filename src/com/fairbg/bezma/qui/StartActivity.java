@@ -160,6 +160,7 @@ public class StartActivity extends Activity
         startActivity(intent);
     }
 
+    @SuppressWarnings("unused")
     private void startSelectDeviceActivity()
     {
         Intent intent = new Intent(this, SelectDeviceActivity.class);

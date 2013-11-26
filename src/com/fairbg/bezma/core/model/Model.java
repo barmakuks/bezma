@@ -1,21 +1,23 @@
 package com.fairbg.bezma.core.model;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+
 import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.store.IDatabase;
 
 /**
  * Main class for model in Model-View-Controller architecture
- * 
- * @author Vitalii Misiura
  */
 public final class Model
 {
     private MatchParameters m_MatchParameters;
     private IDatabase m_Storage;
     private GameBox m_GameBox;
-    // private ArrayList<IModelObserver> m_Observers = new
-    // ArrayList<IModelObserver>();
+
+    private ArrayList<WeakReference<IModelObserver>> m_Observers = new ArrayList<WeakReference<IModelObserver>>();
+
     private Match m_Match = new Match();
 
     // private ModelState m_ModelState = new ModelState();
@@ -30,11 +32,11 @@ public final class Model
      */
     public void create(MatchParameters parameters, IDatabase storage)
     {
-        m_MatchParameters = parameters;
-        m_Storage = storage;
-        m_GameBox = new GameBox(m_Match);
-        initNotStoredObjects();
-        store();
+	m_MatchParameters = parameters;
+	m_Storage = storage;
+	m_GameBox = new GameBox(this);
+	initNotStoredObjects();
+	store();
     }
 
     /**
@@ -47,10 +49,10 @@ public final class Model
      */
     public void open(MatchIdentifier matchId, IDatabase storage)
     {
-        m_MatchParameters = storage.readMatchParameters(matchId);
-        m_Storage = storage;
-        restore();
-        initNotStoredObjects();
+	m_MatchParameters = storage.readMatchParameters(matchId);
+	m_Storage = storage;
+	restore();
+	initNotStoredObjects();
     }
 
     /**
@@ -61,18 +63,43 @@ public final class Model
      */
     public boolean acceptCommand(ModelCommand command)
     {
-        boolean result = processCommand(command);
-        if (result)
-        {
-            m_GameBox.writeCurrentState();
-            if (m_Storage != null)
-            {
-                m_Storage.writeCurrentState(m_MatchParameters.matchId, m_GameBox.getModelState());
-            }
-        }
-        return result;
+	boolean result = processCommand(command);
+	if (result)
+	{
+	    m_GameBox.writeCurrentState();
+	    if (m_Storage != null)
+	    {
+		m_Storage.writeCurrentState(m_MatchParameters.matchId,
+			m_GameBox.getModelState());
+	    }
+	}
+	return result;
     }
 
+    public void addObserver(IModelObserver observer)
+    {
+	if (!m_Observers.contains(observer))
+	{
+	    m_Observers.add(new WeakReference<IModelObserver>(observer));
+	}
+    }
+    
+    public void removeObserver(IModelObserver observer)
+    {
+	m_Observers.remove(observer);
+    }
+    
+    public void notifyAll(IModelObserver.Event event)
+    {
+	for (WeakReference<IModelObserver> observer : m_Observers)
+	{
+	    if (!observer.isEnqueued())
+	    {
+		observer.get().onModelEvent(event);	    
+	    }
+	}
+    }
+    
     /************************* PRIVATE FUNCTIONS *****************************************/
 
     /**
@@ -80,17 +107,16 @@ public final class Model
      */
     private void store()
     {
-
-        if (m_Storage != null)
-        {
-            if (m_MatchParameters.matchId == null || m_MatchParameters.matchId.isEmpty())
-            {
-                m_MatchParameters.matchId = MatchIdentifier.generateNew();
-            }
-            m_Storage.writeMatchParameters(m_MatchParameters);
-            m_Storage.writeMatch(m_MatchParameters.matchId, m_Match);
-        }
-
+	if (m_Storage != null)
+	{
+	    if (m_MatchParameters.matchId == null
+		    || m_MatchParameters.matchId.isEmpty())
+	    {
+		m_MatchParameters.matchId = MatchIdentifier.generateNew();
+	    }
+	    m_Storage.writeMatchParameters(m_MatchParameters);
+	    m_Storage.writeMatch(m_MatchParameters.matchId, m_Match);
+	}
     }
 
     /**
@@ -98,12 +124,10 @@ public final class Model
      */
     private void restore()
     {
-
-        if (m_Storage != null)
-        {
-            m_GameBox.restore(m_Storage);
-        }
-
+	if (m_Storage != null)
+	{
+	    m_GameBox.restore(m_Storage);
+	}
     }
 
     /**
@@ -116,7 +140,7 @@ public final class Model
      */
     private boolean processCommand(ModelCommand modelCommand)
     {
-        return m_GameBox.processCommand(modelCommand);
+	return m_GameBox.processCommand(modelCommand);
     }
 
     /**
@@ -128,7 +152,12 @@ public final class Model
 
     public ModelSituation getState()
     {
-        return m_GameBox.getModelState();
+	return m_GameBox.getModelState();
     }
 
+    public void appendMove(IMove move)
+    {
+	m_Match.appendMove(move);
+	notifyAll(new IModelObserver.MoveEvent(move));
+    }    
 }

@@ -6,8 +6,8 @@ import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.CommunicationCommandState;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
+import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
-import com.fairbg.bezma.core.model.PlayerColors;
 
 public class TestModelCommandsProvider implements IModelView
 {
@@ -24,25 +24,26 @@ public class TestModelCommandsProvider implements IModelView
 //	    };
     
     short [][] datagrams = {
-	    new short[] { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, 
-	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, 
-	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0,-1,-1, 0, 0, 0, 0}, 
-	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, 
-	    new short[] { 1, 0, 1,-2, 0, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2,-1, 4, 2, 0, 0,-1, 0, 0, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // skip move 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2, 0,-1, 0,-1, 0, 0}, 
-	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, 
+	    new short[] { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, // 
+	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, // W
+	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0,-1,-1, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // W
+	    new short[] { 1, 0, 1,-2, 0, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2,-1, 4, 2, 0, 0,-1, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // B skip move 
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2, 0,-1, 0,-1, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 2,-5, 0, 1, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0,-1,-1, 2,-3, 0, 1, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // B
 	    };
     
     @Override
     public void notifyObservers(CommunicationCommand userCommand)
     {
-	System.out.println("View model sends command");
 	for (ICommandObserver observer : m_Observers)
 	{
 	    observer.handeEvent(userCommand);
@@ -88,5 +89,12 @@ public class TestModelCommandsProvider implements IModelView
     @Override
     public void setModelState(ModelSituation aModelState)
     {
+    }
+
+    @Override
+    public void appendMove(IMove move)
+    {
+	// TODO Auto-generated method stub
+	
     }
 }
