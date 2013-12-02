@@ -9,6 +9,9 @@ import com.fairbg.bezma.log.BezmaLog;
 
 public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
 {
+    private Position.Direction m_StartPositionDirection = Position.Direction.None;
+    private Position.Direction DefaultDirection = Position.Direction.BlackCW;
+    
     private BackgammonRules m_Rules = new BackgammonRules();
     private IGameBox m_GameBox;
     
@@ -39,9 +42,10 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
     public void startGame(Position.Direction direction)
     {
 	BezmaLog.i("BEZMA", "startGame");
-        m_GameBox.startGame(direction);
+	m_StartPositionDirection = direction;
+        m_GameBox.startGame(DefaultDirection);
         m_LastPosition = new Position();
-        m_LastPosition.setCheckers(BackgammonRules.getStartPosition(direction));
+        m_LastPosition.setCheckers(BackgammonRules.getStartPosition(DefaultDirection));
     }
     
     @Override
@@ -190,11 +194,31 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
 
 	if (m_CurrentState != null)
 	{
+	    ModelCommand normalizedCommand = NormalizePosition(modelCommand);
 	    BezmaLog.i("BEZMA", "processCommand in BackgammonAutomat" + modelCommand.getPosition().toString());
-	    res = m_CurrentState.processCommand(this, modelCommand);
+	    res = m_CurrentState.processCommand(this, normalizedCommand);
 	}
 	
         return res;
+    }
+
+    
+    /** Returns Model Command's position in Black Counterclockwise direction */
+    private ModelCommand NormalizePosition(ModelCommand modelCommand)
+    {
+	ModelCommand normalizedCommand = modelCommand;
+
+	try
+	{
+	    normalizedCommand = (ModelCommand) modelCommand.clone();
+	    normalizedCommand.getPosition().ChangeDirection(m_StartPositionDirection, DefaultDirection);
+	} 
+	catch (CloneNotSupportedException e)
+	{
+	    e.printStackTrace();
+	}
+	
+	return normalizedCommand;
     }
 
     @Override

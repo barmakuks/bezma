@@ -83,23 +83,23 @@ public final class Model
 	    m_Observers.add(new WeakReference<IModelObserver>(observer));
 	}
     }
-    
+
     public void removeObserver(IModelObserver observer)
     {
 	m_Observers.remove(observer);
     }
-    
+
     public void notifyAll(IModelObserver.Event event)
     {
 	for (WeakReference<IModelObserver> observer : m_Observers)
 	{
 	    if (!observer.isEnqueued())
 	    {
-		observer.get().onModelEvent(event);	    
+		observer.get().onModelEvent(event);
 	    }
 	}
     }
-    
+
     /************************* PRIVATE FUNCTIONS *****************************************/
 
     /**
@@ -159,5 +159,5 @@ public final class Model
     {
 	m_Match.appendMove(move);
 	notifyAll(new IModelObserver.MoveEvent(move));
-    }    
+    }
 }

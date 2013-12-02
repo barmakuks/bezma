@@ -1,6 +1,7 @@
 package com.fairbg.bezma.core.backgammon;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import com.fairbg.bezma.core.model.PlayerColors;
 import com.fairbg.bezma.log.BezmaLog;
@@ -15,15 +16,15 @@ public class BackgammonRules
 	switch(direction)
 	{
 	case BlackCCW:
-	    return new int[] { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
+	    return new int[] { 0,-2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0,-5, 5, 0, 0, 0,-3, 0,-5, 0, 0, 0, 0, 2, 0, 0, 0 };
 	case BlackCW:
-	    return new int[] { 0, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 0, 0, 0 };
+	    return new int[] { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0 };
 	case WhiteCW:
-	    return new int[] { 0, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, 0, 0, 0 }; 
+	    return new int[] { 0,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5, 0, 0, 0 }; 
 	case WhiteCCW:
-	    return new int[] { 0, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 0, 0, 0 }; 
-	    default:
-		return null;
+	    return new int[] { 0, 5, 0, 0, 0,-3, 0,-5, 0, 0, 0, 0, 2,-2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0,-5, 0, 0, 0 }; 
+	default:
+	    return null;
 	}
     } 
     
@@ -40,17 +41,9 @@ public class BackgammonRules
 	{
 	    int start[] = BackgammonRules.getStartPosition(direction);	    
 	    
-	    if (start != null)
+	    if (PositionUtils.EqualPositions(start, pos))
 	    {
-		boolean equal = true;
-	        for (int i = 0; equal && i < pos.length; ++i)
-	        {
-	            equal = equal && (start[i] == pos[i]);
-	        }		
-	        if (equal)
-	        {
-	            return direction;
-	        }
+		return direction;
 	    }
 	}
 	

@@ -1,6 +1,7 @@
 package com.fairbg.bezma.qui;
 
 import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,12 +18,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import com.fairbg.bezma.R;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
+import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
@@ -598,6 +601,8 @@ public class PlayActivity extends Activity implements IModelView
     @Override
     public void appendMove(IMove move)
     {
-	// TODO Auto-generated method stub
+	String moveString = MovePrinter.printMove(move);
+	
+	showErrorMessage(moveString);
     }
 }

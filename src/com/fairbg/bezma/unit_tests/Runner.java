@@ -6,6 +6,7 @@ import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.BackgammonRules;
 import com.fairbg.bezma.core.backgammon.Move;
+import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Movement;
 import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.model.IMoveVisitor;
@@ -13,38 +14,6 @@ import com.fairbg.bezma.core.model.Model;
 import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.core.model.PlayerColors;
 
-class MovePrinter implements IMoveVisitor
-{
-
-    @Override
-    public void visit(Move move)
-    {
-	System.out
-		.print(move.getPlayer() == PlayerColors.WHITE ? "W: " : "B: ");
-	System.out.print("[" + move.getDie1() + ":" + move.getDie2() + "]");
-
-	if (move.getMovements().length == 0)
-	{
-	    System.out.print(" skip move");
-	} else
-	{
-	    for (Movement movement : move.getMovements())
-	    {
-		movement.accept(this);
-	    }
-	}
-
-	System.out.println();
-    }
-
-    @Override
-    public void visit(Movement movement)
-    {
-	System.out.print(" " + movement.MoveFrom + "/"
-		+ (movement.MoveTo > 0 ? movement.MoveTo : "off"));
-	System.out.print(movement.Strike ? "* " : " ");
-    }
-};
 
 public class Runner
 {
@@ -275,7 +244,6 @@ public class Runner
     {
 	System.out.println("*********** test find move ********");
 	BackgammonRules rules = new BackgammonRules();
-	MovePrinter movePrinter = new MovePrinter();
 
 	Position from = new Position();
 	from.setCheckers(testData[0].position);
@@ -292,14 +260,13 @@ public class Runner
 	    if (move != null)
 	    {
 		System.out.print(String.format("%2d: ", i));
-		move.accept(movePrinter);
+		System.out.println(MovePrinter.printMove(move));
 		from.applyMove(move);
 	    } else
 	    {
 		System.out.println("Move " + i + " not found");
 	    }
 	}
-
     }
 
     void testModel(MoveData testData[])

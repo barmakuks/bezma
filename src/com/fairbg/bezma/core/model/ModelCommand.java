@@ -44,4 +44,14 @@ public class ModelCommand
         return m_Position;
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+	ModelCommand clone = new ModelCommand();
+
+	clone.player = player;
+	clone.m_Position = (Position)m_Position.clone();
+
+        return clone;
+    }
 }

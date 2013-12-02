@@ -365,4 +365,17 @@ public class Position implements Cloneable
     {
 	return m_Checkers[getIndex(BAR_POSITION, player)] != 0;
     }
+    
+    public void ChangeDirection(Direction currentDirection, Direction destDirection)
+    {
+	if (currentDirection == Direction.None)
+	{
+	    return;	    
+	}
+	
+	if (currentDirection != destDirection)
+	{
+	    m_Checkers = PositionUtils.ChangeDirection(currentDirection, destDirection, m_Checkers);
+	}
+    }
 }

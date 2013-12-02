@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
+import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
 
@@ -58,7 +59,8 @@ public class TestModelOut implements IModelView
 	if (aModelState != null)
 	{
 	    System.out.println(aModelState.getPosition());
-	} else
+	} 
+	else
 	{
 	    System.out.println("empty state");
 	}
@@ -67,6 +69,6 @@ public class TestModelOut implements IModelView
     @Override
     public void appendMove(IMove move)
     {
-	move.accept(new MovePrinter());
+	System.out.println(MovePrinter.printMove(move));
     }
 }
