@@ -59,6 +59,7 @@ public class TestModelOut implements IModelView
 	if (aModelState != null)
 	{
 	    System.out.println(aModelState.getPosition());
+	    System.out.println();
 	} 
 	else
 	{
@@ -69,6 +70,6 @@ public class TestModelOut implements IModelView
     @Override
     public void appendMove(IMove move)
     {
-	System.out.println(MovePrinter.printMove(move));
+	System.out.print(MovePrinter.printMove(move));
     }
 }

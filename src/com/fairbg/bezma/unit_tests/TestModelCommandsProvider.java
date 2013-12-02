@@ -11,35 +11,17 @@ import com.fairbg.bezma.core.model.ModelSituation;
 
 public class TestModelCommandsProvider implements IModelView
 {
+    private long m_delay;
+    short [][] 	 m_datagrams; 
+    
+    public TestModelCommandsProvider(short [][] datagrams, long delay)
+    {
+	m_delay = delay;
+	m_datagrams = datagrams;
+    }
+    
     /** Datagram listeners list */
     private ArrayList<ICommandObserver> m_Observers = new ArrayList<ICommandObserver>();
-    
-    short [][] datagrams = {
-	    new short[] { 0,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5, 0, 0, 0}, 
-	    new short[] { 0,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
-	    new short[] { 0,-5, 0, 0, 0, 2, 0, 4, 2, 0, 0, 0,-2, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
-	    new short[] { 0,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
-	    new short[] { 0,-5, 0, 0, 0, 2, 0, 2, 2, 0,-1, 2, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5,-1, 0, 0}, 
-	    new short[] { 0,-5, 0, 0, 0, 2, 0, 2, 2, 0,-2, 2, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
-	    };
-    
-//    short [][] datagrams = {
-//	    new short[] { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, // 
-//	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, // W
-//	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0,-1,-1, 0, 0, 0, 0}, // B
-//	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // W
-//	    new short[] { 1, 0, 1,-2, 0, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // B
-//	    new short[] { 0, 0, 0,-2, 2, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // W
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2,-1, 4, 2, 0, 0,-1, 0, 0, 0, 0}, // B
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // W
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // B skip move 
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // W
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // B
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2, 0,-1, 0,-1, 0, 0}, // W
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // B
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 2,-5, 0, 1, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // W
-//	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0,-1,-1, 2,-3, 0, 1, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // B
-//	    };
     
     @Override
     public void notifyObservers(CommunicationCommand userCommand)
@@ -65,15 +47,34 @@ public class TestModelCommandsProvider implements IModelView
     @Override
     public boolean start()
     {
-	for (int i = 0; i < datagrams.length; i++)
+	Thread thread = new Thread(new Runnable()
 	{
-	    CommunicationCommandState command = new CommunicationCommandState();
-	    command.checkers = datagrams[i];
-	    command.cubePosition = -1;
-	    command.playerId = -1;
-	    notifyObservers(command);
-	}
-	return false;
+	    @Override
+	    public void run()
+	    {
+		for (int i = 0; i < m_datagrams.length; i++)
+		{
+		    CommunicationCommandState command = new CommunicationCommandState();
+		    command.checkers = m_datagrams[i];
+		    command.cubePosition = -1;
+		    command.playerId = -1;
+		    notifyObservers(command);
+		    
+		    try
+		    {
+			Thread.sleep(m_delay);
+		    }
+		    catch (InterruptedException e)
+		    {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		    }
+		}
+	    }
+	});
+	
+	thread.start();
+	return true;
     }
 
     @Override

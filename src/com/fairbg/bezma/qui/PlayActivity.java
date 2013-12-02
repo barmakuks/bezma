@@ -23,6 +23,8 @@ import com.fairbg.bezma.R;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
+import com.fairbg.bezma.core.Configuration;
+import com.fairbg.bezma.core.IConfigurator;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
@@ -30,6 +32,11 @@ import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.model.IMove;
 import com.fairbg.bezma.core.model.ModelSituation;
 import com.fairbg.bezma.log.BezmaLog;
+import com.fairbg.bezma.unit_tests.Runner;
+import com.fairbg.bezma.unit_tests.TestConfiguration;
+import com.fairbg.bezma.unit_tests.TestConfigurator;
+import com.fairbg.bezma.unit_tests.TestModelCommandsProvider;
+import com.fairbg.bezma.unit_tests.TestModelOut;
 import com.fairbg.bezma.version3.ConfigurationVer3;
 import com.fairbg.bezma.version3.ConfiguratorVer3;
 
@@ -56,30 +63,54 @@ public class PlayActivity extends Activity implements IModelView
 	super.onCreate(bundle);
 
 	requestWindowFeature(Window.FEATURE_NO_TITLE);
-	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-	ConfigurationVer3 configuration = (ConfigurationVer3) (getIntent()
-		.getExtras().getSerializable(ConfigurationVer3.class
-		.getCanonicalName()));
+	Configuration configuration = new TestConfiguration();
 
-	m_DeviceMAC = configuration.deviceMAC;
-	m_MatchParameters = configuration.getMatchParameters();
+	m_MatchParameters = new MatchParameters();
 
-	ConfiguratorVer3 configurator = new ConfiguratorVer3();
+	IConfigurator configurator = new TestConfigurator();
 
 	m_Presenter = new Presenter(configurator, configuration);
 
+	IModelView commandsProvider = new TestModelCommandsProvider(Runner.getDatagrams(), 2000);
+
+	m_Presenter.addView(commandsProvider);
 	m_Presenter.addView(this);
 
 	initView();
 
 	DrawingUtils.setAssetManager(this.getAssets());
 
-	startPresenter();
-
+	m_Presenter.start();
     }
 
+//    @Override
+//    protected void onCreate(Bundle bundle)
+//    {
+//	super.onCreate(bundle);
+//
+//	requestWindowFeature(Window.FEATURE_NO_TITLE);
+//	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//	ConfigurationVer3 configuration = (ConfigurationVer3) (getIntent().getExtras().getSerializable(ConfigurationVer3.class.getCanonicalName()));
+//
+//	m_DeviceMAC = configuration.deviceMAC;
+//	m_MatchParameters = configuration.getMatchParameters();
+//
+//	ConfiguratorVer3 configurator = new ConfiguratorVer3();
+//
+//	m_Presenter = new Presenter(configurator, configuration);
+//
+//	m_Presenter.addView(this);
+//
+//	initView();
+//
+//	DrawingUtils.setAssetManager(this.getAssets());
+//
+//	startPresenter();
+//    }
+    
     final int DEVICE_CONNECTION_OK = 1;
     final int DEVICE_CONNECTION_ERROR = 0;
 
@@ -466,14 +497,13 @@ public class PlayActivity extends Activity implements IModelView
 		    22, 270, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
 	    // Game conditions
-	    DrawingUtils.drawText(canvas,
-		    Integer.toString(m_MatchParameters.MatchLength), 240, 98,
-		    48, 0, 0xFF302f2f, "fonts/OpiumB.TTF");
+	    DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.MatchLength), 
+		    240, 78, 48, 0, 0xFF302f2f, "fonts/OpiumB.TTF");
 	    // Players scores
-	    DrawingUtils.drawText(canvas, "0", 140, 98, 48, 0, 0xFFA30101,
-		    "fonts/OpiumB.TTF");
-	    DrawingUtils.drawText(canvas, "0", 340, 98, 48, 0, 0xFF5b2b0a,
-		    "fonts/OpiumB.TTF");
+	    DrawingUtils.drawText(canvas, "0",
+		    140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
+	    DrawingUtils.drawText(canvas, "0",
+		    340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
 	    // DEBUG version
 	    // int[] _checkers = new int[] {-3,
@@ -599,10 +629,17 @@ public class PlayActivity extends Activity implements IModelView
     }
 
     @Override
-    public void appendMove(IMove move)
+    public void appendMove(final IMove move)
     {
-	String moveString = MovePrinter.printMove(move);
-	
-	showErrorMessage(moveString);
+	runOnUiThread(new Runnable()
+	{
+	    @Override
+	    public void run()
+	    {
+		String moveString = MovePrinter.printMove(move);
+
+		showErrorMessage(moveString);
+	    }
+	});
     }
 }
