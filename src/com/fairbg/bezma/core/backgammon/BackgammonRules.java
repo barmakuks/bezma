@@ -1,7 +1,6 @@
 package com.fairbg.bezma.core.backgammon;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import com.fairbg.bezma.core.model.PlayerColors;
 import com.fairbg.bezma.log.BezmaLog;

@@ -225,8 +225,7 @@ public class Position implements Cloneable
 				checkers_left--;
 			}
 		}
-		pos.m_CubeValue = (new int[] { 2, 4, 8, 16, 32, 64 })[rnd.nextInt(6)];
-		;
+		pos.m_CubeValue = (new int[] { 2, 4, 8, 16, 32, 64 })[rnd.nextInt(6)];		
 		pos.m_CubePosition = (new CubePosition[] { CubePosition.None, CubePosition.Center, CubePosition.Left,
 				CubePosition.Right, CubePosition.Black, CubePosition.White })[rnd.nextInt(6)];
 		return pos;

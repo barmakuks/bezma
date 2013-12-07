@@ -25,6 +25,7 @@ public class ConfiguratorVer3 implements IConfigurator{
 			BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 			BluetoothDevice device = adapter.getRemoteDevice(c3.deviceMAC);
 			communicator.addView(new DeviceImpl(device));
+
 			return communicator;			
 		}
 		throw new WrongConfigurationException();
