@@ -36,9 +36,6 @@ import com.fairbg.bezma.unit_tests.Runner;
 import com.fairbg.bezma.unit_tests.TestConfiguration;
 import com.fairbg.bezma.unit_tests.TestConfigurator;
 import com.fairbg.bezma.unit_tests.TestModelCommandsProvider;
-import com.fairbg.bezma.unit_tests.TestModelOut;
-import com.fairbg.bezma.version3.ConfigurationVer3;
-import com.fairbg.bezma.version3.ConfiguratorVer3;
 
 /**
  * Окно отображения состояния матча на экране должно уметь реагировать на команды пользователя и отправлять их слушателю
@@ -469,11 +466,11 @@ public class PlayActivity extends Activity implements IModelView
 			canvas.drawBitmap(m_Background, 0, 0, null);
 
 			// Players names
-			DrawingUtils.drawText(canvas, m_MatchParameters.Player1, 32, 670, 22, 90, 0xFFA30101, "fonts/OpiumB.TTF");
-			DrawingUtils.drawText(canvas, m_MatchParameters.Player2, 448, 670, 22, 270, 0xFF5b2b0a, "fonts/OpiumB.TTF");
+			DrawingUtils.drawText(canvas, m_MatchParameters.bPlayerName, 32, 670, 22, 90, 0xFFA30101, "fonts/OpiumB.TTF");
+			DrawingUtils.drawText(canvas, m_MatchParameters.wPlayerName, 448, 670, 22, 270, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
 			// Game conditions
-			DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.MatchLength), 240, 78, 48, 0, 0xFF302f2f,
+			DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.matchLength), 240, 78, 48, 0, 0xFF302f2f,
 					"fonts/OpiumB.TTF");
 			// Players scores
 			DrawingUtils.drawText(canvas, "0", 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");

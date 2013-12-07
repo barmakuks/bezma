@@ -3,7 +3,7 @@ package com.fairbg.bezma.version3;
 import com.fairbg.bezma.communication.CommunicatorBase;
 import com.fairbg.bezma.log.BezmaLog;
 
-/** Имплементация коммуникатора для 3-й версии BEZMA */
+/** BEZMA 3rd version communicator implementation*/
 public class CommunicatorImpl extends CommunicatorBase
 {
     public CommunicatorImpl()

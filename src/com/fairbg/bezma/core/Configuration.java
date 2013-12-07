@@ -6,18 +6,18 @@ import java.io.Serializable;
 public class Configuration implements Serializable
 {
 
-    private static final long serialVersionUID = 7086822977080560127L;
+	private static final long serialVersionUID = 7086822977080560127L;
 
-    /** Match parameters */
-    private MatchParameters m_MatchParameters;
+	/** Match parameters */
+	private MatchParameters   m_MatchParameters;
 
-    public void setMatchParameters(MatchParameters matchParameters)
-    {
-	m_MatchParameters = matchParameters;
-    }
+	public void setMatchParameters(MatchParameters matchParameters)
+	{
+		m_MatchParameters = matchParameters;
+	}
 
-    public MatchParameters getMatchParameters()
-    {
-	return m_MatchParameters;
-    }
+	public MatchParameters getMatchParameters()
+	{
+		return m_MatchParameters;
+	}
 }
