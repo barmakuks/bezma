@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">BezmaAndroid</string>
     <string name="new_match">Start new match</string>
     <string name="match_continue">Continue last match</string>
@@ -30,12 +31,20 @@
     <string name="timer_params">Timer Parameters</string>
     <string name="backgammon">Backgammon</string>
     <string name="gulbara">Gul Bara</string>
+
     <string-array name="game_type_strings">
         <item>Backgammon</item>
         <item>Gul Bara</item>
     </string-array>
-        <string name="select_device">Select device</string>
-        <string name="update_devices">Find Devices</string>
-        <string name="bezma_logo">BEZMA</string>
+
+    <string-array name="registered_boards">
+        <item>00:12:6F:22:46:2C</item>
+        <item>00:12:6F:22:45:98</item>
+    </string-array>
     
+    <string name="select_device">Select device</string>
+    <string name="update_devices">Find Devices</string>
+    <string name="bezma_logo">BEZMA</string>
+    <string name="board_id">Board ID</string>
+
 </resources>
