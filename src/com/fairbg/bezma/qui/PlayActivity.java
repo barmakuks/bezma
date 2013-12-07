@@ -392,34 +392,34 @@ public class PlayActivity extends Activity implements IModelView
 	    }
 	}
 
-	public void drawCube(Canvas canvas, int cubeValue, int cubePosition)
+	public void drawCube(Canvas canvas, int cubeValue, Position.CubePosition cubePosition)
 	{
 	    if (m_current_position != null)
 	    {
 		int x = 0;
 		int y = 0;
-		int cube_value = m_current_position.getCubeValue();
-		switch (m_current_position.getCubePosition())
+		
+		switch (cubePosition)
 		{
-		case Position.CUBE_CENTER:
+		case None:
+		    return;
+		case Center:
 		    x = m_CubeMiddleX;
 		    y = m_CubeMiddleY;
 		    break;
-		case Position.CUBE_CRAWFORD:
-		    return;
-		case Position.CUBE_BLACK:
+		case Black:
 		    x = m_CubeBlackX;
 		    y = m_CubeBlackY;
 		    break;
-		case Position.CUBE_WHITE:
+		case White:
 		    x = m_CubeWhiteX;
 		    y = m_CubeWhiteY;
 		    break;
-		case Position.CUBE_RIGHT:
+		case Right:
 		    x = m_CubeRightX;
 		    y = m_CubeMiddleY;
 		    break;
-		case Position.CUBE_LEFT:
+		case Left:
 		    x = m_CubeLeftX;
 		    y = m_CubeMiddleY;
 		    break;
@@ -428,7 +428,7 @@ public class PlayActivity extends Activity implements IModelView
 		}
 		canvas.translate(m_Left, m_Top);
 		// canvas.rotate(angle);
-		canvas.drawBitmap(getCubeBitmap(cube_value), x, y, null);
+		canvas.drawBitmap(getCubeBitmap(cubeValue), x, y, null);
 		canvas.translate(-m_Left, -m_Top);
 	    }
 	}
