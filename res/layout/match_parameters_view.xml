@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent" android:layout_height="match_parent"
+	android:orientation="vertical" android:gravity="bottom" android:layout_gravity="bottom">
+    <LinearLayout android:orientation="horizontal" android:id="@+id/buttons_box" android:layout_height="wrap_content" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_gravity="center_horizontal">
+        <Button android:layout_gravity="right" android:text="@string/start" android:layout_height="wrap_content" android:layout_width="150px" android:id="@+id/btn_start"></Button>
+        <Button android:layout_gravity="right" android:text="@string/cancel" android:layout_height="wrap_content" android:layout_width="150px" android:id="@+id/btn_cancel"></Button>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/scroll_box">
+        <ScrollView android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_gravity="top">
+            <LinearLayout android:orientation="vertical" android:paddingRight="10px" android:layout_width="match_parent" android:paddingLeft="10px" android:layout_height="match_parent">
+                <LinearLayout android:orientation="vertical" android:id="@+id/match_parameters_box" android:layout_height="wrap_content" android:layout_width="match_parent">
+                    <TextView android:id="@+id/textView2" android:text="@string/match_parameters" android:layout_height="wrap_content" android:gravity="center" android:layout_width="match_parent" android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
+                        <TextView android:id="@+id/textView1" android:text="@string/player_1" android:layout_gravity="center_vertical" android:height="50px" android:width="120px" android:layout_height="50px" android:gravity="center_vertical" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
+                        <EditText android:inputType="textPersonName" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/edtPlayer1">
+                            <requestFocus></requestFocus>
+                        </EditText>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="match_parent">
+                        <TextView android:id="@+id/TextView01" android:text="@string/player_2" android:layout_gravity="center_vertical" android:height="50px" android:width="120px" android:layout_height="50px" android:gravity="center_vertical" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
+                        <EditText android:inputType="textPersonName" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/edtPlayer2"></EditText>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="match_parent">
+                        <TextView android:id="@+id/TextView02" android:text="@string/game_type" android:layout_gravity="center_vertical" android:height="50px" android:width="120px" android:layout_height="50px" android:gravity="center_vertical" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
+                        <Spinner android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/lstGameType" android:entries="@array/game_type_strings">
+                        </Spinner>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:id="@+id/match_conditions_box" android:layout_height="wrap_content" android:layout_width="match_parent">
+                    <TextView android:id="@+id/textView3" android:text="@string/match_conditions" android:layout_height="wrap_content" android:gravity="center" android:typeface="normal" android:layout_width="match_parent" android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                    <LinearLayout android:id="@+id/linearLayout6" android:layout_height="wrap_content" android:layout_width="match_parent">
+                        <RadioGroup android:id="@+id/QueGroup1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:orientation="vertical">
+                            <RadioButton android:textSize="18px" android:layout_width="wrap_content" android:text="@string/fixed_number_of_games" android:layout_height="wrap_content" android:checked="true" android:id="@+id/rbxFixedGames"></RadioButton>
+                            <RadioButton android:textSize="18px" android:layout_width="wrap_content" android:text="@string/number_of_points" android:layout_height="wrap_content" android:id="@+id/rbxFixedPoints"></RadioButton>
+                            <CheckBox android:layout_marginLeft="50px" android:layout_width="wrap_content" android:textSize="18px" android:layout_height="wrap_content" android:text="@string/use_crawford" android:id="@+id/cbxUseCrawford"></CheckBox>
+                        </RadioGroup>
+                        <LinearLayout android:orientation="vertical" android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:layout_width="match_parent">
+                            <EditText android:inputType="number" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/edtFixedGames"></EditText>
+                            <EditText android:inputType="number" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/edtFixedPoints"></EditText>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:id="@+id/dice_box" android:layout_height="wrap_content" android:layout_width="match_parent">
+                    <TextView android:id="@+id/TextView03" android:text="@string/rolling_dice" android:layout_height="wrap_content" android:gravity="center" android:typeface="normal" android:layout_width="match_parent" android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                    <LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
+                        <RadioGroup android:id="@+id/RadioGroup01" android:layout_height="wrap_content" android:layout_width="wrap_content" android:orientation="vertical">
+                            <RadioButton android:textSize="18px" android:layout_width="wrap_content" android:text="@string/random_rolls" android:layout_height="wrap_content" android:checked="true" android:id="@+id/rbxComputerRolls"></RadioButton>
+                            <RadioButton android:textSize="18px" android:layout_width="wrap_content" android:text="@string/manual_rolls" android:layout_height="wrap_content" android:id="@+id/rbxPlayersRools"></RadioButton>
+                        </RadioGroup>
+                        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="horizontal" android:id="@+id/calculate_dice_box">
+                            <CheckBox android:text="@string/calculate_rools" android:layout_marginLeft="50px" android:layout_height="wrap_content" android:textSize="18px" android:layout_width="wrap_content" android:id="@+id/cbxCalculateRolls"></CheckBox>
+                            <RadioGroup android:layout_height="wrap_content" android:layout_width="wrap_content" android:orientation="vertical" android:id="@+id/calcalute_dice_precision_box">
+                                <RadioButton android:textSize="18px" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/exactly" android:checked="true" android:id="@+id/rbxExactly"></RadioButton>
+                                <RadioButton android:textSize="18px" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/approximately" android:id="@+id/rbxApproximately"></RadioButton>
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:id="@+id/timer_box">
+                    <CheckBox android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/use_timer" android:id="@+id/cbxUseTimer"></CheckBox>
+                    <TableLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginLeft="30px" android:id="@+id/timer_limits_box">
+                        <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <TextView android:id="@+id/textView4" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="@string/minutes_per_match" android:layout_width="wrap_content"></TextView>
+                            <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="120px" android:text="60" android:id="@+id/edtMatchLimit"></EditText>
+                        </TableRow>
+                        <TableRow android:id="@+id/tableRow2" android:layout_gravity="right" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <TextView android:id="@+id/TextView04" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="@string/seconds_per_move" android:layout_width="wrap_content"></TextView>
+                            <EditText android:inputType="number" android:layout_height="wrap_content" android:layout_width="120px" android:text="60" android:id="@+id/edtMoveLimit"></EditText>
+                        </TableRow>
+                        
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
+
