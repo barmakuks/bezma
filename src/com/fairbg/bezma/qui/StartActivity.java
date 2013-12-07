@@ -20,7 +20,6 @@ public class StartActivity extends Activity
     static final int REQUEST_MATCH_PARAMETERS = 100;
     static final int REQUEST_BLUETOOTH_DEVICE = 101;
 
-    /** Вызывается, когда оператор создается впервые. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {

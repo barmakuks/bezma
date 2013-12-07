@@ -7,9 +7,7 @@ import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.BackgammonRules;
 import com.fairbg.bezma.core.backgammon.Move;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
-import com.fairbg.bezma.core.backgammon.Movement;
 import com.fairbg.bezma.core.backgammon.Position;
-import com.fairbg.bezma.core.model.IMoveVisitor;
 import com.fairbg.bezma.core.model.Model;
 import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.core.model.PlayerColors;
@@ -298,6 +296,36 @@ public class Runner
 	}
     }
 
+    
+    static short [][] datagrams_one = {
+	    new short[] { 0,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5, 0, 0, 0}, 
+	    new short[] { 0,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
+	    new short[] { 0,-5, 0, 0, 0, 2, 0, 4, 2, 0, 0, 0,-2, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
+	    new short[] { 0,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
+	    new short[] { 0,-5, 0, 0, 0, 2, 0, 2, 2, 0,-1, 2, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5,-1, 0, 0}, 
+	    new short[] { 0,-5, 0, 0, 0, 2, 0, 2, 2, 0,-2, 2, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0}, 
+	    };
+    
+    public static short [][] getDatagrams()
+    {
+	return new short[][] {
+	    new short[] { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, // 
+	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0}, // W
+	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0,-1,-1, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // W
+	    new short[] { 1, 0, 1,-2, 0, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2, 0,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2,-1, 4, 2, 0, 0,-1, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 4,-5, 0, 0, 0, 1, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // B skip move 
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 4, 2, 0, 0,-1, 0,-1, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2, 0,-1, 0,-1, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 3,-5, 0, 0, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // B
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0, 0, 0, 2,-5, 0, 1, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // W
+	    new short[] { 0, 0, 0,-2, 2,-1,-3, 0,-2, 0,-1,-1, 2,-3, 0, 1, 0, 2, 2, 2, 2, 2,-2, 0, 0, 0, 0, 0}, // B
+	    };
+    }
     /**
      * @param args
      */
@@ -305,7 +333,7 @@ public class Runner
     {
 //	BezmaLog.allowTag("MOVE");
 	IModelView view = new TestModelOut();
-	IModelView commandsProvider = new TestModelCommandsProvider();
+	IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 2000);
 
 	TestConfiguration configuration = new TestConfiguration();
 	
