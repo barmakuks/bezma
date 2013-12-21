@@ -12,7 +12,8 @@ import com.fairbg.bezma.bluetooth.android.BluetoothBoardDevice;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
-import com.fairbg.bezma.core.model.IMove;
+import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.ModelSituation;
 
 /** Имплементация устройства 3-го покоения со связью через bluetooth */
@@ -100,8 +101,14 @@ public class DeviceImpl implements IModelView, IDatagramObserver
     }
 
     @Override
-    public void appendMove(IMove move)
+    public void appendMove(MoveAbstract move)
     {
 	// TODO Auto-generated method stub	
+    }
+    
+    @Override 
+    public void displayError(Error error)
+    {
+    	// TODO Auto-generated method stub
     }
 }

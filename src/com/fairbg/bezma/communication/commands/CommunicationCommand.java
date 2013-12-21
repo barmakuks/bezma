@@ -1,6 +1,7 @@
 package com.fairbg.bezma.communication.commands;
 
-/**Абстрактный класс для пользовательской команды*/
-public abstract class CommunicationCommand {
+/** Abstract class for communication command */
+public abstract class CommunicationCommand
+{
 
 }
