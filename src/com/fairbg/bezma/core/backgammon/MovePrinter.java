@@ -59,6 +59,8 @@ public class MovePrinter implements IMoveVisitor
         m_builder = new StringBuilder();
         m_builder.append(move.getPlayer() == PlayerColors.WHITE ? "W: " : "B: ");
         m_builder.append(" double");
+
+        m_moveString = m_builder.toString();        
     }
 
     @Override
@@ -67,5 +69,7 @@ public class MovePrinter implements IMoveVisitor
         m_builder = new StringBuilder();
         m_builder.append(move.getPlayer() == PlayerColors.WHITE ? "W: " : "B: ");
         m_builder.append(" take");
+
+        m_moveString = m_builder.toString();        
     }
 }

@@ -18,65 +18,65 @@ public class TestModelOut implements IModelView
     @Override
     public void notifyObservers(CommunicationCommand userCommand)
     {
-	for (ICommandObserver observer : m_Observers)
-	{
-	    observer.handeEvent(userCommand);
-	}
+        for (ICommandObserver observer : m_Observers)
+        {
+            observer.handeEvent(userCommand);
+        }
     }
 
     @Override
     public void addObserver(ICommandObserver aCommandObserver)
     {
-	m_Observers.add(aCommandObserver);
+        m_Observers.add(aCommandObserver);
     }
 
     @Override
     public void removeObserver(ICommandObserver aCommandObserver)
     {
-	m_Observers.remove(aCommandObserver);
+        m_Observers.remove(aCommandObserver);
     }
 
     @Override
     public boolean start()
     {
-	return true;
+        return true;
     }
 
     @Override
     public void stop()
     {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
     }
 
     @Override
     public void sendCommand(CommunicationCommand command)
     {
-	System.out.println(command.toString());
+//        System.out.println(command.toString());
     }
 
     @Override
     public void setModelState(ModelSituation aModelState)
     {
-	if (aModelState != null)
-	{
-	    System.out.println(aModelState.getPosition());
-	    System.out.println();
-	} 
-	else
-	{
-	    System.out.println("empty state");
-	}
+        if (aModelState != null)
+        {
+            System.out.println(aModelState.getPosition());
+            System.out.println();
+        }
+        else
+        {
+            System.out.println("empty state");
+        }
     }
 
     @Override
     public void appendMove(MoveAbstract move)
     {
-	System.out.print(MovePrinter.printMove(move));
+        System.out.print(MovePrinter.printMove(move));
     }
 
-	@Override
-	public void displayError(Error error)
-	{
-		System.out.print("Error received");
-	}
+    @Override
+    public void displayError(Error error)
+    {
+        System.out.print("Error received");
+    }
 }

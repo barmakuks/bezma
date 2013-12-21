@@ -16,18 +16,18 @@ import com.fairbg.bezma.store.IDatabase;
 public class GameBox implements IGameBox
 {
     /** Current game state */
-    private ModelSituation m_ModelState;
+    private ModelSituation       m_ModelState;
 
-    private IGameAutomat  m_GameAutomat;
+    private IGameAutomat         m_GameAutomat;
 
-    /** Current model*/
+    /** Current model */
     private WeakReference<Model> m_Model;
 
     public GameBox(Model aModel)
     {
         m_ModelState = null;
         m_Model = new WeakReference<Model>(aModel);
-        
+
         m_GameAutomat = new BackgammonAutomat(this);
     }
 
@@ -51,7 +51,7 @@ public class GameBox implements IGameBox
         }
         else
         {
-            return m_GameAutomat.processCommand(this, modelCommand);            
+            return m_GameAutomat.processCommand(this, modelCommand);
         }
     }
 
@@ -74,16 +74,17 @@ public class GameBox implements IGameBox
 
     @Override
     public void nextGame()
-    {	
+    {
         // TODO Auto-generated method stub
     }
-    
-    @Override public void startGame(Position.Direction direction) 
+
+    @Override
+    public void startGame(Position.Direction direction)
     {
-	Position pos = new Position();
-	pos.setCheckers(BackgammonRules.getStartPosition(direction));
-	
-	m_ModelState = new ModelSituation(pos, "");
+        Position pos = new Position();
+        pos.setCheckers(BackgammonRules.getStartPosition(direction));
+
+        m_ModelState = new ModelSituation(pos, "");
     }
 
     @Override
