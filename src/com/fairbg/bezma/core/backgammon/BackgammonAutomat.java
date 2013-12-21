@@ -247,35 +247,52 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
     @Override
     public boolean proposeDouble(PlayerColors player)
     {
+        boolean result = false;
+
         if (player == PlayerColors.BLACK)
         {
             m_LastPosition.setCubePosition(CubePosition.Left);
-            return true;
+            result = true;
         }
         else if (player == PlayerColors.WHITE)
         {
             m_LastPosition.setCubePosition(CubePosition.Right);
-            return true;
+            result = true;
         }
         
-        return false;
+        if (result)
+        {
+            MoveCubeDouble move = new MoveCubeDouble();
+            move.setPlayer(player);
+            m_GameBox.appendMove(move);
+        }
+
+        return result;
     }
 
     @Override
     public boolean take(PlayerColors player)
     {
+        boolean result = false;
         if (player == PlayerColors.BLACK)
         {
             m_LastPosition.setCubePosition(CubePosition.Black);
-            return true;
+            result = true;
         }
         else if (player == PlayerColors.WHITE)
         {
             m_LastPosition.setCubePosition(CubePosition.White);
-            return true;
+            result = true;
         }
-        // TODO Auto-generated method stub
-        return false;
+
+        if (result)
+        {
+            MoveCubeTake move = new MoveCubeTake();
+            move.setPlayer(player);
+            m_GameBox.appendMove(move);
+        }
+
+        return result;
     }
 
     @Override

@@ -1,6 +1,11 @@
 package com.fairbg.bezma.communication.commands;
 
-/** пользовательская команда на запрос состояния доски*/
-public class CommunicationCommandRequest extends CommunicationCommand {
-
+/** Board state request communication command */
+public class CommunicationCommandRequest extends CommunicationCommand
+{
+    @Override
+    public String toString()
+    {
+        return super.toString();
+    }
 }

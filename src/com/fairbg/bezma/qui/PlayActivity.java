@@ -210,8 +210,8 @@ public class PlayActivity extends Activity implements IModelView
 
 		private int	m_CubeBlackX;
 		private int	m_CubeWhiteX;
-		private int	m_CubeRightX;
-		private int	m_CubeLeftX;
+		private int	m_CubeRightY;
+		private int	m_CubeLeftY;
 
 		private void initBitmaps()
 		{
@@ -260,16 +260,15 @@ public class PlayActivity extends Activity implements IModelView
 			m_MaxY = 427;
 			m_MinBarX = 226;
 			m_MaxBarX = 257;
-			m_CubeMiddleY = 187;
-			m_CubeBlackY = 47;
-			m_CubeWhiteY = 325;
 
+            m_CubeMiddleX = 230;
 			m_CubeMiddleY = m_NestsY[12] + 5;
-			m_CubeMiddleX = 230;
-			m_CubeBlackX = 7;
-			m_CubeWhiteX = 7;
-			m_CubeRightX = m_NestsY[9] - 15;
-			m_CubeLeftX = m_NestsY[2] + 12;
+
+            m_CubeBlackX = 90;
+            m_CubeWhiteX = 365;
+
+            m_CubeRightY = 90;
+			m_CubeLeftY = 350;
 		}
 
 		private void LoadLdpiValues()
@@ -289,8 +288,8 @@ public class PlayActivity extends Activity implements IModelView
 			m_CubeMiddleX = m_NestsY[12] - 3;
 			m_CubeBlackX = 7;
 			m_CubeWhiteX = 7;
-			m_CubeRightX = m_NestsY[9] - 15;
-			m_CubeLeftX = m_NestsY[2] + 12;
+			m_CubeRightY = m_NestsY[9] - 15;
+			m_CubeLeftY = m_NestsY[2] + 12;
 		}
 
 		public BoardView(int left, int top, AssetManager assets)
@@ -315,40 +314,26 @@ public class PlayActivity extends Activity implements IModelView
 		{
 
 			if (m_current_position == null)
+			{
 				return;
-
-			// canvas.rotate(90, 200, 200);
-			// canvas.translate(100, -200);
+			}
 
 			canvas.translate(m_Left, m_Top);
 
-			// for (int i = 1; i < 10; i++)
-			// {
-			// canvas.drawBitmap(m_checker_white_bmp, i * m_CheckerSize, 0,
-			// null);
-			// canvas.drawBitmap(m_checker_black_bmp, 1, i * m_CheckerSize,
-			// null);
-			// }
 			int y = 0;
 			int x = 0;
 
-			// рисуем фишки на доске
+			// draw checkers on board
 			for (int i = 1; i <= 24; i++)
 			{
-
 				x = (i >= 13) ? m_MinY : m_MaxY - m_CheckerSize;
-
 				y = (i < 13) ? m_NestsY[(i - 1) % 12] : m_NestsY[11 - (i - 1) % 12];
-
 				Bitmap checker = checkers[i] > 0 ? m_checker_black_bmp : m_checker_white_bmp;
-
 				int checkersCount = Math.abs(checkers[i]);
-
 				DrawCheckersNest(canvas, checker, checkersCount, x, y, i < 13);
-
 			}
 
-			// рисуем фишки на баре
+			// draw checkers on bar
 			y = m_NestsY[12];
 
 			for (int j = 0; j > checkers[25]; j--)
@@ -361,7 +346,7 @@ public class PlayActivity extends Activity implements IModelView
 				canvas.drawBitmap(m_checker_black_bmp, m_MaxBarX - j * m_CheckerSize, y, null);
 			}
 
-			// рисуем фишки на выбросе
+			// draw checkers on off-side
 			x = m_MaxY - m_CheckerSideSize;
 
 			for (int j = 0; j < checkers[26]; j++)
@@ -376,7 +361,6 @@ public class PlayActivity extends Activity implements IModelView
 				canvas.drawBitmap(m_checker_black_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5, m_NestsY[13], null);
 			}
 			canvas.translate(-m_Left, -m_Top);
-
 		}
 
 		public void DrawCheckersNest(Canvas canvas, Bitmap checker, int checkersCount, int nestX, int nestY, boolean direction)
@@ -420,24 +404,25 @@ public class PlayActivity extends Activity implements IModelView
 					break;
 				case Black:
 					x = m_CubeBlackX;
-					y = m_CubeBlackY;
+					y = m_CubeMiddleY;
 					break;
 				case White:
 					x = m_CubeWhiteX;
-					y = m_CubeWhiteY;
+					y = m_CubeMiddleY;
 					break;
 				case Right:
-					x = m_CubeRightX;
-					y = m_CubeMiddleY;
+					x = m_CubeMiddleX;
+					y = m_CubeRightY;
 					break;
 				case Left:
-					x = m_CubeLeftX;
-					y = m_CubeMiddleY;
+					x = m_CubeMiddleX;
+					y = m_CubeLeftY;
 					break;
 				default:
 					return;
 				}
-				canvas.translate(m_Left, m_Top);
+
+                canvas.translate(m_Left, m_Top);
 				// canvas.rotate(angle);
 				canvas.drawBitmap(getCubeBitmap(cubeValue), x, y, null);
 				canvas.translate(-m_Left, -m_Top);
