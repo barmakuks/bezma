@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Match
 {    
-    ArrayList<IMove> m_Moves = new ArrayList<IMove>();  
+    ArrayList<MoveAbstract> m_Moves = new ArrayList<MoveAbstract>();  
     
-    public void appendMove(IMove move)
+    public void appendMove(MoveAbstract move)
     {
 	m_Moves.add(move);
     }

@@ -13,16 +13,15 @@ public class AutomatStateDouble implements IAutomatState
             return false;
         }
 
-        if (gameAutomat.isDoubleAccepted(command.getPosition()))
+//        if (gameAutomat.isDoubleAccepted(command.getPosition()))
         {
-            gameAutomat.acceptDouble();
-            
+            gameAutomat.take(command.player);
             gameAutomat.setAutomatState(AutomatStates.MOVE);
             
             return true;
         }
 
-        return false;
+//        return false;
     }
 
 }

@@ -39,9 +39,7 @@ public class Position implements Cloneable
 
 	public static final int MAX_CHECKERS_IN_POSITION = 5;
 
-	/**
-	 * Bar index. Used for movement search. Checkers moved from less index to lager
-	 */
+	/** Bar index. Used for movement search. Checkers moved from less index to lager */
 	public static final int BAR_POSITION			 = 25;
 
 	/**
@@ -50,6 +48,12 @@ public class Position implements Cloneable
 	 *          off position for black and white. White checkers moved from 1 to 24, black - from 24 to 1
 	 */
 	private int[]		   m_Checkers			   = new int[28];
+
+	/** Current cube value. Possible values 1, 2, 4, 8, 16, 32, 64 */
+	private int			 m_CubeValue			  = 1;
+
+	/** Current cube position */
+	private CubePosition	m_CubePosition		   = CubePosition.Center;
 
 	/**
 	 * Get normalized checker position (move direction from 1 to 24)
@@ -72,12 +76,6 @@ public class Position implements Cloneable
 	{
 		return player == PlayerColors.WHITE ? 1 : player == PlayerColors.BLACK ? -1 : 0;
 	}
-
-	/** Current cube value. Possible values 1, 2, 4, 8, 16, 32, 64 */
-	private int		  m_CubeValue	= 1;
-
-	/** Current cube position */
-	private CubePosition m_CubePosition = CubePosition.Center;
 
 	/**
 	 * Возвращает массив содержащий положение и цвет фишек на доске если значение >0, то количество белых, если <0, то
@@ -113,6 +111,12 @@ public class Position implements Cloneable
 	public CubePosition getCubePosition()
 	{
 		return m_CubePosition;
+	}
+
+	/** Set current cube position on board */
+	public void setCubePosition(CubePosition value)
+	{
+		m_CubePosition = value;
 	}
 
 	@Override
@@ -225,7 +229,7 @@ public class Position implements Cloneable
 				checkers_left--;
 			}
 		}
-		pos.m_CubeValue = (new int[] { 2, 4, 8, 16, 32, 64 })[rnd.nextInt(6)];		
+		pos.m_CubeValue = (new int[] { 2, 4, 8, 16, 32, 64 })[rnd.nextInt(6)];
 		pos.m_CubePosition = (new CubePosition[] { CubePosition.None, CubePosition.Center, CubePosition.Left,
 				CubePosition.Right, CubePosition.Black, CubePosition.White })[rnd.nextInt(6)];
 		return pos;

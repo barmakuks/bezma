@@ -29,7 +29,9 @@ import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
-import com.fairbg.bezma.core.model.IMove;
+import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.errors.ErrorWrongPosition;
+import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.ModelSituation;
 import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.unit_tests.Runner;
@@ -53,60 +55,63 @@ public class PlayActivity extends Activity implements IModelView
 	private String					  m_DeviceMAC		= "";
 	private MatchParameters			 m_MatchParameters  = null;
 
-	@Override
-	protected void onCreate(Bundle bundle)
-	{
-		super.onCreate(bundle);
+	
+	/// Debug function for work without board, data read from TestModelCommandProvider 
+	 @Override
+	 protected void onCreate(Bundle bundle)
+	 {
+	 super.onCreate(bundle);
+	
+	 requestWindowFeature(Window.FEATURE_NO_TITLE);
+	 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	
+	 Configuration configuration = new TestConfiguration();
+	
+	 m_MatchParameters = new MatchParameters();
+	
+	 IConfigurator configurator = new TestConfigurator();
+	
+	 m_Presenter = new Presenter(configurator, configuration);
+	
+	 IModelView commandsProvider = new TestModelCommandsProvider(Runner.getDatagrams(), 2000);
+	
+	 m_Presenter.addView(commandsProvider);
+	 m_Presenter.addView(this);
+	
+	 initView();
+	
+	 DrawingUtils.setAssetManager(this.getAssets());
+	
+	 m_Presenter.start();
+	 }
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		Configuration configuration = new TestConfiguration();
-
-		m_MatchParameters = new MatchParameters();
-
-		IConfigurator configurator = new TestConfigurator();
-
-		m_Presenter = new Presenter(configurator, configuration);
-
-		IModelView commandsProvider = new TestModelCommandsProvider(Runner.getDatagrams(), 2000);
-
-		m_Presenter.addView(commandsProvider);
-		m_Presenter.addView(this);
-
-		initView();
-
-		DrawingUtils.setAssetManager(this.getAssets());
-
-		m_Presenter.start();
-	}
-
-	// @Override
-	// protected void onCreate(Bundle bundle)
-	// {
-	// super.onCreate(bundle);
-	//
-	// requestWindowFeature(Window.FEATURE_NO_TITLE);
-	// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-	//
-	// ConfigurationVer3 configuration = (ConfigurationVer3)
-	// (getIntent().getExtras().getSerializable(ConfigurationVer3.class.getCanonicalName()));
-	//
-	// m_DeviceMAC = configuration.deviceMAC;
-	// m_MatchParameters = configuration.getMatchParameters();
-	//
-	// ConfiguratorVer3 configurator = new ConfiguratorVer3();
-	//
-	// m_Presenter = new Presenter(configurator, configuration);
-	//
-	// m_Presenter.addView(this);
-	//
-	// initView();
-	//
-	// DrawingUtils.setAssetManager(this.getAssets());
-	//
-	// startPresenter();
-	// }
+	
+	/// Release function
+//	@Override
+//	protected void onCreate(Bundle bundle)
+//	{
+//		super.onCreate(bundle);
+//
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//		ConfigurationVer3 configuration = (ConfigurationVer3) (getIntent().getExtras().getSerializable(ConfigurationVer3.class.getCanonicalName()));
+//
+//		m_DeviceMAC = configuration.getUserSettings().boardMAC;
+//		m_MatchParameters = configuration.getMatchParameters();
+//
+//		ConfiguratorVer3 configurator = new ConfiguratorVer3();
+//
+//		m_Presenter = new Presenter(configurator, configuration);
+//
+//		m_Presenter.addView(this);
+//
+//		initView();
+//
+//		DrawingUtils.setAssetManager(this.getAssets());
+//
+//		startPresenter();
+//	}
 
 	final int DEVICE_CONNECTION_OK	= 1;
 	final int DEVICE_CONNECTION_ERROR = 0;
@@ -374,8 +379,7 @@ public class PlayActivity extends Activity implements IModelView
 
 		}
 
-		public void DrawCheckersNest(Canvas canvas, Bitmap checker, int checkersCount, int nestX, int nestY,
-				boolean direction)
+		public void DrawCheckersNest(Canvas canvas, Bitmap checker, int checkersCount, int nestX, int nestY, boolean direction)
 		{
 			int max_checkers = 5;
 
@@ -399,34 +403,34 @@ public class PlayActivity extends Activity implements IModelView
 			}
 		}
 
-	public void drawCube(Canvas canvas, int cubeValue, Position.CubePosition cubePosition)
+		public void drawCube(Canvas canvas, int cubeValue, Position.CubePosition cubePosition)
 		{
 			if (m_current_position != null)
 			{
 				int x = 0;
 				int y = 0;
-		
-		switch (cubePosition)
+
+				switch (cubePosition)
 				{
-		case None:
-		    return;
-		case Center:
+				case None:
+					return;
+				case Center:
 					x = m_CubeMiddleX;
 					y = m_CubeMiddleY;
 					break;
-		case Black:
+				case Black:
 					x = m_CubeBlackX;
 					y = m_CubeBlackY;
 					break;
-		case White:
+				case White:
 					x = m_CubeWhiteX;
 					y = m_CubeWhiteY;
 					break;
-		case Right:
+				case Right:
 					x = m_CubeRightX;
 					y = m_CubeMiddleY;
 					break;
-		case Left:
+				case Left:
 					x = m_CubeLeftX;
 					y = m_CubeMiddleY;
 					break;
@@ -435,7 +439,7 @@ public class PlayActivity extends Activity implements IModelView
 				}
 				canvas.translate(m_Left, m_Top);
 				// canvas.rotate(angle);
-		canvas.drawBitmap(getCubeBitmap(cubeValue), x, y, null);
+				canvas.drawBitmap(getCubeBitmap(cubeValue), x, y, null);
 				canvas.translate(-m_Left, -m_Top);
 			}
 		}
@@ -470,17 +474,17 @@ public class PlayActivity extends Activity implements IModelView
 			DrawingUtils.drawText(canvas, m_MatchParameters.wPlayerName, 448, 670, 22, 270, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
 			// Game conditions
-			DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.matchLength), 240, 78, 48, 0, 0xFF302f2f,
-					"fonts/OpiumB.TTF");
+			DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.matchLength), 240, 78, 48, 0, 0xFF302f2f, "fonts/OpiumB.TTF");
 			// Players scores
 			DrawingUtils.drawText(canvas, "0", 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
 			DrawingUtils.drawText(canvas, "0", 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
-			 //Test version
-//			 int[] _checkers = new int[] {-3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, -4, -5, -6, -7, -8, -9,-10,-11,-12,-13,-14,-15, 3, 15, -1};
-//			 m_BoardView.drawBoard(canvas, _checkers);
+			// Test version
+			// int[] _checkers = new int[] {-3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, -4, -5, -6, -7, -8,
+			// -9,-10,-11,-12,-13,-14,-15, 3, 15, -1};
+			// m_BoardView.drawBoard(canvas, _checkers);
 
-			// 
+			//
 			if (m_current_position != null)
 			{
 				m_BoardView.drawBoard(canvas, m_current_position.getCheckers());
@@ -587,7 +591,7 @@ public class PlayActivity extends Activity implements IModelView
 	}
 
 	@Override
-	public void appendMove(final IMove move)
+	public void appendMove(final MoveAbstract move)
 	{
 		runOnUiThread(new Runnable()
 		{
@@ -595,9 +599,18 @@ public class PlayActivity extends Activity implements IModelView
 			public void run()
 			{
 				String moveString = MovePrinter.printMove(move);
-
 				showErrorMessage(moveString);
 			}
 		});
+	}
+
+	@Override
+	public void displayError(Error error)
+	{
+		if (error instanceof ErrorWrongPosition)
+		{
+//			ErrorWrongPosition position_error = (ErrorWrongPosition) error;
+//			Position wrong_position = position_error.position;  
+		}
 	}
 }

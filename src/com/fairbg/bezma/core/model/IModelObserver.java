@@ -11,15 +11,15 @@ public interface IModelObserver
     class Event{}
     class MoveEvent extends Event
     {
-	public MoveEvent(IMove move)
+	public MoveEvent(MoveAbstract move)
 	{
 	    m_Move = move;
 	}
-	public IMove getMove()
+	public MoveAbstract getMove()
 	{
 	    return m_Move;
 	}
-	private IMove m_Move;
+	private MoveAbstract m_Move;
     }
     
     void onModelEvent(Event event);

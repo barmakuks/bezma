@@ -12,5 +12,5 @@ public interface IGameBox
     void finishMatch();
     boolean isMatchFinished();
 
-    void appendMove(IMove move);
+    void appendMove(MoveAbstract move);
 }

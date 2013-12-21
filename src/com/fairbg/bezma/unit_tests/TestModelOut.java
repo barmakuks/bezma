@@ -6,7 +6,8 @@ import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
-import com.fairbg.bezma.core.model.IMove;
+import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.ModelSituation;
 
 public class TestModelOut implements IModelView
@@ -68,8 +69,14 @@ public class TestModelOut implements IModelView
     }
 
     @Override
-    public void appendMove(IMove move)
+    public void appendMove(MoveAbstract move)
     {
 	System.out.print(MovePrinter.printMove(move));
     }
+
+	@Override
+	public void displayError(Error error)
+	{
+		System.out.print("Error received");
+	}
 }

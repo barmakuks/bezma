@@ -2,26 +2,14 @@ package com.fairbg.bezma.core.backgammon;
 
 import java.util.ArrayList;
 
-import com.fairbg.bezma.core.model.IMove;
+import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.IMoveVisitor;
-import com.fairbg.bezma.core.model.PlayerColors;
 
-public class Move implements Cloneable, IMove
+public class Move extends MoveAbstract implements Cloneable 
 {
     private ArrayList<Movement> m_Movements = new ArrayList<Movement>();
     private ArrayList<Integer> m_Dice = new ArrayList<Integer>();
-    private PlayerColors m_Player;
     private int m_Die1, m_Die2;
-
-    public PlayerColors getPlayer()
-    {
-        return m_Player;
-    }
-
-    public void setPlayer(PlayerColors player)
-    {
-        m_Player = player;
-    }
 
     public Move()
     {

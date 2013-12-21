@@ -56,7 +56,7 @@ public class GameBox implements IGameBox
     }
 
     @Override
-    public void appendMove(IMove move)
+    public void appendMove(MoveAbstract move)
     {
         m_Model.get().appendMove(move);
         m_ModelState = new ModelSituation(m_GameAutomat.getCurrentPosition(), "");

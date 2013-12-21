@@ -1,12 +1,10 @@
 package com.fairbg.bezma.core.backgammon;
 
 import java.lang.ref.WeakReference;
+import java.util.NoSuchElementException;
 
+import com.fairbg.bezma.core.backgammon.Position.CubePosition;
 import com.fairbg.bezma.core.model.PlayerColors;
-
-enum CubePosition {
-	None, White, Middle, Black
-}
 
 interface ICubeState
 {
@@ -26,10 +24,9 @@ interface IGameWithCube
 	public PlayerColors getCurrentPlayer();
 }
 
-
 interface ICubeAutomat extends IGameWithCube
 {
-	public ICubeState setNextState(CubePosition position);
+	public boolean processNextState(CubePosition position);
 }
 
 class BlackCubeState implements ICubeState
@@ -48,7 +45,7 @@ class BlackCubeState implements ICubeState
 
 		switch (position)
 		{
-		case Middle:
+		case Center:
 		{
 			if (m_automat.get().proposeDouble(PlayerColors.BLACK) && m_automat.get().pass(PlayerColors.WHITE))
 			{
@@ -104,7 +101,7 @@ class WhiteCubeState implements ICubeState
 			}
 			break;
 		}
-		case Middle:
+		case Center:
 		{
 			if (m_automat.get().proposeDouble(PlayerColors.WHITE) && m_automat.get().pass(PlayerColors.BLACK))
 			{
@@ -200,7 +197,7 @@ class NoCubeState implements ICubeState
 			}
 			break;
 		}
-		case Middle:
+		case Center:
 		{
 			if (m_automat.get().pass(m_automat.get().getCurrentPlayer()))
 			{
@@ -218,9 +215,10 @@ class NoCubeState implements ICubeState
 		}
 		case None:
 		{
-			// TODO: Implement redouble routine
 			break;
 		}
+        default:
+            throw new NoSuchElementException();
 		}
 
 		return nextState;
@@ -239,7 +237,7 @@ public class CubeAutomat implements ICubeAutomat
 	}
 
 	@Override
-	public ICubeState setNextState(CubePosition position)
+	public boolean processNextState(CubePosition position)
 	{
 		if (m_currentState != null)
 		{
@@ -248,9 +246,10 @@ public class CubeAutomat implements ICubeAutomat
 			if (nextState != null)
 			{
 				m_currentState = nextState;
+				return true;
 			}
 		}
-		return m_currentState;
+		return false;
 	}
 
 	@Override
@@ -273,7 +272,7 @@ public class CubeAutomat implements ICubeAutomat
 
 	@Override
 	public boolean take(PlayerColors player)
-	{		
+	{
 		return m_game.take(player);
 	}
 
