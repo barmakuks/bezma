@@ -20,95 +20,95 @@ import com.fairbg.bezma.core.model.ModelSituation;
 public class DeviceImpl implements IModelView, IDatagramObserver
 {
     /** Связь через bluetooth */
-    private BluetoothBoardDevice m_BoardDevice = null;
+    private BluetoothBoardDevice        m_BoardDevice = null;
 
-    private ArrayList<ICommandObserver> observers = new ArrayList<ICommandObserver>();
+    private ArrayList<ICommandObserver> observers     = new ArrayList<ICommandObserver>();
 
     public DeviceImpl(BluetoothDevice bluetoothDevice)
     {
-	m_BoardDevice = new BluetoothBoardDevice(bluetoothDevice);
-	m_BoardDevice.addObserver(this);
+        m_BoardDevice = new BluetoothBoardDevice(bluetoothDevice);
+        m_BoardDevice.addObserver(this);
     }
 
     @Override
     public void setModelState(ModelSituation modelState)
     {
-	Datagram datagram = null;
-	m_BoardDevice.sendDatagram(datagram);
+        Datagram datagram = null;
+        m_BoardDevice.sendDatagram(datagram);
     }
 
     @Override
     public void notifyObservers(CommunicationCommand userCommand)
     {
-	for (ICommandObserver observer : observers)
-	{
-	    observer.handeEvent(userCommand);
-	}
+        for (ICommandObserver observer : observers)
+        {
+            observer.handeEvent(userCommand);
+        }
     }
 
     @Override
     public void addObserver(ICommandObserver aCommandObserver)
     {
-	observers.add(aCommandObserver);
+        observers.add(aCommandObserver);
     }
 
     @Override
     public void removeObserver(ICommandObserver aCommandObserver)
     {
-	observers.remove(aCommandObserver);
+        observers.remove(aCommandObserver);
     }
 
     @Override
     public boolean start()
     {
-	try
-	{
-	    // Start listen bluetooth port
-	    return m_BoardDevice.startListen();
-	} catch (IOException e)
-	{
-	    e.printStackTrace();
-	    return false;
-	}
+        try
+        {
+            // Start listen bluetooth port
+            return m_BoardDevice.startListen();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public void stop()
     {
-	// Stop listen bluetooth
-	m_BoardDevice.stopListen();
+        // Stop listen bluetooth
+        m_BoardDevice.stopListen();
     }
 
     @Override
     public String toString()
     {
-	return "BoardImpl";
+        return "BoardImpl";
     }
 
     @Override
     public void handleEvent(Datagram datagram)
     {
-	CommunicationCommand command = DatagramConverter
-		.datagramToCommand(datagram);
-	notifyObservers(command);
+        CommunicationCommand command = DatagramConverter
+                .datagramToCommand(datagram);
+        notifyObservers(command);
     }
 
     @Override
     public void sendCommand(CommunicationCommand command)
     {
-	Datagram datagram = DatagramConverter.commandToDatagram(command);
-	m_BoardDevice.sendDatagram(datagram);
+        Datagram datagram = DatagramConverter.commandToDatagram(command);
+        m_BoardDevice.sendDatagram(datagram);
     }
 
     @Override
     public void appendMove(MoveAbstract move)
     {
-	// TODO Auto-generated method stub	
+        // TODO Auto-generated method stub
     }
-    
-    @Override 
+
+    @Override
     public void displayError(Error error)
     {
-    	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
     }
 }

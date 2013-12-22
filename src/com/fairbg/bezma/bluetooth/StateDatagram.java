@@ -2,14 +2,14 @@ package com.fairbg.bezma.bluetooth;
 
 import java.util.HashMap;
 
-/** Датаграмма состояния доски */
+/** Board state datagram */
 public class StateDatagram extends Datagram
 {
 
-    /** Идентификатор устройства */
+    /** Device identifier */
     public int id;
 
-    /** Карта датчиков на доске */
+    /** Board sensors map */
     public final HashMap<Integer, Integer> sensors = new HashMap<Integer, Integer>();
 
     /**

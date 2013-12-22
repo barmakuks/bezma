@@ -90,6 +90,7 @@ public class GameBox implements IGameBox
     @Override
     public void finishGame()
     {
+        m_ModelState = new ModelSituation(new Position(), "");;
         // TODO Auto-generated method stub
     }
 
