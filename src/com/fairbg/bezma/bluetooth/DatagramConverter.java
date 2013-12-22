@@ -45,7 +45,26 @@ final public class DatagramConverter {
 			CommunicationCommandState state_cmd = new CommunicationCommandState();
 			StateDatagram st_datagram = (StateDatagram) datagram;
 			state_cmd.playerId = st_datagram.button;
-			state_cmd.cubePosition = st_datagram.cube;
+			if (st_datagram.has_cube)
+			{
+			    if (st_datagram.cube == 0)
+			    {
+			        state_cmd.cubePosition = 0;			        
+			    }
+			    else if (st_datagram.cube > 0)
+			    {
+			        state_cmd.cubePosition = 1;
+			    }
+			    else 
+                {
+                    state_cmd.cubePosition = 2;
+                }			    
+			}
+			else
+			{
+			    state_cmd.cubePosition = -1;
+			}
+			
 			for(int i = 0; i < st_datagram.positions.length; i++)
 			{
 				state_cmd.checkers[i] = st_datagram.positions[i];				

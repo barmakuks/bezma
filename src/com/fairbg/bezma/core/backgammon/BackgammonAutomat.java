@@ -11,237 +11,241 @@ import com.fairbg.bezma.log.BezmaLog;
 
 public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
 {
-	private Position.Direction m_StartPositionDirection = Position.Direction.None;
-	private Position.Direction DefaultDirection		 = Position.Direction.BlackCW;
+    private Position.Direction m_StartPositionDirection = Position.Direction.None;
+    private Position.Direction DefaultDirection         = Position.Direction.BlackCW;
 
-	private BackgammonRules	  m_Rules  = new BackgammonRules();
-	private IGameBox		  m_GameBox;
+    private BackgammonRules    m_Rules                  = new BackgammonRules();
+    private IGameBox           m_GameBox;
 
-	private Position		  m_LastPosition;
-	private PlayerColors	  m_CurrentPlayer;
-	
-	private CubeAutomat		  m_CubeAutomat;
+    private Position           m_LastPosition;
+    private PlayerColors       m_CurrentPlayer;
 
-	IAutomatState			  m_CurrentState;
+    private CubeAutomat        m_CubeAutomat;
 
-	public BackgammonAutomat(IGameBox gameBox)
-	{
-		m_GameBox = gameBox;
-		m_CubeAutomat = new CubeAutomat(this);
+    IAutomatState              m_CurrentState;
 
-		setAutomatState(AutomatStates.START);
-	}
+    public BackgammonAutomat(IGameBox gameBox)
+    {
+        m_GameBox = gameBox;
+        m_CubeAutomat = new CubeAutomat(this);
 
-	@Override
-	public Position.Direction getStartPositionDirection(Position position)
-	{
-		return m_Rules.getStartPositionDirection(position);
-	}
+        setAutomatState(AutomatStates.START);
+    }
 
-	@Override
-	public void nextGame()
-	{
-		m_GameBox.nextGame();
-	}
+    @Override
+    public Position.Direction getStartPositionDirection(Position position)
+    {
+        return m_Rules.getStartPositionDirection(position);
+    }
 
-	@Override
-	public void startGame(Position.Direction direction)
-	{
-		BezmaLog.i("BEZMA", "startGame");
-		m_StartPositionDirection = direction;
-		m_GameBox.startGame(DefaultDirection);
-		m_LastPosition = new Position();
-		m_LastPosition.setCheckers(BackgammonRules.getStartPosition(DefaultDirection));
-	}
+    @Override
+    public void nextGame()
+    {
+        m_GameBox.nextGame();
+    }
 
-	boolean canDouble(Position position)
-	{
-		return false;
-	}
+    @Override
+    public void startGame(Position.Direction direction)
+    {
+        BezmaLog.i("BEZMA", "startGame");
+        m_StartPositionDirection = direction;
+        m_GameBox.startGame(DefaultDirection);
+        m_LastPosition = new Position();
+        m_LastPosition.setCheckers(BackgammonRules.getStartPosition(DefaultDirection));
+    }
 
-	void proposeDouble()
-	{
-	    MoveAbstract move = new MoveCubeDouble();
-		m_GameBox.appendMove(move);
-	}
+    boolean canDouble(Position position)
+    {
+        return false;
+    }
 
-	boolean isDoubleAccepted(Position position)
-	{
-		// TODO Auto-generated method stub
-		return true;
-	}
+    void proposeDouble()
+    {
+        MoveAbstract move = new MoveCubeDouble();
+        m_GameBox.appendMove(move);
+    }
 
-	void acceptDouble()
-	{
+    boolean isDoubleAccepted(Position position)
+    {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    void acceptDouble()
+    {
         MoveAbstract move = new MoveCubeTake();
         m_GameBox.appendMove(move);
-	}
+    }
 
-	@Override
-	public boolean isGameFinished()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isGameFinished()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public void finishGame()
-	{
-		// TODO Auto-generated method stub
-		m_GameBox.finishGame();
-	}
+    @Override
+    public void finishGame()
+    {
+        m_GameBox.finishGame();
+        m_CurrentPlayer = null;
+        
+        if (!isMatchFinished())
+        {
+            setAutomatState(AutomatStates.START);            
+        }        
+    }
 
-	@Override
-	public boolean isMatchFinished()
-	{
-		// TODO Auto-generated method stub
-		return m_GameBox.isMatchFinished();
-	}
+    @Override
+    public boolean isMatchFinished()
+    {
+        return m_GameBox.isMatchFinished();
+    }
 
-	@Override
-	public void finishMatch()
-	{
-		m_GameBox.finishMatch();
-	}
+    @Override
+    public void finishMatch()
+    {
+        m_GameBox.finishMatch();
+    }
 
-	@Override
-	public boolean processCube(Position position)
-	{
-		if (m_LastPosition.getCubePosition() != position.getCubePosition())
-		{
-		    return m_CubeAutomat.processNextState(position.getCubePosition());
-		}
+    @Override
+    public boolean processCube(Position position)
+    {
+        if (m_LastPosition.getCubePosition() != position.getCubePosition())
+        {
+            return m_CubeAutomat.processNextState(position.getCubePosition());
+        }
 
-		return false;
-	}
-	
-	@Override
-	public boolean findAndAcceptMove(Position position)
-	{
-		BezmaLog.i("BEZMA", "findAndAcceptMove");
-		int die1 = 0;
-		int die2 = 0;
+        return false;
+    }
 
-		Move move = null;
-		if (m_CurrentPlayer == null || m_CurrentPlayer == PlayerColors.NONE)
-		{
-			m_CurrentPlayer = PlayerColors.BLACK;
+    @Override
+    public boolean findAndAcceptMove(Position position)
+    {
+        BezmaLog.i("BEZMA", "findAndAcceptMove");
+        int die1 = 0;
+        int die2 = 0;
 
-			move = m_Rules.findMove(die1, die2, m_LastPosition, position, m_CurrentPlayer);
+        Move move = null;
+        if (m_CurrentPlayer == null || m_CurrentPlayer == PlayerColors.NONE)
+        {
+            m_CurrentPlayer = PlayerColors.BLACK;
 
-			if (move == null)
-			{
-				m_CurrentPlayer = PlayerColors.WHITE;
-				move = m_Rules.findMove(die1, die2, m_LastPosition, position, PlayerColors.WHITE);
-			}
+            move = m_Rules.findMove(die1, die2, m_LastPosition, position, m_CurrentPlayer);
 
-			if (move == null)
-			{
-				m_CurrentPlayer = PlayerColors.NONE;
-			}
-		}
-		else
-		{
-			move = m_Rules.findMove(die1, die2, m_LastPosition, position, m_CurrentPlayer);
-		}
+            if (move == null)
+            {
+                m_CurrentPlayer = PlayerColors.WHITE;
+                move = m_Rules.findMove(die1, die2, m_LastPosition, position, PlayerColors.WHITE);
+            }
 
-		if (move != null)
-		{
-			BezmaLog.i("BEZMA", "found move");
-			m_LastPosition.applyMove(move);
-			m_GameBox.appendMove(move);
-			m_CurrentPlayer = PlayerColors.getAltColor(m_CurrentPlayer);
-			BezmaLog.i("BEZMA", "move accepted");
-			return true;
-		}
-		else
-		{
-			BezmaLog.i("BEZMA", "move not found");
-		}
-		// TODO Auto-generated method stub
-		return false;
-	}
+            if (move == null)
+            {
+                m_CurrentPlayer = PlayerColors.NONE;
+            }
+        }
+        else
+        {
+            move = m_Rules.findMove(die1, die2, m_LastPosition, position, m_CurrentPlayer);
+        }
 
-	@Override
-	public IAutomatState getAutomatState()
-	{
-		return m_CurrentState;
-	}
+        if (move != null)
+        {
+            BezmaLog.i("BEZMA", "found move");
+            m_LastPosition.applyMove(move);
+            m_GameBox.appendMove(move);
+            m_CurrentPlayer = PlayerColors.getAltColor(m_CurrentPlayer);
+            BezmaLog.i("BEZMA", "move accepted");
+            return true;
+        }
+        else
+        {
+            BezmaLog.i("BEZMA", "move not found");
+        }
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public boolean setAutomatState(AutomatStates state)
-	{
-		BezmaLog.i("BEZMA", "set Automat State: " + state.toString());
-		switch (state)
-		{
-		case DOUBLE:
-			m_CurrentState = new AutomatStateDouble();
-			break;
-		case MOVE:
-			m_CurrentState = new AutomatStateMove();
-			break;
-		case START:
-			m_CurrentState = new AutomatStateStart();
-			break;
-		case END:
-			m_CurrentState = new AutomatStateEnd();
-			break;
-		}
+    @Override
+    public IAutomatState getAutomatState()
+    {
+        return m_CurrentState;
+    }
 
-		return true;
-	}
+    @Override
+    public boolean setAutomatState(AutomatStates state)
+    {
+        BezmaLog.i("BEZMA", "set Automat State: " + state.toString());
+        switch (state)
+        {
+        case DOUBLE:
+            m_CurrentState = new AutomatStateDouble();
+            break;
+        case MOVE:
+            m_CurrentState = new AutomatStateMove();
+            break;
+        case START:
+            m_CurrentState = new AutomatStateStart();
+            break;
+        case END:
+            m_CurrentState = new AutomatStateEnd();
+            break;
+        }
 
-	@Override
-	public boolean isCurrentPlayer(PlayerColors player)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean processCommand(IGameBox gameBox, ModelCommand modelCommand)
-	{
-		boolean res = false;
+    @Override
+    public boolean isCurrentPlayer(PlayerColors player)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-		if (m_CurrentState != null)
-		{
-			ModelCommand normalizedCommand = NormalizePosition(modelCommand);
-			BezmaLog.i("BEZMA", "processCommand in BackgammonAutomat" + modelCommand.getPosition().toString());
-			res = m_CurrentState.processCommand(this, normalizedCommand);
-		}
+    @Override
+    public boolean processCommand(IGameBox gameBox, ModelCommand modelCommand)
+    {
+        boolean res = false;
 
-		return res;
-	}
+        if (m_CurrentState != null)
+        {
+            ModelCommand normalizedCommand = NormalizePosition(modelCommand);
+            BezmaLog.i("BEZMA", "processCommand in BackgammonAutomat" + modelCommand.getPosition().toString());
+            res = m_CurrentState.processCommand(this, normalizedCommand);
+        }
 
-	/** Returns Model Command's position in Black Counterclockwise direction */
-	private ModelCommand NormalizePosition(ModelCommand modelCommand)
-	{
-		ModelCommand normalizedCommand = modelCommand;
+        return res;
+    }
 
-		try
-		{
-			normalizedCommand = (ModelCommand) modelCommand.clone();
-			normalizedCommand.getPosition().ChangeDirection(m_StartPositionDirection, DefaultDirection);
-		} catch (CloneNotSupportedException e)
-		{
-			e.printStackTrace();
-		}
+    /** Returns Model Command's position in Black Counterclockwise direction */
+    private ModelCommand NormalizePosition(ModelCommand modelCommand)
+    {
+        ModelCommand normalizedCommand = modelCommand;
 
-		return normalizedCommand;
-	}
+        try
+        {
+            normalizedCommand = (ModelCommand) modelCommand.clone();
+            normalizedCommand.getPosition().ChangeDirection(m_StartPositionDirection, DefaultDirection);
+        } catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
 
-	@Override
-	public Position getCurrentPosition()
-	{
-		return m_LastPosition;
-	}
+        return normalizedCommand;
+    }
+
+    @Override
+    public Position getCurrentPosition()
+    {
+        return m_LastPosition;
+    }
 
     // IGameWithCube functions
 
-	@Override
+    @Override
     public boolean canProposeDouble(PlayerColors player)
     {
-	    return m_LastPosition != null && m_LastPosition.getCubePosition() == CubePosition.Center && m_LastPosition.getCubeValue() != 64;
+        return m_LastPosition != null && m_LastPosition.getCubePosition() == CubePosition.Center && m_LastPosition.getCubeValue() != 64;
     }
 
     @Override
@@ -259,7 +263,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
             m_LastPosition.setCubePosition(CubePosition.Right);
             result = true;
         }
-        
+
         if (result)
         {
             MoveCubeDouble move = new MoveCubeDouble();
@@ -309,5 +313,4 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         return m_CurrentPlayer;
     }
 
-	
 }
