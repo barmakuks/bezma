@@ -1,10 +1,7 @@
 package com.fairbg.bezma.core.model;
 
 /**
- * Observer listenes notifies from Model
- * 
- * @author Vitalik
- * 
+ * Observer listens notifies from Model
  */
 public interface IModelObserver
 {

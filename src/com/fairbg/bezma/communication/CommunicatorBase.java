@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.core.model.MoveAbstract;
-import com.fairbg.bezma.core.model.ModelSituation;
+import com.fairbg.bezma.core.model.BoardContext;
 
 ;
 
@@ -46,7 +46,7 @@ public abstract class CommunicatorBase implements ICommunicator
 
 	/** Отображает на всех устройствах текущее состояние модели */
 	@Override
-	public void setModelState(ModelSituation modelState)
+	public void setModelState(BoardContext modelState)
 	{
 		for (IModelView view : m_Views)
 		{

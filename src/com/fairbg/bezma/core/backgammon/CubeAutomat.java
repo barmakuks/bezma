@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
 
 import com.fairbg.bezma.core.backgammon.Position.CubePosition;
-import com.fairbg.bezma.core.model.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerId;
 
 interface ICubeState
 {
@@ -13,15 +13,15 @@ interface ICubeState
 
 interface IGameWithCube
 {
-	public boolean canProposeDouble(PlayerColors player);
+	public boolean canProposeDouble(PlayerId player);
 
-	public boolean proposeDouble(PlayerColors player);
+	public boolean proposeDouble(PlayerId player);
 
-	public boolean take(PlayerColors player);
+	public boolean take(PlayerId player);
 
-	public boolean pass(PlayerColors player);
+	public boolean pass(PlayerId player);
 
-	public PlayerColors getCurrentPlayer();
+	public PlayerId getCurrentPlayer();
 }
 
 interface ICubeAutomat extends IGameWithCube
@@ -47,7 +47,7 @@ class BlackCubeState implements ICubeState
 		{
 		case Center:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.BLACK) && m_automat.get().pass(PlayerColors.WHITE))
+			if (m_automat.get().proposeDouble(PlayerId.BLACK) && m_automat.get().pass(PlayerId.WHITE))
 			{
 				nextState = new MiddleCubeState(m_automat);
 			}
@@ -55,7 +55,7 @@ class BlackCubeState implements ICubeState
 		}
 		case White:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.BLACK) && m_automat.get().take(PlayerColors.WHITE))
+			if (m_automat.get().proposeDouble(PlayerId.BLACK) && m_automat.get().take(PlayerId.WHITE))
 			{
 				nextState = new WhiteCubeState(m_automat);
 			}
@@ -63,7 +63,7 @@ class BlackCubeState implements ICubeState
 		}
 		case None:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.BLACK))
+			if (m_automat.get().proposeDouble(PlayerId.BLACK))
 			{
 				nextState = new NoCubeState(m_automat);
 			}
@@ -95,7 +95,7 @@ class WhiteCubeState implements ICubeState
 		{
 		case Black:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.WHITE) && m_automat.get().take(PlayerColors.BLACK))
+			if (m_automat.get().proposeDouble(PlayerId.WHITE) && m_automat.get().take(PlayerId.BLACK))
 			{
 				nextState = new BlackCubeState(m_automat);
 			}
@@ -103,7 +103,7 @@ class WhiteCubeState implements ICubeState
 		}
 		case Center:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.WHITE) && m_automat.get().pass(PlayerColors.BLACK))
+			if (m_automat.get().proposeDouble(PlayerId.WHITE) && m_automat.get().pass(PlayerId.BLACK))
 			{
 				nextState = new MiddleCubeState(m_automat);
 			}
@@ -111,7 +111,7 @@ class WhiteCubeState implements ICubeState
 		}
 		case None:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.WHITE))
+			if (m_automat.get().proposeDouble(PlayerId.WHITE))
 			{
 				nextState = new NoCubeState(m_automat);
 			}
@@ -143,7 +143,7 @@ class MiddleCubeState implements ICubeState
 		{
 		case Black:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.WHITE) && m_automat.get().take(PlayerColors.BLACK))
+			if (m_automat.get().proposeDouble(PlayerId.WHITE) && m_automat.get().take(PlayerId.BLACK))
 			{
 				nextState = new BlackCubeState(m_automat);
 			}
@@ -151,7 +151,7 @@ class MiddleCubeState implements ICubeState
 		}
 		case White:
 		{
-			if (m_automat.get().proposeDouble(PlayerColors.BLACK) && m_automat.get().pass(PlayerColors.WHITE))
+			if (m_automat.get().proposeDouble(PlayerId.BLACK) && m_automat.get().pass(PlayerId.WHITE))
 			{
 				nextState = new WhiteCubeState(m_automat);
 			}
@@ -191,7 +191,7 @@ class NoCubeState implements ICubeState
 		{
 		case Black:
 		{
-			if (m_automat.get().take(PlayerColors.BLACK))
+			if (m_automat.get().take(PlayerId.BLACK))
 			{
 				nextState = new BlackCubeState(m_automat);
 			}
@@ -207,7 +207,7 @@ class NoCubeState implements ICubeState
 		}
 		case White:
 		{
-			if (m_automat.get().take(PlayerColors.WHITE))
+			if (m_automat.get().take(PlayerId.WHITE))
 			{
 				nextState = new WhiteCubeState(m_automat);
 			}
@@ -253,31 +253,31 @@ public class CubeAutomat implements ICubeAutomat
 	}
 
 	@Override
-	public PlayerColors getCurrentPlayer()
+	public PlayerId getCurrentPlayer()
 	{
 		return m_game.getCurrentPlayer();
 	}
 
 	@Override
-	public boolean proposeDouble(PlayerColors player)
+	public boolean proposeDouble(PlayerId player)
 	{
 		return m_game.proposeDouble(player);
 	}
 
 	@Override
-	public boolean pass(PlayerColors player)
+	public boolean pass(PlayerId player)
 	{
 		return m_game.pass(player);
 	}
 
 	@Override
-	public boolean take(PlayerColors player)
+	public boolean take(PlayerId player)
 	{
 		return m_game.take(player);
 	}
 
 	@Override
-	public boolean canProposeDouble(PlayerColors player)
+	public boolean canProposeDouble(PlayerId player)
 	{
 		return m_game.canProposeDouble(player);
 	}

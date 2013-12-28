@@ -2,7 +2,7 @@ package com.fairbg.bezma.core.backgammon;
 
 import java.util.ArrayList;
 
-import com.fairbg.bezma.core.model.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaLog;
 
 public class BackgammonRules
@@ -12,21 +12,21 @@ public class BackgammonRules
 
     public static int[] getStartPosition(Position.Direction direction)
     {
-	switch(direction)
-	{
-	case BlackCCW:
-	    return new int[] { 0,-2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0,-5, 5, 0, 0, 0,-3, 0,-5, 0, 0, 0, 0, 2, 0, 0, 0 };
-	case BlackCW:
-	    return new int[] { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0 };
-	case WhiteCW:
-	    return new int[] { 0,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5, 0, 0, 0 }; 
-	case WhiteCCW:
-	    return new int[] { 0, 5, 0, 0, 0,-3, 0,-5, 0, 0, 0, 0, 2,-2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0,-5, 0, 0, 0 }; 
-	default:
-	    return null;
-	}
-    } 
-    
+        switch (direction)
+        {
+        case BlackCCW:
+            return new int[] { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
+        case BlackCW:
+            return new int[] { 0, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 0, 0, 0 };
+        case WhiteCW:
+            return new int[] { 0, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, 0, 0, 0 };
+        case WhiteCCW:
+            return new int[] { 0, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 0, 0, 0 };
+        default:
+            return null;
+        }
+    }
+
     /**
      * Check if position is start position, and returns board position direction
      * if it is not a start position returns BoardDirection.None
@@ -34,33 +34,33 @@ public class BackgammonRules
      */
     public Position.Direction getStartPositionDirection(Position position)
     {
-	int pos[] = position.getCheckers();
-	
-	for (Position.Direction direction : Position.Direction.values())
-	{
-	    int start[] = BackgammonRules.getStartPosition(direction);	    
-	    
-	    if (PositionUtils.EqualPositions(start, pos))
-	    {
-		return direction;
-	    }
-	}
-	
-	return Position.Direction.None;
+        int pos[] = position.getCheckers();
+
+        for (Position.Direction direction : Position.Direction.values())
+        {
+            int start[] = BackgammonRules.getStartPosition(direction);
+
+            if (PositionUtils.EqualPositions(start, pos))
+            {
+                return direction;
+            }
+        }
+
+        return Position.Direction.None;
     }
 
     /**
      * Tries to find move
      * 
      * @param from
-     *            previous position
+     *        previous position
      * @param to
-     *            final position
+     *        final position
      * @param player
-     *            player, who press the button
+     *        player, who press the button
      * @return SkipMove, DoubleMove or CheckerMove
      */
-    public Move findMove(int die1, int die2, Position from, Position to, PlayerColors player)
+    public Move findMove(int die1, int die2, Position from, Position to, PlayerId player)
     {
         m_FoundMoves.clear();
 
@@ -113,8 +113,7 @@ public class BackgammonRules
                 }
             }
 
-        }
-        catch (CloneNotSupportedException e)
+        } catch (CloneNotSupportedException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -128,14 +127,14 @@ public class BackgammonRules
         return null;
     }
 
-    private boolean canSkipMove(Move move, Position from, Position to, PlayerColors player)
+    private boolean canSkipMove(Move move, Position from, Position to, PlayerId player)
     {
         return from.approxEquals(to) && !stillCanDoMovement(move, from);
     }
 
-    private Move getBestMove(Position from, PlayerColors player)
+    private Move getBestMove(Position from, PlayerId player)
     {
-        PlayerColors otherPlayer = PlayerColors.getAltColor(player);
+        PlayerId otherPlayer = PlayerId.getOppositeId(player);
         Move best_move = null, temp_move = null;
         int aMinMovesLeft = -1000, aMovesLeft = 0;
         Position aPositionCopy;
@@ -155,8 +154,7 @@ public class BackgammonRules
                     aMinMovesLeft = aMovesLeft;
                 }
             }
-        }
-        catch (CloneNotSupportedException e)
+        } catch (CloneNotSupportedException e)
         {
             e.printStackTrace();
             return null;
@@ -164,7 +162,8 @@ public class BackgammonRules
         return best_move;
     }
 
-    private boolean findPosibleMoves(final Move move, final Position fromPosition, final Position toPosition, PlayerColors player) throws CloneNotSupportedException
+    private boolean findPosibleMoves(final Move move, final Position fromPosition, final Position toPosition, PlayerId player)
+            throws CloneNotSupportedException
     {
         Position aPositionFromCopy = null;
         Move move_copy = null;
@@ -195,8 +194,8 @@ public class BackgammonRules
 
                         if (dest_index > 0)
                         {
-                            PlayerColors color = aPositionFromCopy.getCheckerColor(dest_index, player);
-                            isStrike = color != player && color != PlayerColors.NONE;
+                            PlayerId color = aPositionFromCopy.getCheckerColor(dest_index, player);
+                            isStrike = color != player && color != PlayerId.NONE;
                         }
 
                         move_copy.appendMovement(from_index, dest_index, isStrike);
@@ -227,7 +226,7 @@ public class BackgammonRules
                                 {
                                     m_FoundMoves.add((Move) move_copy.clone());
                                 }
-                                
+
                                 return true;
                             }
                         }
@@ -267,19 +266,20 @@ public class BackgammonRules
         return false;
     }
 
-    private boolean canApplayMovement(Position position, int from_index, int to_index, PlayerColors player)
+    private boolean canApplayMovement(Position position, int from_index, int to_index, PlayerId player)
     {
         final int destCheckerCount = position.getCheckerCount(to_index, player);
-        final PlayerColors destCheckerColor = position.getCheckerColor(to_index, player);
+        final PlayerId destCheckerColor = position.getCheckerColor(to_index, player);
         final int srcCheckerCount = position.getCheckerCount(from_index, player);
-        final PlayerColors srcCheckerColor = position.getCheckerColor(from_index, player);
+        final PlayerId srcCheckerColor = position.getCheckerColor(from_index, player);
 
         if (srcCheckerCount == 0) // Если нет шашки для хода
         {
             return false;
         }
 
-        if (position.hasCheckerInBar(player) && from_index != Position.BAR_POSITION) // Если есть шашка на баре и ход не из бара
+        if (position.hasCheckerInBar(player) && from_index != Position.BAR_POSITION) // Если есть шашка на баре и ход не
+                                                                                     // из бара
         {
             return false;
         }
@@ -298,7 +298,7 @@ public class BackgammonRules
         }
         else
         {
-            if ((srcCheckerColor != destCheckerColor && destCheckerColor != PlayerColors.NONE) && destCheckerCount > 1)
+            if ((srcCheckerColor != destCheckerColor && destCheckerColor != PlayerId.NONE) && destCheckerCount > 1)
             {
                 return false;
             }
@@ -306,7 +306,7 @@ public class BackgammonRules
         return true;
     }
 
-    private boolean hasLefterCheckerInHome(Position position, int from_index, PlayerColors player)
+    private boolean hasLefterCheckerInHome(Position position, int from_index, PlayerId player)
     {
         // check if is any checker with same color and greater indes
         for (int i = from_index + 1; i <= Position.BAR_POSITION; i++)
@@ -319,7 +319,7 @@ public class BackgammonRules
         return false;
     }
 
-    private boolean canOffChecker(Position position, PlayerColors checkerColor)
+    private boolean canOffChecker(Position position, PlayerId checkerColor)
     {
         // Check if is any checker out of home
         for (int i = 7; i <= Position.BAR_POSITION; i++)
@@ -332,11 +332,12 @@ public class BackgammonRules
         return true;
     }
 
-    private int findFirstMovedChecker(Position from, Position to, PlayerColors player, int start_from)
+    private int findFirstMovedChecker(Position from, Position to, PlayerId player, int start_from)
     {
         for (int i = start_from - 1; i >= 0; i--)
         {
-            if (from.getCheckerColor(i, player) == player && (from.getCheckerCount(i, player) > to.getCheckerCount(i, player) || from.getCheckerCount(i, player) >= Position.MAX_CHECKERS_IN_POSITION))
+            if (from.getCheckerColor(i, player) == player
+                    && (from.getCheckerCount(i, player) > to.getCheckerCount(i, player) || from.getCheckerCount(i, player) >= Position.MAX_CHECKERS_IN_POSITION))
             {
                 return i;
             }

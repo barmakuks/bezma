@@ -8,9 +8,9 @@ import com.fairbg.bezma.core.backgammon.BackgammonRules;
 import com.fairbg.bezma.core.backgammon.Move;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
-import com.fairbg.bezma.core.model.Model;
+import com.fairbg.bezma.core.model.ModelCore;
 import com.fairbg.bezma.core.model.ModelCommand;
-import com.fairbg.bezma.core.model.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerId;
 
 public class Runner
 {
@@ -18,16 +18,16 @@ public class Runner
 	{
 		int		  die1, die2;
 		int		  position[];
-		PlayerColors player;
+		PlayerId player;
 
-		MoveData(int p[], PlayerColors pl)
+		MoveData(int p[], PlayerId pl)
 		{
 			die1 = die2 = 0;
 			position = p;
 			player = pl;
 		}
 
-		MoveData(int d1, int d2, int p[], PlayerColors pl)
+		MoveData(int d1, int d2, int p[], PlayerId pl)
 		{
 			die1 = d1;
 			die2 = d2;
@@ -58,8 +58,8 @@ public class Runner
 								   };
 
 	static short testGame1[][] = {
-		{ 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // Start
-																												   // position
+		{ 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // Start position
+
 		{ 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // W
 		{ 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0,-1,-1, 0, 0, 0, 0, 0 }, // B
 		{ 0, 0, 1, 1, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0,-1,-1, 0, 0, 0, 0, 0 }, // W
@@ -140,6 +140,25 @@ public class Runner
 		{ 0,-5, 0, 0, 0, 2, 0, 2, 2, 0,-2, 2, 0, 2, 0, 0, 0,-2,-4, 0,-2, 0, 0, 0, 5, 0, 0, 0, 0 },
 	};
 
+    static short[][] testGame4 = { // Two games match
+        { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // Start position
+        
+        { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // B: 01:  
+        { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0, 0 }, // W: 02:
+        { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0,-1 }, // B: double
+        { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0, 0 }, // W: pass
+
+        // next game
+        { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // Start position
+
+        { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 2, 0, 4, 2, 0, 0, 0,-2, 0, 0, 0, 0 }, // W:
+        { 0, 2, 0, 0, 0, 0,-5,-2,-2, 0, 0, 0, 5,-4, 0, 0, 0, 2, 0, 4, 2, 0, 0, 0,-2, 0, 0, 0, 0 }, // B:
+        { 0, 2, 0, 0, 0, 0,-5,-2,-2, 0, 0, 0, 5,-4, 0, 0, 0, 1, 0, 3, 2, 2, 0, 0,-2, 0, 0, 0, 0 }, // W:
+        { 0, 2, 0, 0, 0, 0,-5,-2,-2, 0, 0, 0, 5,-4, 0, 0, 0, 1, 0, 3, 2, 2, 0, 0,-2, 0, 0, 0,-1 }, // B: double
+        { 0, 2, 0, 0, 0, 0,-5,-2,-2, 0, 0, 0, 5,-4, 0, 0, 0, 1, 0, 3, 2, 2, 0, 0,-2, 0, 0, 0, 2 }, // B: take
+        { 0, 2, 0, 0, 0, 0,-5,-2,-2,-2, 0, 0, 5,-2, 0, 0, 0, 1, 0, 3, 2, 2, 0, 0,-2, 0, 0, 0, 2 }, // B: 
+    };
+	
 	void testFindMove(MoveData testData[])
 	{
 		System.out.println("*********** test find move ********");
@@ -172,8 +191,8 @@ public class Runner
 	void testModel(MoveData testData[])
 	{
 		System.out.println("*********** test model **************");
-		Model model = new Model();
-		model.create(null, null);
+		ModelCore model = new ModelCore();
+		model.create(null, null, null);
 
 		CommunicationCommandState commCommand = new CommunicationCommandState();
 		ModelCommand command = ModelCommand.createCommand(commCommand);
@@ -201,7 +220,7 @@ public class Runner
 
 	public static short[][] getDatagrams()
 	{
-		return testGame;
+		return testGame4;
 	}
 
 	/**

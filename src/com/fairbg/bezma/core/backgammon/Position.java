@@ -2,7 +2,7 @@ package com.fairbg.bezma.core.backgammon;
 
 import java.util.Random;
 
-import com.fairbg.bezma.core.model.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaLog;
 
 /** Describes checkers positions and cube state */
@@ -61,20 +61,20 @@ public class Position implements Cloneable
 	 * @param direction move direction
 	 * @return checker index in m_Checkers
 	 */
-	private int getIndex(int position, PlayerColors direction)
+	private int getIndex(int position, PlayerId direction)
 	{
 		if (position <= 0)
 		{
-			return direction == PlayerColors.BLACK ? 26 : 27;
+			return direction == PlayerId.BLACK ? 26 : 27;
 		} else
 		{
-			return direction == PlayerColors.BLACK ? position : BAR_POSITION - position;
+			return direction == PlayerId.BLACK ? position : BAR_POSITION - position;
 		}
 	}
 
-	private int getPLayerSign(PlayerColors player)
+	private int getPLayerSign(PlayerId player)
 	{
-		return player == PlayerColors.WHITE ? 1 : player == PlayerColors.BLACK ? -1 : 0;
+		return player == PlayerId.WHITE ? 1 : player == PlayerId.BLACK ? -1 : 0;
 	}
 
 	/**
@@ -258,11 +258,11 @@ public class Position implements Cloneable
 	}
 
 	/** Move checkers on the board according to the movement */
-	public void applayMovement(int moveFrom, int moveTo, PlayerColors player)
+	public void applayMovement(int moveFrom, int moveTo, PlayerId player)
 	{
 		moveFrom = getIndex(moveFrom, player);
 		moveTo = getIndex(moveTo, player);
-		final int OPP_BAR_POSITION = getIndex(Position.BAR_POSITION, PlayerColors.getAltColor(player));
+		final int OPP_BAR_POSITION = getIndex(Position.BAR_POSITION, PlayerId.getOppositeId(player));
 
 		final int ONE_CHECKER = getPLayerSign(player);
 
@@ -288,19 +288,19 @@ public class Position implements Cloneable
 	}
 
 	/** Calculate current PIPs for player */
-	public int getPips(PlayerColors forPlayer)
+	public int getPips(PlayerId forPlayer)
 	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	/** Return the color of the checker on the specified position */
-	public PlayerColors getCheckerColor(int position, PlayerColors player)
+	public PlayerId getCheckerColor(int position, PlayerId player)
 	{
 		final int index = getIndex(position, player);
-		int color = m_Checkers[index] * getPLayerSign(PlayerColors.WHITE);
+		int color = m_Checkers[index] * getPLayerSign(PlayerId.WHITE);
 
-		return color == 0 ? PlayerColors.NONE : color > 0 ? PlayerColors.WHITE : PlayerColors.BLACK;
+		return color == 0 ? PlayerId.NONE : color > 0 ? PlayerId.WHITE : PlayerId.BLACK;
 	}
 
 	/** Return true if all checkers has the same position */
@@ -322,12 +322,12 @@ public class Position implements Cloneable
 
 		for (int i = 0; equals && i <= 25; i++)
 		{
-			int count = getCheckerCount(i, PlayerColors.BLACK);
-			int other_count = other.getCheckerCount(i, PlayerColors.BLACK);
-			PlayerColors color = getCheckerColor(i, PlayerColors.BLACK);
-			PlayerColors other_color = other.getCheckerColor(i, PlayerColors.BLACK);
+			int count = getCheckerCount(i, PlayerId.BLACK);
+			int other_count = other.getCheckerCount(i, PlayerId.BLACK);
+			PlayerId color = getCheckerColor(i, PlayerId.BLACK);
+			PlayerId other_color = other.getCheckerColor(i, PlayerId.BLACK);
 
-			equals = equals && (other_color == color || other_color == PlayerColors.NONE || color == PlayerColors.NONE);
+			equals = equals && (other_color == color || other_color == PlayerId.NONE || color == PlayerId.NONE);
 
 			equals = equals && (count == other_count)
 					|| (count >= other_count && (other_count == MAX_CHECKERS_IN_POSITION));
@@ -336,12 +336,12 @@ public class Position implements Cloneable
 		return equals;
 	}
 
-	public int getCheckerCount(int position, PlayerColors player)
+	public int getCheckerCount(int position, PlayerId player)
 	{
 		return Math.abs(m_Checkers[getIndex(position, player)]);
 	}
 
-	public boolean hasCheckerInBar(PlayerColors player)
+	public boolean hasCheckerInBar(PlayerId player)
 	{
 		return m_Checkers[getIndex(BAR_POSITION, player)] != 0;
 	}

@@ -6,19 +6,17 @@ import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.backgammon.Position.CubePosition;
 import com.fairbg.bezma.log.BezmaLog;
 
-/// Description of the commands used by model 
+/** Description of the commands used by model */ 
 public class ModelCommand
 {
-
     /** player who sent command */
-    public PlayerColors player;
+    public PlayerId player;
 
     private Position    m_Position = new Position();
 
-    // / Creates Model Command from Communication command
+    /** Creates Model Command from Communication command */
     public static ModelCommand createCommand(CommunicationCommand command)
     {
-
         BezmaLog.i("COMMUNICATION TO COMMAND", "Convertation");
 
         ModelCommand modelCommand = new ModelCommand();
@@ -26,7 +24,7 @@ public class ModelCommand
         {
             CommunicationCommandState stateCommand = (CommunicationCommandState) command;
 
-            modelCommand.player = (stateCommand.playerId == 0) ? PlayerColors.NONE : (stateCommand.playerId > 0) ? PlayerColors.BLACK : PlayerColors.WHITE;
+            modelCommand.player = (stateCommand.playerId == 0) ? PlayerId.NONE : (stateCommand.playerId > 0) ? PlayerId.BLACK : PlayerId.WHITE;
 
             int[] pos = modelCommand.m_Position.getCheckers();
 

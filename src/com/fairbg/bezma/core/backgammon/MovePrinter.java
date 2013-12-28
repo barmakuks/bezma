@@ -2,7 +2,7 @@ package com.fairbg.bezma.core.backgammon;
 
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.IMoveVisitor;
-import com.fairbg.bezma.core.model.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerId;
 
 public class MovePrinter implements IMoveVisitor
 {
@@ -14,7 +14,7 @@ public class MovePrinter implements IMoveVisitor
     {
         m_builder = new StringBuilder();
 
-        m_builder.append(move.getPlayer() == PlayerColors.WHITE ? "W: " : "B: ");
+        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
         m_builder.append("[" + move.getDie1() + ":" + move.getDie2() + "]");
 
         if (move.getMovements().length == 0)
@@ -57,7 +57,7 @@ public class MovePrinter implements IMoveVisitor
     public void visit(MoveCubeDouble move)
     {
         m_builder = new StringBuilder();
-        m_builder.append(move.getPlayer() == PlayerColors.WHITE ? "W: " : "B: ");
+        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
         m_builder.append(" double");
 
         m_moveString = m_builder.toString();        
@@ -67,8 +67,18 @@ public class MovePrinter implements IMoveVisitor
     public void visit(MoveCubeTake move)
     {
         m_builder = new StringBuilder();
-        m_builder.append(move.getPlayer() == PlayerColors.WHITE ? "W: " : "B: ");
+        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
         m_builder.append(" take");
+
+        m_moveString = m_builder.toString();        
+    }
+
+    @Override
+    public void visit(MoveCubePass move)
+    {
+        m_builder = new StringBuilder();
+        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
+        m_builder.append(" pass");
 
         m_moveString = m_builder.toString();        
     }
