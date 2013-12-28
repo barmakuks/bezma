@@ -2,6 +2,7 @@ package com.fairbg.bezma.core;
 
 import com.fairbg.bezma.communication.IBroadcast;
 import com.fairbg.bezma.communication.ICommunicator;
+import com.fairbg.bezma.core.model.IControllersFactory;
 import com.fairbg.bezma.store.IDatabase;
 
 
@@ -18,5 +19,7 @@ public interface IConfigurator {
 
 	/**Создает объект для передачи данных в Интернет*/
 	public abstract IBroadcast createBroadcastModule(Configuration configuration) throws WrongConfigurationException;
+	
+	public abstract IControllersFactory createControllersFactory() throws WrongConfigurationException;
 
 }

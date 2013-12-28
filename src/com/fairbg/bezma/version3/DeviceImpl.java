@@ -14,7 +14,7 @@ import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.model.MoveAbstract;
-import com.fairbg.bezma.core.model.ModelSituation;
+import com.fairbg.bezma.core.model.BoardContext;
 
 /** Имплементация устройства 3-го покоения со связью через bluetooth */
 public class DeviceImpl implements IModelView, IDatagramObserver
@@ -31,7 +31,7 @@ public class DeviceImpl implements IModelView, IDatagramObserver
     }
 
     @Override
-    public void setModelState(ModelSituation modelState)
+    public void setModelState(BoardContext modelState)
     {
         Datagram datagram = null;
         m_BoardDevice.sendDatagram(datagram);

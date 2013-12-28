@@ -30,7 +30,7 @@ import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.errors.ErrorWrongPosition;
 import com.fairbg.bezma.core.model.MoveAbstract;
-import com.fairbg.bezma.core.model.ModelSituation;
+import com.fairbg.bezma.core.model.BoardContext;
 import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.version3.ConfigurationVer3;
 import com.fairbg.bezma.version3.ConfiguratorVer3;
@@ -547,7 +547,7 @@ public class PlayActivity extends Activity implements IModelView
     }
 
     @Override
-    public void setModelState(ModelSituation aModelState)
+    public void setModelState(BoardContext aModelState)
     {
 
         if (aModelState != null && !aModelState.isErrorState())

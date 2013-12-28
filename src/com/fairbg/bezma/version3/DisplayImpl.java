@@ -7,7 +7,7 @@ import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.model.MoveAbstract;
-import com.fairbg.bezma.core.model.ModelSituation;
+import com.fairbg.bezma.core.model.BoardContext;
 
 /** Устройство отображения данных на экране смартфона с android */
 public class DisplayImpl implements IModelView
@@ -16,7 +16,7 @@ public class DisplayImpl implements IModelView
 	private ArrayList<ICommandObserver> observers = new ArrayList<ICommandObserver>();
 
 	@Override
-	public void setModelState(ModelSituation modelState)
+	public void setModelState(BoardContext modelState)
 	{
 	}
 

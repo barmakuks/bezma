@@ -2,14 +2,14 @@ package com.fairbg.bezma.core.model;
 
 public abstract class MoveAbstract
 {
-    protected PlayerColors m_Player;
+    protected PlayerId m_Player;
 
-    public PlayerColors getPlayer()
+    public PlayerId getPlayer()
     {
         return m_Player;
     }
 
-    public void setPlayer(PlayerColors player)
+    public void setPlayer(PlayerId player)
     {
         m_Player = player;
     }

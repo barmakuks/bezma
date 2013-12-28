@@ -8,7 +8,7 @@ import com.fairbg.bezma.communication.commands.CommunicationCommandState;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.model.MoveAbstract;
-import com.fairbg.bezma.core.model.ModelSituation;
+import com.fairbg.bezma.core.model.BoardContext;
 
 public class TestModelCommandsProvider implements IModelView
 {
@@ -88,7 +88,7 @@ public class TestModelCommandsProvider implements IModelView
     }
 
     @Override
-    public void setModelState(ModelSituation aModelState)
+    public void setModelState(BoardContext aModelState)
     {
     }
 

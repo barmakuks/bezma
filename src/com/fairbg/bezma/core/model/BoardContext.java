@@ -5,15 +5,14 @@ import com.fairbg.bezma.core.backgammon.Position;
 /**
  * Current model state
  * */
-public class ModelSituation
+public class BoardContext
 {
-
     /** Current checkers position */
     private Position m_Position = null;
     /** Last error message */
     private String m_ErrorMsg = "";
 
-    public ModelSituation(Position position, String errorMsg)
+    public BoardContext(Position position, String errorMsg)
     {
         try
         {
@@ -21,7 +20,6 @@ public class ModelSituation
         }
         catch (CloneNotSupportedException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         m_ErrorMsg = errorMsg;

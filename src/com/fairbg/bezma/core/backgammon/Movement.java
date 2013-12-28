@@ -1,12 +1,12 @@
 package com.fairbg.bezma.core.backgammon;
 
 import com.fairbg.bezma.core.model.IMoveVisitor;
-import com.fairbg.bezma.core.model.PlayerColors;
+import com.fairbg.bezma.core.model.PlayerId;
 
 public class Movement implements Cloneable{
     public int MoveFrom = 0, MoveTo = 0;
     public boolean Strike = false;
-    public PlayerColors Color = PlayerColors.NONE;
+    public PlayerId Color = PlayerId.NONE;
 
     @Override
     protected Object clone() throws CloneNotSupportedException {

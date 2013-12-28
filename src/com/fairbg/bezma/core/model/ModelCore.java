@@ -10,42 +10,35 @@ import com.fairbg.bezma.store.IDatabase;
 /**
  * Main class for model in Model-View-Controller architecture
  */
-public final class Model
+public final class ModelCore implements IModelEventNotifier
 {
     private MatchParameters                          m_MatchParameters;
     private IDatabase                                m_Storage;
-    private GameBox                                  m_GameBox;
+
+    private IMatchController                         m_MatchController;
+    private IGameController                          m_GameController;
 
     private ArrayList<WeakReference<IModelObserver>> m_Observers = new ArrayList<WeakReference<IModelObserver>>();
 
-    private Match                                    m_Match     = new Match();
-
-    // private ModelState m_ModelState = new ModelState();
-
-    /************************* PUBLIC FUNCTIONS *****************************************/
     /**
      * Creates new match model
-     * 
-     * @param parameters
-     *        Match parameters
+     * @param parameters Match parameters
      * @param storage
      */
-    public void create(MatchParameters parameters, IDatabase storage)
+    public void create(MatchParameters parameters, IDatabase storage, IControllersFactory factory)
     {
         m_MatchParameters = parameters;
         m_Storage = storage;
-        m_GameBox = new GameBox(this);
+        m_MatchController = factory.createMatchController(this);
+        m_GameController = factory.createGameController(m_MatchController);
         initNotStoredObjects();
         store();
     }
 
     /**
      * Opens model saved in storage
-     * 
-     * @param matchId
-     *        match identifier
-     * @param storage
-     *        storage
+     * @param matchId Match identifier
+     * @param storage storage
      */
     public void open(MatchIdentifier matchId, IDatabase storage)
     {
@@ -57,21 +50,15 @@ public final class Model
 
     /**
      * Accepts user command
-     * 
      * @param command
      * @return true if command is accepted and model state was changed
      */
     public boolean acceptCommand(ModelCommand command)
     {
         boolean result = processCommand(command);
-        if (result)
+        if (result && m_Storage != null)
         {
-            m_GameBox.writeCurrentState();
-            if (m_Storage != null)
-            {
-                m_Storage.writeCurrentState(m_MatchParameters.matchId,
-                        m_GameBox.getModelState());
-            }
+            m_Storage.writeCurrentState(m_MatchParameters.matchId, m_GameController.getModelSituation());
         }
         return result;
     }
@@ -89,6 +76,7 @@ public final class Model
         m_Observers.remove(observer);
     }
 
+    @Override
     public void notifyAll(IModelObserver.Event event)
     {
         for (WeakReference<IModelObserver> observer : m_Observers)
@@ -99,8 +87,6 @@ public final class Model
             }
         }
     }
-
-    /************************* PRIVATE FUNCTIONS *****************************************/
 
     /**
      * Stores all model in m_Storage
@@ -115,7 +101,7 @@ public final class Model
                 m_MatchParameters.matchId = MatchIdentifier.generateNew();
             }
             m_Storage.writeMatchParameters(m_MatchParameters);
-            m_Storage.writeMatch(m_MatchParameters.matchId, m_Match);
+            m_Storage.writeMatch(m_MatchParameters.matchId, m_MatchController);
         }
     }
 
@@ -126,21 +112,18 @@ public final class Model
     {
         if (m_Storage != null)
         {
-            m_GameBox.restore(m_Storage);
+            // m_GameBox.restore(m_Storage);
         }
     }
 
     /**
-     * Converts user command to model command, processes it and changes model
-     * state
-     * 
-     * @param modelCommand
-     *        user command to process
+     * Converts user command to model command, processes it and changes model state
+     * @param modelCommand user command to process
      * @return true, if command is valid and model was changed
      */
     private boolean processCommand(ModelCommand modelCommand)
     {
-        return m_GameBox.processCommand(modelCommand);
+        return m_GameController.processCommand(modelCommand);
     }
 
     /**
@@ -150,14 +133,8 @@ public final class Model
     {
     }
 
-    public ModelSituation getState()
+    public BoardContext getState()
     {
-        return m_GameBox.getModelState();
-    }
-
-    public void appendMove(MoveAbstract move)
-    {
-        m_Match.appendMove(move);
-        notifyAll(new IModelObserver.MoveEvent(move));
+        return m_GameController.getModelSituation();
     }
 }
