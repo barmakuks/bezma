@@ -8,5 +8,5 @@ public interface IMatchController
     void finishGame(PlayerId winner, int points);
     boolean isMatchFinished();
     MatchParameters getMatchParameters();
-    IScore   getScore();
+    MatchScore   getScore();
 }

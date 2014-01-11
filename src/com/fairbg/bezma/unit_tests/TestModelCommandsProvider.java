@@ -7,12 +7,14 @@ import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.CommunicationCommandState;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.BoardContext;
 
 public class TestModelCommandsProvider implements IModelView
 {
     private long m_delay;
+    private boolean m_observersChanged = false;
     short[][]    m_datagrams;
 
     public TestModelCommandsProvider(short[][] datagrams, long delay)
@@ -27,21 +29,28 @@ public class TestModelCommandsProvider implements IModelView
     @Override
     public void notifyObservers(CommunicationCommand userCommand)
     {
+        m_observersChanged = false;
         for (ICommandObserver observer : m_Observers)
         {
             observer.handeEvent(userCommand);
+            if (m_observersChanged)
+            {
+                return;
+            }
         }
     }
 
     @Override
     public void addObserver(ICommandObserver aCommandObserver)
     {
+        m_observersChanged = true;
         m_Observers.add(aCommandObserver);
     }
 
     @Override
     public void removeObserver(ICommandObserver aCommandObserver)
     {
+        m_observersChanged = true;
         m_Observers.remove(aCommandObserver);
     }
 
@@ -104,5 +113,12 @@ public class TestModelCommandsProvider implements IModelView
     {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void changeScore(MatchScore score)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -7,8 +7,10 @@ import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.BoardContext;
+import com.fairbg.bezma.core.model.PlayerId;
 
 public class TestModelOut implements IModelView
 {
@@ -57,26 +59,33 @@ public class TestModelOut implements IModelView
     @Override
     public void setModelState(BoardContext aModelState)
     {
-        if (aModelState != null)
-        {
-            System.out.println(aModelState.getPosition());
-            System.out.println();
-        }
-        else
-        {
-            System.out.println("empty state");
-        }
+//        if (aModelState != null)
+//        {
+//            System.out.println(aModelState.getPosition());
+//            System.out.println();
+//        }
+//        else
+//        {
+//            System.out.println("empty state");
+//        }
     }
 
     @Override
     public void appendMove(MoveAbstract move)
     {
-        System.out.print(MovePrinter.printMove(move));
+        System.out.println(MovePrinter.printMove(move));
     }
 
     @Override
     public void displayError(Error error)
     {
-        System.out.print("Error received");
+        System.out.println("Error received");
+    }
+
+    @Override
+    public void changeScore(MatchScore score)
+    {
+        System.out.println("");
+        System.out.println("Black [" + score.getPlayerScore(PlayerId.BLACK) + " : " + score.getPlayerScore(PlayerId.WHITE) + "] White");
     }
 }

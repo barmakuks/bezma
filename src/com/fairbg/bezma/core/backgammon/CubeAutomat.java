@@ -22,6 +22,8 @@ interface IGameWithCube
 	public boolean pass(PlayerId player);
 
 	public PlayerId getCurrentPlayer();
+	
+	public int getCubeValue();
 }
 
 interface ICubeAutomat extends IGameWithCube
@@ -281,11 +283,11 @@ public class CubeAutomat implements ICubeAutomat
 	{
 		return m_game.canProposeDouble(player);
 	}
-
-	public static void main(String[] args)
-	{
-		// TODO Auto-generated method stub
-
+	
+	@Override
+	public int getCubeValue()
+	{	    
+	    return m_game.getCubeValue();
 	}
 
 }

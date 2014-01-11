@@ -23,15 +23,23 @@ import com.fairbg.bezma.R;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
+import com.fairbg.bezma.core.Configuration;
+import com.fairbg.bezma.core.IConfigurator;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.errors.ErrorWrongPosition;
+import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.BoardContext;
+import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaLog;
+import com.fairbg.bezma.unit_tests.Runner;
+import com.fairbg.bezma.unit_tests.TestConfiguration;
+import com.fairbg.bezma.unit_tests.TestConfigurator;
+import com.fairbg.bezma.unit_tests.TestModelCommandsProvider;
 import com.fairbg.bezma.version3.ConfigurationVer3;
 import com.fairbg.bezma.version3.ConfiguratorVer3;
 
@@ -51,7 +59,7 @@ public class PlayActivity extends Activity implements IModelView
     private String                      m_DeviceMAC        = "";
     private MatchParameters             m_MatchParameters  = null;
 
-    // /// Debug function for work without board, data read from TestModelCommandProvider
+    // / Debug function for work without board, data read from TestModelCommandProvider
     // @Override
     // protected void onCreate(Bundle bundle)
     // {
@@ -63,6 +71,8 @@ public class PlayActivity extends Activity implements IModelView
     // Configuration configuration = new TestConfiguration();
     //
     // m_MatchParameters = new MatchParameters();
+    //
+    // configuration.setMatchParameters(m_MatchParameters);
     //
     // IConfigurator configurator = new TestConfigurator();
     //
@@ -80,7 +90,7 @@ public class PlayActivity extends Activity implements IModelView
     // m_Presenter.start();
     // }
 
-    // / Release function
+    // Release function
     @Override
     protected void onCreate(Bundle bundle)
     {
@@ -89,7 +99,8 @@ public class PlayActivity extends Activity implements IModelView
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        ConfigurationVer3 configuration = (ConfigurationVer3) (getIntent().getExtras().getSerializable(ConfigurationVer3.class.getCanonicalName()));
+        ConfigurationVer3 configuration = (ConfigurationVer3)
+                (getIntent().getExtras().getSerializable(ConfigurationVer3.class.getCanonicalName()));
 
         m_DeviceMAC = configuration.getUserSettings().boardMAC;
         m_MatchParameters = configuration.getMatchParameters();
@@ -425,6 +436,9 @@ public class PlayActivity extends Activity implements IModelView
         private Bitmap    m_Background;
         private BoardView m_BoardView;
 
+        public int        m_whiteScore = 0;
+        public int        m_blackScore = 0;
+
         public PlayView(Context context)
         {
             super(context);
@@ -449,8 +463,8 @@ public class PlayActivity extends Activity implements IModelView
             // Game conditions
             DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.matchLength), 240, 78, 48, 0, 0xFF302f2f, "fonts/OpiumB.TTF");
             // Players scores
-            DrawingUtils.drawText(canvas, "0", 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
-            DrawingUtils.drawText(canvas, "0", 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
+            DrawingUtils.drawText(canvas, Integer.toString(m_whiteScore), 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
+            DrawingUtils.drawText(canvas, Integer.toString(m_blackScore), 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
             // Test version
             // int[] _checkers = new int[] {-3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, -4, -5, -6, -7, -8,
@@ -585,5 +599,12 @@ public class PlayActivity extends Activity implements IModelView
             // ErrorWrongPosition position_error = (ErrorWrongPosition) error;
             // Position wrong_position = position_error.position;
         }
+    }
+
+    @Override
+    public void changeScore(MatchScore score)
+    {
+        m_view.m_blackScore = score.getPlayerScore(PlayerId.BLACK);
+        m_view.m_whiteScore = score.getPlayerScore(PlayerId.WHITE);
     }
 }

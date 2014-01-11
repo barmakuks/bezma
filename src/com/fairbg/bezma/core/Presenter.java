@@ -15,7 +15,7 @@ public class Presenter implements ICommandObserver, IModelObserver
     private ICommunicator   m_Communicator = null;
     private IDatabase       m_Storage      = null;
     private RequestViewLoop m_RequestLoop  = null;
-    private ModelCore           m_Model        = new ModelCore();
+    private ModelCore           m_Model    = new ModelCore();
 
     public Presenter(IConfigurator configurator, Configuration configuration)
     {
@@ -133,7 +133,16 @@ public class Presenter implements ICommandObserver, IModelObserver
             IModelObserver.MoveEvent moveEvent = (MoveEvent) event;
             m_Communicator.appendMove(moveEvent.getMove());
         }
-        // TODO Auto-generated method stub
+        if (event instanceof IModelObserver.ScoreChangedEvent)
+        {
+            IModelObserver.ScoreChangedEvent scoreEvent = (ScoreChangedEvent) event;
+            m_Communicator.changeScore(scoreEvent.getScore());
+        }
+        if (event instanceof IModelObserver.MatchFinishEvent)
+        {
+//            IModelObserver.MatchFinishEvent scoreEvent = (MatchFinishEvent) event;
+            m_Communicator.stop();
+        }
 
     }
 

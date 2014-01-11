@@ -29,7 +29,7 @@ public final class ModelCore implements IModelEventNotifier
     {
         m_MatchParameters = parameters;
         m_Storage = storage;
-        m_MatchController = factory.createMatchController(this);
+        m_MatchController = factory.createMatchController(parameters, this);
         m_GameController = factory.createGameController(m_MatchController);
         initNotStoredObjects();
         store();

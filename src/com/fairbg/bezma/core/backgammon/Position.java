@@ -290,8 +290,16 @@ public class Position implements Cloneable
 	/** Calculate current PIPs for player */
 	public int getPips(PlayerId forPlayer)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+	    int pips = 0;
+	    for (int i = 0; i < 25; ++i)
+	    {
+	        if (getCheckerColor(i, forPlayer) == forPlayer)
+	        {
+	            int cnt = getCheckerCount(i, forPlayer);
+	            pips += i * cnt;
+	        }
+	    }
+		return pips;
 	}
 
 	/** Return the color of the checker on the specified position */
