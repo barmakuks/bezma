@@ -13,6 +13,7 @@ import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.BoardContext;
 
@@ -110,5 +111,12 @@ public class DeviceImpl implements IModelView, IDatagramObserver
     public void displayError(Error error)
     {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void changeScore(MatchScore score)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

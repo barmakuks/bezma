@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.fairbg.bezma.communication.commands.ICommandObserver;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
+import com.fairbg.bezma.core.errors.Error;
+import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.BoardContext;
 
@@ -114,4 +116,22 @@ public abstract class CommunicatorBase implements ICommunicator
 		}
 	}
 
+	@Override
+	public void changeScore(MatchScore score)
+	{
+        for (IModelView view : m_Views)
+        {
+            view.changeScore(score);
+        }
+	}
+	
+    @Override
+    public void displayError(Error error)
+    {
+        for (IModelView view : m_Views)
+        {
+            view.displayError(error);
+        }
+    }
+	
 }

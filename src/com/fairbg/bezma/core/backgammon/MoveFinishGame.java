@@ -4,23 +4,25 @@ import com.fairbg.bezma.core.model.IMoveVisitor;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.PlayerId;
 
-public class MoveCubeDouble extends MoveAbstract
+public class MoveFinishGame extends MoveAbstract
 {
-    private int m_cubeValue; 
+    private int m_winnerPoints;
     
-    public MoveCubeDouble(PlayerId player, int cubeValue)
+    public MoveFinishGame(PlayerId winner, int winnerPoints)
     {
-        this.m_Player = player;
-        m_cubeValue = cubeValue;
+        m_Player = winner;
+        m_winnerPoints = winnerPoints;
     }
     
-    public int getCubeValue()
+    public int getPoints()
     {
-        return m_cubeValue;
+        return m_winnerPoints;
     }
     
+    @Override
     public void accept(IMoveVisitor visitor)
     {
         visitor.visit(this);
     }
+
 }

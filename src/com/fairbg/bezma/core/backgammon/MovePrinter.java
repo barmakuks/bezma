@@ -58,7 +58,7 @@ public class MovePrinter implements IMoveVisitor
     {
         m_builder = new StringBuilder();
         m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
-        m_builder.append(" double");
+        m_builder.append(" double " + move.getCubeValue());
 
         m_moveString = m_builder.toString();        
     }
@@ -68,7 +68,7 @@ public class MovePrinter implements IMoveVisitor
     {
         m_builder = new StringBuilder();
         m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
-        m_builder.append(" take");
+        m_builder.append(" take " + move.getCubeValue());
 
         m_moveString = m_builder.toString();        
     }
@@ -78,8 +78,21 @@ public class MovePrinter implements IMoveVisitor
     {
         m_builder = new StringBuilder();
         m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
-        m_builder.append(" pass");
+        m_builder.append(" pass " + move.getCubeValue());
 
+        m_moveString = m_builder.toString();        
+    }
+    
+    @Override
+    public void visit(MoveFinishGame move)
+    {
+        m_builder = new StringBuilder();
+        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "White " : "Black ");
+        m_builder.append(" wins " + move.getPoints() + " point");
+        if (move.getPoints() > 1)
+        {
+            m_builder.append("s");
+        }
         m_moveString = m_builder.toString();        
     }
 }
