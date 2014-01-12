@@ -59,43 +59,38 @@ public class PlayActivity extends Activity implements IModelView
     private String                      m_DeviceMAC        = "";
     private MatchParameters             m_MatchParameters  = null;
 
-    // / Debug function for work without board, data read from TestModelCommandProvider
-    // @Override
-    // protected void onCreate(Bundle bundle)
-    // {
-    // super.onCreate(bundle);
-    //
-    // requestWindowFeature(Window.FEATURE_NO_TITLE);
-    // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    //
-    // Configuration configuration = new TestConfiguration();
-    //
-    // m_MatchParameters = new MatchParameters();
-    //
-    // configuration.setMatchParameters(m_MatchParameters);
-    //
-    // IConfigurator configurator = new TestConfigurator();
-    //
-    // m_Presenter = new Presenter(configurator, configuration);
-    //
-    // IModelView commandsProvider = new TestModelCommandsProvider(Runner.getDatagrams(), 2000);
-    //
-    // m_Presenter.addView(commandsProvider);
-    // m_Presenter.addView(this);
-    //
-    // initView();
-    //
-    // DrawingUtils.setAssetManager(this.getAssets());
-    //
-    // m_Presenter.start();
-    // }
-
-    // Release function
-    @Override
-    protected void onCreate(Bundle bundle)
+    /** Initialize activity for receiving test commands from TestCommandProvider */
+    protected void initDebug()
     {
-        super.onCreate(bundle);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        Configuration configuration = new TestConfiguration();
+
+        m_MatchParameters = new MatchParameters();
+
+        configuration.setMatchParameters(m_MatchParameters);
+
+        IConfigurator configurator = new TestConfigurator();
+
+        m_Presenter = new Presenter(configurator, configuration);
+
+        IModelView commandsProvider = new TestModelCommandsProvider(Runner.getDatagrams(), 2000);
+
+        m_Presenter.addView(commandsProvider);
+        m_Presenter.addView(this);
+
+        initView();
+
+        DrawingUtils.setAssetManager(this.getAssets());
+
+        m_Presenter.start();
+
+    }
+
+    /** Initialize activity for receiving commands from Bluetooth device */
+    protected void initRelease()
+    {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -116,6 +111,16 @@ public class PlayActivity extends Activity implements IModelView
         DrawingUtils.setAssetManager(this.getAssets());
 
         startPresenter();
+    }
+
+    @Override
+    protected void onCreate(Bundle bundle)
+    {
+        super.onCreate(bundle);
+
+        // Use only one of initDebug() or initRelease() functions
+        // initDebug();
+        initRelease();
     }
 
     final int DEVICE_CONNECTION_OK    = 1;
@@ -501,18 +506,6 @@ public class PlayActivity extends Activity implements IModelView
         else
             BezmaLog.i("POS", position.toString());
         invalidate();
-        // view.invalidate();
-    }
-
-    public void drawCube(Canvas canvas, int cubeValue, int cubePosition)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setMatchParameters(MatchParameters params)
-    {
-        /* _match_parameters = params; */
     }
 
     private void invalidate()
