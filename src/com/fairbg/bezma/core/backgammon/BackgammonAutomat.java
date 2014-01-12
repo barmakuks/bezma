@@ -227,12 +227,19 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
     @Override
     public boolean processCube(Position position)
     {
+        boolean result = false;
         if (m_LastPosition.getCubePosition() != position.getCubePosition())
-        {
-            return m_CubeAutomat.processNextState(position.getCubePosition());
+        {            
+            result = m_CubeAutomat.processNextState(position.getCubePosition());
+            
+            if (result)
+            {
+                // TODO Cube value should have right value
+                m_LastPosition.setCubeValue(m_cubeValue);
+            }
         }
 
-        return false;
+        return result;
     }
 
     @Override
@@ -387,6 +394,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
         {
             m_CurrentPlayer = PlayerId.getOppositeId(player);
             m_cubeValue = m_cubeValue * 2;
+            m_LastPosition.setCubeValue(m_cubeValue);
             MoveCubeDouble move = new MoveCubeDouble(m_CurrentPlayer, m_cubeValue);
             move.setPlayer(player);
             m_GameBox.appendMove(move);

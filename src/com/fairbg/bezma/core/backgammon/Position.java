@@ -102,10 +102,16 @@ public class Position implements Cloneable
 	}
 
 	/** Get current cube value */
-	public int getCubeValue()
-	{
-		return m_CubeValue;
-	}
+    public int getCubeValue()
+    {
+        return m_CubeValue;
+    }
+
+    public void setCubeValue(int cubeValue)
+    {
+        m_CubeValue = cubeValue;
+    }
+	
 
 	/** Get current cube position on board */
 	public CubePosition getCubePosition()
