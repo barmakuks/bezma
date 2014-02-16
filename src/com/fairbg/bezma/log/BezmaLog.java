@@ -23,7 +23,6 @@ public class BezmaLog
 	}
     }
 
-    @SuppressLint("DefaultLocale")
     private static boolean tagAllowed(String tag)
     {
 	return m_Tags.contains(tag.toUpperCase());
@@ -34,7 +33,6 @@ public class BezmaLog
 	m_Logger.setShowTag(showTag);
     }
 
-    @SuppressLint("DefaultLocale")
     public static void allowTag(String tag)
     {
 	if (tag != null && !tag.isEmpty())
@@ -43,7 +41,6 @@ public class BezmaLog
 	}
     }
 
-    @SuppressLint("DefaultLocale")
     public static void disableTag(String tag)
     {
 	if (tag != null && !tag.isEmpty())

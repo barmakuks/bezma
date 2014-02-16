@@ -11,6 +11,7 @@ import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.model.ModelCore;
 import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.core.model.PlayerId;
+import com.fairbg.bezma.log.BezmaLog;
 
 public class Runner
 {
@@ -301,7 +302,7 @@ public class Runner
 
 	public static short[][] getDatagrams()
 	{
-		return testGame5;
+		return testGame4;
 	}
 
 	/**
@@ -309,13 +310,13 @@ public class Runner
 	 */
 	public static void main(String[] args)
 	{
-		// BezmaLog.allowTag("MOVE");
+		BezmaLog.allowTag("Generator");
 		IModelView view = new TestModelOut();
 		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 200);
 
 		TestConfiguration configuration = new TestConfiguration();
 
-		configuration.setMatchParameters(new MatchParameters());
+		configuration.configureMatchParameters(new MatchParameters());
 
 		TestConfigurator configurator = new TestConfigurator();
 

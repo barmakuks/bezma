@@ -18,6 +18,12 @@ public class ConfigurationVer3 extends Configuration
     }
     
 	UserSettings m_UserSettings;
+	
+	@Override
+	public String getDefaultUserDirectory()
+	{
+        return null;	    
+	}
 //    private String m_deviceMAC = "00:12:6F:22:46:2C"; 
 //    private String m_deviceMAC = "00:12:6F:22:45:98";
     

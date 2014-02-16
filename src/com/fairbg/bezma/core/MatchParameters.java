@@ -1,6 +1,7 @@
 package com.fairbg.bezma.core;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Match parameters
@@ -47,7 +48,7 @@ public class MatchParameters implements Serializable
 
 	public int				matchLength	  = 3;
 	public boolean			isCrawford	   = true;
-	public RollTypes		  rollType		 = RollTypes.Generate;
+	public RollTypes		rollType		 = RollTypes.Generate;
 	public boolean			calculateRolls   = false;
 	public boolean			exactRolls	   = true;
 	public boolean			useTimer		 = false;
@@ -55,4 +56,8 @@ public class MatchParameters implements Serializable
 	public int				moveTimeLimit	= 30;
 
 	public boolean			confirmDouble	= true;
+	
+	public Date             eventDate = new Date();
+	
+	public String           defaultDir = null; 
 }

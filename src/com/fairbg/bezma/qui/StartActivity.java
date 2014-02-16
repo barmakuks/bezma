@@ -131,7 +131,7 @@ public class StartActivity extends Activity
 	{
 		Intent intent = new Intent(this, PlayActivity.class);
 		ConfigurationVer3 c3 = new ConfigurationVer3();
-		c3.setMatchParameters(getMatchParameters());
+		c3.configureMatchParameters(getMatchParameters());
 		c3.setUserSettings(getUserSettings());
 		
 		intent.putExtra(ConfigurationVer3.class.getCanonicalName(), c3);

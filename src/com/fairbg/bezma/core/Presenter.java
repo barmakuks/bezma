@@ -15,7 +15,7 @@ public class Presenter implements ICommandObserver, IModelObserver
     private ICommunicator   m_Communicator = null;
     private IDatabase       m_Storage      = null;
     private RequestViewLoop m_RequestLoop  = null;
-    private ModelCore           m_Model    = new ModelCore();
+    private ModelCore       m_Model        = new ModelCore();
 
     public Presenter(IConfigurator configurator, Configuration configuration)
     {
@@ -140,7 +140,7 @@ public class Presenter implements ICommandObserver, IModelObserver
         }
         if (event instanceof IModelObserver.MatchFinishEvent)
         {
-//            IModelObserver.MatchFinishEvent scoreEvent = (MatchFinishEvent) event;
+            // IModelObserver.MatchFinishEvent scoreEvent = (MatchFinishEvent) event;
             m_Communicator.stop();
         }
 
