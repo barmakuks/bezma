@@ -69,7 +69,7 @@ public class PlayActivity extends Activity implements IModelView
 
         m_MatchParameters = new MatchParameters();
 
-        configuration.setMatchParameters(m_MatchParameters);
+        configuration.configureMatchParameters(m_MatchParameters);
 
         IConfigurator configurator = new TestConfigurator();
 
@@ -119,8 +119,8 @@ public class PlayActivity extends Activity implements IModelView
         super.onCreate(bundle);
 
         // Use only one of initDebug() or initRelease() functions
-        // initDebug();
-        initRelease();
+        initDebug();
+//        initRelease();
     }
 
     final int DEVICE_CONNECTION_OK    = 1;

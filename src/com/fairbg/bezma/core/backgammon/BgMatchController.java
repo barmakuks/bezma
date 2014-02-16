@@ -1,13 +1,18 @@
 package com.fairbg.bezma.core.backgammon;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.fairbg.bezma.core.MatchParameters;
+import com.fairbg.bezma.core.backgammon.generators.SnowieGenerator;
+import com.fairbg.bezma.core.model.IGenerator;
 import com.fairbg.bezma.core.model.IMatchController;
 import com.fairbg.bezma.core.model.IModelEventNotifier;
 import com.fairbg.bezma.core.model.IModelObserver;
 import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
+import com.fairbg.bezma.core.model.MovesList;
 import com.fairbg.bezma.core.model.PlayerId;
 
 class BgScore implements MatchScore
@@ -40,7 +45,7 @@ class BgScore implements MatchScore
 
 public class BgMatchController implements IMatchController
 {
-    private ArrayList<ArrayList<MoveAbstract>> m_Moves = new ArrayList<ArrayList<MoveAbstract>>();
+    private MovesList                          m_Moves = new MovesList();
     private int                                m_gameNo;
     private IModelEventNotifier                m_ModelNotifier;
     private MatchParameters                    m_matchParameters;
@@ -78,6 +83,7 @@ public class BgMatchController implements IMatchController
         }
         else
         {
+            saveMatch();
             m_ModelNotifier.notifyAll(new IModelObserver.MatchFinishEvent());
         }
     }
@@ -114,4 +120,49 @@ public class BgMatchController implements IMatchController
         m_Moves.add(new ArrayList<MoveAbstract>());
         m_gameNo++;
     }
+    
+    private void saveMatch()
+    {
+        String filename = getUniqueFilename(m_matchParameters.defaultDir, SnowieGenerator.getDefaultFileName(m_matchParameters));
+     
+        processMoves(new SnowieGenerator(filename), m_matchParameters, m_Moves);
+    }
+
+    private String getUniqueFilename(String directory, String defaultFileName)
+    {
+        String filenameWithoutExt = defaultFileName;
+        String ext = null;
+        
+        int extIndex = defaultFileName.lastIndexOf('.');
+        
+        if (extIndex != -1)
+        {
+            ext = defaultFileName.substring(extIndex);
+            filenameWithoutExt = defaultFileName.substring(0, extIndex);
+        }
+        
+        String filename = defaultFileName;
+        
+        int i = 1;
+        
+        while (Files.exists(Paths.get(directory, filename)))
+        {
+            filename = filenameWithoutExt + "-" + i + ext;
+            i++;
+        }
+        
+        return Paths.get(directory, filename).toString();
+    }
+
+    private void processMoves(IGenerator generator, MatchParameters matchParameters, MovesList moves)
+    {
+        generator.beginProccessing();
+        
+        generator.processMatchParameters(matchParameters);
+        
+        generator.processMoves(moves);
+        
+        generator.finishProcessing();
+    }
+
 }
