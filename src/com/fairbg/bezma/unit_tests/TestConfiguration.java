@@ -1,6 +1,8 @@
 package com.fairbg.bezma.unit_tests;
 
-import java.nio.file.Paths;
+import java.io.File;
+
+import android.os.Environment;
 
 import com.fairbg.bezma.core.Configuration;
 
@@ -11,7 +13,7 @@ public class TestConfiguration extends Configuration
     @Override
     public String getDefaultUserDirectory()
     {
-        return Paths.get(System.getProperty("user.home"), "bezma-files").toString();
-//        return new JFileChooser().getFileSystemView().getHomeDirectory().toString();
+        File sdCard = Environment.getExternalStorageDirectory();
+        return sdCard.getAbsolutePath() + "/bezma-files";
     }
 }

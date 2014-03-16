@@ -1,15 +1,16 @@
 package com.fairbg.bezma.core.backgammon.generators;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
+import android.os.Environment;
+
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.backgammon.Move;
 import com.fairbg.bezma.core.backgammon.MoveCubeDouble;
@@ -240,11 +241,15 @@ public class SnowieGenerator implements IGenerator
     public void beginProccessing()
     {
         finishProcessing();
-        BezmaLog.i("Generator", "Start write to file:" + m_filename);
+        BezmaLog.allowTag("Generator");
+//        BezmaLog.i("Generator", "Start write to file:" + m_filename);
         try
         {
-            Files.createDirectories(Paths.get(m_filename).getParent());
-            m_out = new PrintWriter(new PrintStream(m_filename));
+            File file = new File (m_filename);
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+
+            m_out = new PrintWriter(new PrintStream(file));
         } catch (FileNotFoundException e)
         {
             // TODO Auto-generated catch block
