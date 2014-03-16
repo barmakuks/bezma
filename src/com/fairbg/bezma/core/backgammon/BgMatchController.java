@@ -1,8 +1,9 @@
 package com.fairbg.bezma.core.backgammon;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.io.File;
+
+//import android.provider.MediaStore.Files;
 
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.backgammon.generators.SnowieGenerator;
@@ -14,6 +15,7 @@ import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.MovesList;
 import com.fairbg.bezma.core.model.PlayerId;
+import com.fairbg.bezma.log.BezmaLog;
 
 class BgScore implements MatchScore
 {
@@ -144,14 +146,17 @@ public class BgMatchController implements IMatchController
         String filename = defaultFileName;
         
         int i = 1;
+        String path = directory + "/" + filename;
         
-        while (Files.exists(Paths.get(directory, filename)))
+        while ((new File(path)).exists())
         {
             filename = filenameWithoutExt + "-" + i + ext;
             i++;
+            path = directory + "/" + filename;
         }
-        
-        return Paths.get(directory, filename).toString();
+        BezmaLog.allowTag("BezmaPath");
+        BezmaLog.i("BezmaPath", path);
+        return path;//Paths.get(directory, filename).toString();
     }
 
     private void processMoves(IGenerator generator, MatchParameters matchParameters, MovesList moves)
