@@ -56,6 +56,19 @@ public abstract class CommunicatorBase implements ICommunicator
 		}
 	}
 
+	@Override
+	public void setLastRawData(Object rawData)
+	{
+	    for (Object view : m_Views)
+        {
+	        if (view instanceof IRawDataView)
+	        {
+	            IRawDataView rawDataView = (IRawDataView)view;
+	            rawDataView.setRawData(rawData);	            
+	        }            
+        }
+    }
+	
 	/**
 	 * Запускает у всех устройств отображения и ввода цикл прослушивания сообщений
 	 */

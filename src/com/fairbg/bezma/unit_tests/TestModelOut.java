@@ -88,4 +88,5 @@ public class TestModelOut implements IModelView
         System.out.println("");
         System.out.println("Black [" + score.getPlayerScore(PlayerId.BLACK) + " : " + score.getPlayerScore(PlayerId.WHITE) + "] White");
     }
+
 }

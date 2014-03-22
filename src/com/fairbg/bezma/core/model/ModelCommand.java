@@ -13,6 +13,7 @@ public class ModelCommand
     public PlayerId player;
 
     private Position    m_Position = new Position();
+    private Object m_rawData;
 
     /** Creates Model Command from Communication command */
     public static ModelCommand createCommand(CommunicationCommand command)
@@ -55,6 +56,11 @@ public class ModelCommand
 
         }
 
+        if (command != null)
+        {
+            modelCommand.setRawData(command.getRawData());
+        }
+        
         return modelCommand;
     }
 
@@ -72,5 +78,15 @@ public class ModelCommand
         clone.m_Position = (Position) m_Position.clone();
 
         return clone;
+    }
+
+    public Object getRawData()
+    {
+        return m_rawData;
+    }
+    
+    public void setRawData(Object rawData)
+    {
+        m_rawData = rawData;
     }
 }

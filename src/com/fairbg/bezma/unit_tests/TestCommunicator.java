@@ -10,5 +10,4 @@ public class TestCommunicator extends CommunicatorBase
         super.stop();
         System.out.println("Stop listening");
     }
-
 }

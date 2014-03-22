@@ -38,10 +38,14 @@ final public class DatagramConverter {
 	}
 	
 	/**Конвертирует датаграмму в команду*/
-	public static CommunicationCommand datagramToCommand(Datagram datagram)	
+    public static CommunicationCommand datagramToCommand(Datagram datagram)	
 	{
-		switch (datagram.getDatagramType()){
+        CommunicationCommand command = null;
+		
+        switch (datagram.getDatagramType())
+		{
 		case A:
+		{
 			CommunicationCommandState state_cmd = new CommunicationCommandState();
 			StateDatagram st_datagram = (StateDatagram) datagram;
 			state_cmd.playerId = st_datagram.button;
@@ -69,17 +73,30 @@ final public class DatagramConverter {
 			{
 				state_cmd.checkers[i] = st_datagram.positions[i];				
 			}
-			return state_cmd;
+			command = state_cmd;
+			
+			break;
+		}
 		case L:
+		{
 			CommunicationCommandLed led_cmd = new CommunicationCommandLed();
 			LedDatagram led_datagram = (LedDatagram) datagram;
 			led_datagram.button = led_cmd.button;
 			led_datagram.state = led_cmd.state;
-			return led_cmd;
+			command = led_cmd;
+			
+			break;
+		}
         default:
             break;
 		}
-		return null;
+        
+        if (command != null)
+        {
+            command.setRawData(datagram);
+        }
+        
+		return command;
 	}
 	
 	/**Возвращает массив датаграм для отображения текущего состояния модели на внешнем устройстве*/

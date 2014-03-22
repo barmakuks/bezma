@@ -11,7 +11,7 @@ public class BoardContext
     private Position m_Position = null;
     /** Last error message */
     private String m_ErrorMsg = "";
-
+    
     public BoardContext(Position position, String errorMsg)
     {
         try
