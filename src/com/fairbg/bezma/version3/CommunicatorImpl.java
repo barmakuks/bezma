@@ -16,4 +16,5 @@ public class CommunicatorImpl extends CommunicatorBase
     {
         return "CommunicatorImpl";
     }
+
 }

@@ -20,4 +20,7 @@ public interface ICommunicator extends ICommandObserver, IModelStateListener,
      */
     void removeView(IModelView displayView);
 
+    /** Display last raw data received from board */ 
+    void setLastRawData(Object rawData);
+
 }

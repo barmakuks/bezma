@@ -68,8 +68,12 @@ public class Presenter implements ICommandObserver, IModelObserver
     @Override
     public void handeEvent(CommunicationCommand aCommand)
     {
-        processCommand(aCommand);
-        displayResults();
+        if (aCommand != null)
+        {
+            processCommand(aCommand);
+            displayResults();
+            m_Communicator.setLastRawData(aCommand.getRawData());
+        }
     }
 
     private void displayResults()

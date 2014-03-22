@@ -21,6 +21,8 @@ public class BgGameController implements IGameController
     private BoardContext                    m_BoardContext;
 
     private IGameAutomat                    m_GameAutomat;
+    
+    private Object                          m_lastRawData;
 
     /** Current model */
     private WeakReference<IMatchController> m_MatchController;
@@ -40,6 +42,10 @@ public class BgGameController implements IGameController
 
     public boolean processCommand(ModelCommand modelCommand)
     {
+        m_lastRawData = modelCommand.getRawData();
+        
+//        m_BoardContext = new BoardContext(null, "", m_lastRawData);
+
         if (BezmaDebug.checkPositionMode)
         {
             Position position = modelCommand.getPosition();

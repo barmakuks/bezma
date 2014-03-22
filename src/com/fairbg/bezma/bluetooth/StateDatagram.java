@@ -8,6 +8,8 @@ public class StateDatagram extends Datagram
 
     /** Device identifier */
     public int id;
+    
+    private byte[] m_rawData;
 
     /** Board sensors map */
     public final HashMap<Integer, Integer> sensors = new HashMap<Integer, Integer>();
@@ -34,6 +36,11 @@ public class StateDatagram extends Datagram
         return DatagramType.A;
     }
 
+    public byte[] getRawData()
+    {
+        return m_rawData;
+    }
+    
     @Override
     public byte[] toByteArray()
     {
@@ -72,6 +79,8 @@ public class StateDatagram extends Datagram
         }
 
         StateDatagram dg = new StateDatagram();
+        dg.m_rawData = array;
+        
         dg.id = (array[2] << 24) | (array[3] << 16) | (array[4] << 8) | (array[5]);
         for (int i = 6; i < array.length - 1 && (int) (array[i]) != (byte) 0xFF; i += 2)
         {

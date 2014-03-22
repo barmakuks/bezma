@@ -119,4 +119,5 @@ public class DeviceImpl implements IModelView, IDatagramObserver
         // TODO Auto-generated method stub
         
     }
+
 }
