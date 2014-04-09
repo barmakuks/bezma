@@ -6,6 +6,7 @@ import java.io.File;
 //import android.provider.MediaStore.Files;
 
 import com.fairbg.bezma.core.MatchParameters;
+import com.fairbg.bezma.core.MatchParameters.MatchWinConditions;
 import com.fairbg.bezma.core.backgammon.generators.SnowieGenerator;
 import com.fairbg.bezma.core.model.IGenerator;
 import com.fairbg.bezma.core.model.IMatchController;
@@ -52,6 +53,7 @@ public class BgMatchController implements IMatchController
     private IModelEventNotifier                m_ModelNotifier;
     private MatchParameters                    m_matchParameters;
     private BgScore                            m_score = new BgScore();
+    private boolean                            m_isCrawford; 
 
     BgMatchController(MatchParameters matchParameters, IModelEventNotifier aModelNotifier)
     {
@@ -60,6 +62,7 @@ public class BgMatchController implements IMatchController
         m_Moves.clear();
         nextGame();
         m_ModelNotifier = aModelNotifier;
+        m_isCrawford = false;
     }
 
     public void appendMove(MoveAbstract move)
@@ -75,6 +78,8 @@ public class BgMatchController implements IMatchController
         appendMove(move);
         
         m_score.setPlayerScore(winner, m_score.getPlayerScore(winner) + points);
+        
+        m_isCrawford = m_score.getPlayerScore(winner) + points + 1 == m_matchParameters.matchLength;
 
         m_ModelNotifier.notifyAll(new IModelObserver.ScoreChangedEvent(m_score));
         
@@ -168,6 +173,12 @@ public class BgMatchController implements IMatchController
         generator.processMoves(moves);
         
         generator.finishProcessing();
+    }
+
+    @Override
+    public boolean isCrawford()
+    {
+        return m_matchParameters.winConditions == MatchWinConditions.Scores && (!m_matchParameters.useCrawfordRule || m_isCrawford);
     }
 
 }

@@ -80,7 +80,7 @@ public class Presenter implements ICommandObserver, IModelObserver
     {
         if (m_Communicator != null)
         {
-            m_Communicator.setModelState(m_Model.getState());
+            m_Communicator.setModelState(m_Model.getBoardContext());
         }
     }
 
@@ -137,11 +137,13 @@ public class Presenter implements ICommandObserver, IModelObserver
             IModelObserver.MoveEvent moveEvent = (MoveEvent) event;
             m_Communicator.appendMove(moveEvent.getMove());
         }
+
         if (event instanceof IModelObserver.ScoreChangedEvent)
         {
             IModelObserver.ScoreChangedEvent scoreEvent = (ScoreChangedEvent) event;
             m_Communicator.changeScore(scoreEvent.getScore());
         }
+
         if (event instanceof IModelObserver.MatchFinishEvent)
         {
             // IModelObserver.MatchFinishEvent scoreEvent = (MatchFinishEvent) event;

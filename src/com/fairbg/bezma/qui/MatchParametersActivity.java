@@ -105,7 +105,7 @@ public class MatchParametersActivity extends Activity
 		edtFixedGames.setText(Integer.toString(params.matchLength));
 		edtFixedPoints.setText(Integer.toString(params.matchLength));
 
-		cbxUseCrawford.setChecked(params.isCrawford);
+		cbxUseCrawford.setChecked(params.useCrawfordRule);
 		rbxComputerRolls.setChecked(params.rollType == RollTypes.Generate);
 		rbxPlayersRools.setChecked(params.rollType == RollTypes.Manual);
 		cbxCalculateRolls.setChecked(params.calculateRolls);
@@ -174,7 +174,7 @@ public class MatchParametersActivity extends Activity
 				params.winConditions = MatchWinConditions.Scores;
 				params.matchLength = Integer.parseInt(edtFixedPoints.getText().toString());
 			}
-			params.isCrawford = cbxUseCrawford.isChecked();
+			params.useCrawfordRule = cbxUseCrawford.isChecked();
 
 			if (rbxComputerRolls.isChecked())
 			{

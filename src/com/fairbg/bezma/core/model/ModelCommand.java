@@ -37,10 +37,10 @@ public class ModelCommand
                 cubePosition = CubePosition.Center;
                 break;
             case 1:
-                cubePosition = CubePosition.Black;
+                cubePosition = CubePosition.North;
                 break;
             case 2:
-                cubePosition = CubePosition.White;
+                cubePosition = CubePosition.South;
                 break;
             default:
                 cubePosition = CubePosition.None;

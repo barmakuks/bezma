@@ -2,6 +2,7 @@ package com.fairbg.bezma.core.backgammon;
 
 import com.fairbg.bezma.core.backgammon.IAutomatState.AutomatStates;
 import com.fairbg.bezma.core.backgammon.Position.CubePosition;
+import com.fairbg.bezma.core.backgammon.Position.Direction;
 import com.fairbg.bezma.core.model.IGameController;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.ModelCommand;
@@ -10,7 +11,7 @@ import com.fairbg.bezma.log.BezmaLog;
 
 interface IBackgammonAutomat extends IGameWithCube
 {
-    public Position.Direction getStartPositionDirection(Position position);
+    public Position.Direction getStartPositionDirection(Position position, boolean isCrawford);
 
     public void startGame(Position.Direction direction);
 
@@ -119,11 +120,16 @@ class AutomatStateMove implements IAutomatState
 
 class AutomatStateStart implements IAutomatState
 {
+    public AutomatStateStart(boolean isCrawford)
+    {
+        m_isCrawford = isCrawford;
+    }
+    
     @Override
     public boolean processCommand(IBackgammonAutomat gameAutomat, ModelCommand command)
     {
         // Check if this is start position
-        Position.Direction direction = gameAutomat.getStartPositionDirection(command.getPosition());
+        Position.Direction direction = gameAutomat.getStartPositionDirection(command.getPosition(), m_isCrawford);
 
         if (direction != Position.Direction.None)
         {
@@ -136,6 +142,8 @@ class AutomatStateStart implements IAutomatState
 
         return false;
     }
+    
+    private boolean m_isCrawford;
 }
 
 public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGameWithCube
@@ -163,9 +171,9 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
     }
 
     @Override
-    public Position.Direction getStartPositionDirection(Position position)
+    public Position.Direction getStartPositionDirection(Position position, boolean isCrawford)
     {
-        return m_Rules.getStartPositionDirection(position);
+        return m_Rules.getStartPositionDirection(position, isCrawford);
     }
 
     @Override
@@ -312,7 +320,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
             m_CurrentState = new AutomatStateMove();
             break;
         case START:
-            m_CurrentState = new AutomatStateStart();
+            m_CurrentState = new AutomatStateStart(m_GameBox.isCrawford());
             break;
         case END:
             m_CurrentState = new AutomatStateEnd();
@@ -364,7 +372,19 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
     @Override
     public Position getCurrentPosition()
     {
-        return m_LastPosition;
+        Position position = null;
+        try
+        {
+            position = (Position)m_LastPosition.clone();
+//            position.ChangeDirection(DefaultDirection, m_StartPositionDirection);
+        } 
+        catch (CloneNotSupportedException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return position;
     }
 
     // IGameWithCube functions
@@ -379,14 +399,14 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
     {
         boolean result = false;
 
-        if (player == PlayerId.BLACK)
+        if (player == this.getNorthPlayer())
         {
-            m_LastPosition.setCubePosition(CubePosition.Left);
+            m_LastPosition.setCubePosition(CubePosition.West);
             result = true;
         }
-        else if (player == PlayerId.WHITE)
+        else if (player == this.getSouthPlayer())
         {
-            m_LastPosition.setCubePosition(CubePosition.Right);
+            m_LastPosition.setCubePosition(CubePosition.East);
             result = true;
         }
 
@@ -407,14 +427,15 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
     public boolean take(PlayerId player)
     {
         boolean result = false;
-        if (player == PlayerId.BLACK)
+        if (player == this.getNorthPlayer())
         {
-            m_LastPosition.setCubePosition(CubePosition.Black);
+            
+            m_LastPosition.setCubePosition(CubePosition.North);
             result = true;
         }
-        else if (player == PlayerId.WHITE)
+        else if (player == this.getSouthPlayer())
         {
-            m_LastPosition.setCubePosition(CubePosition.White);
+            m_LastPosition.setCubePosition(CubePosition.South);
             result = true;
         }
 
@@ -453,6 +474,25 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
     public int getCubeValue()
     {
         return m_cubeValue;
+    }
+
+    @Override
+    public PlayerId getSouthPlayer()
+    {
+        if (m_StartPositionDirection == Direction.BlackCCW || m_StartPositionDirection == Direction.BlackCW)
+        {
+            return PlayerId.WHITE;
+        }
+        else
+        {
+            return PlayerId.BLACK;
+        }
+    }
+
+    @Override
+    public PlayerId getNorthPlayer()
+    {
+        return PlayerId.getOppositeId(getSouthPlayer());
     }
 
 }

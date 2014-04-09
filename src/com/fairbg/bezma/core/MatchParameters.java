@@ -47,7 +47,7 @@ public class MatchParameters implements Serializable
 	public MatchWinConditions winConditions	= MatchWinConditions.Scores;
 
 	public int				matchLength	  = 3;
-	public boolean			isCrawford	   = true;
+	public boolean			useCrawfordRule	   = true;
 	public RollTypes		rollType		 = RollTypes.Generate;
 	public boolean			calculateRolls   = false;
 	public boolean			exactRolls	   = true;

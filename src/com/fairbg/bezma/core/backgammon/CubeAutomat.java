@@ -24,6 +24,10 @@ interface IGameWithCube
 	public PlayerId getCurrentPlayer();
 	
 	public int getCubeValue();
+	
+    public PlayerId getSouthPlayer();
+
+    public PlayerId getNorthPlayer();
 }
 
 interface ICubeAutomat extends IGameWithCube
@@ -31,11 +35,11 @@ interface ICubeAutomat extends IGameWithCube
 	public boolean processNextState(CubePosition position);
 }
 
-class BlackCubeState implements ICubeState
+class SouthCubeState implements ICubeState
 {
 	private WeakReference<IGameWithCube> m_automat;
 
-	BlackCubeState(WeakReference<IGameWithCube> automat)
+	SouthCubeState(WeakReference<IGameWithCube> automat)
 	{
 		m_automat = automat;
 	}
@@ -44,28 +48,31 @@ class BlackCubeState implements ICubeState
 	public ICubeState getNextState(CubePosition position)
 	{
 		ICubeState nextState = null;
+		final PlayerId southPlayer = m_automat.get().getSouthPlayer();
+		final PlayerId northPlayer = m_automat.get().getNorthPlayer();
+		IGameWithCube automat = m_automat.get();
 
 		switch (position)
 		{
 		case Center:
-		{
-			if (m_automat.get().proposeDouble(PlayerId.BLACK) && m_automat.get().pass(PlayerId.WHITE))
+		{		    
+			if (automat.proposeDouble(southPlayer) && automat.pass(northPlayer))
 			{
 				nextState = new MiddleCubeState(m_automat);
 			}
 			break;
 		}
-		case White:
+		case North:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.BLACK) && m_automat.get().take(PlayerId.WHITE))
+			if (automat.proposeDouble(southPlayer) && automat.take(northPlayer))
 			{
-				nextState = new WhiteCubeState(m_automat);
+				nextState = new NorthCubeState(m_automat);
 			}
 			break;
 		}
 		case None:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.BLACK))
+			if (automat.proposeDouble(southPlayer))
 			{
 				nextState = new NoCubeState(m_automat);
 			}
@@ -79,11 +86,11 @@ class BlackCubeState implements ICubeState
 	}
 }
 
-class WhiteCubeState implements ICubeState
+class NorthCubeState implements ICubeState
 {
 	private WeakReference<IGameWithCube> m_automat;
 
-	WhiteCubeState(WeakReference<IGameWithCube> automat)
+	NorthCubeState(WeakReference<IGameWithCube> automat)
 	{
 		m_automat = automat;
 	}
@@ -92,20 +99,23 @@ class WhiteCubeState implements ICubeState
 	public ICubeState getNextState(CubePosition position)
 	{
 		ICubeState nextState = null;
+		final PlayerId southPlayer = m_automat.get().getSouthPlayer();
+	    final PlayerId northPlayer = m_automat.get().getNorthPlayer();
+	    IGameWithCube automat = m_automat.get();
 
 		switch (position)
 		{
-		case Black:
+		case South:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.WHITE) && m_automat.get().take(PlayerId.BLACK))
+			if (automat.proposeDouble(northPlayer) && automat.take(southPlayer))
 			{
-				nextState = new BlackCubeState(m_automat);
+				nextState = new SouthCubeState(m_automat);
 			}
 			break;
 		}
 		case Center:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.WHITE) && m_automat.get().pass(PlayerId.BLACK))
+			if (automat.proposeDouble(northPlayer) && automat.pass(southPlayer))
 			{
 				nextState = new MiddleCubeState(m_automat);
 			}
@@ -113,7 +123,7 @@ class WhiteCubeState implements ICubeState
 		}
 		case None:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.WHITE))
+			if (automat.proposeDouble(northPlayer))
 			{
 				nextState = new NoCubeState(m_automat);
 			}
@@ -140,28 +150,31 @@ class MiddleCubeState implements ICubeState
 	public ICubeState getNextState(CubePosition position)
 	{
 		ICubeState nextState = null;
+		final PlayerId southPlayer = m_automat.get().getSouthPlayer();
+		final PlayerId northPlayer = m_automat.get().getNorthPlayer();
+		IGameWithCube automat = m_automat.get();
 
 		switch (position)
 		{
-		case Black:
+		case North:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.WHITE) && m_automat.get().take(PlayerId.BLACK))
+			if (automat.proposeDouble(southPlayer) && automat.take(northPlayer))
 			{
-				nextState = new BlackCubeState(m_automat);
+				nextState = new NorthCubeState(m_automat);
 			}
 			break;
 		}
-		case White:
+		case South:
 		{
-			if (m_automat.get().proposeDouble(PlayerId.BLACK) && m_automat.get().pass(PlayerId.WHITE))
+			if (automat.proposeDouble(northPlayer) && automat.take(southPlayer))
 			{
-				nextState = new WhiteCubeState(m_automat);
+				nextState = new SouthCubeState(m_automat);
 			}
 			break;
 		}
 		case None:
 		{
-			if (m_automat.get().proposeDouble(m_automat.get().getCurrentPlayer()))
+			if (automat.proposeDouble(automat.getCurrentPlayer()))
 			{
 				nextState = new NoCubeState(m_automat);
 			}
@@ -188,30 +201,33 @@ class NoCubeState implements ICubeState
 	public ICubeState getNextState(CubePosition position)
 	{
 		ICubeState nextState = null;
+		final PlayerId southPlayer = m_automat.get().getSouthPlayer();
+	    final PlayerId northPlayer = m_automat.get().getNorthPlayer();
+	    IGameWithCube automat = m_automat.get();
 
 		switch (position)
 		{
-		case Black:
+		case North:
 		{
-			if (m_automat.get().take(PlayerId.BLACK))
+			if (automat.take(northPlayer))
 			{
-				nextState = new BlackCubeState(m_automat);
+				nextState = new NorthCubeState(m_automat);
 			}
 			break;
 		}
 		case Center:
 		{
-			if (m_automat.get().pass(m_automat.get().getCurrentPlayer()))
+			if (automat.pass(automat.getCurrentPlayer()))
 			{
 				nextState = new MiddleCubeState(m_automat);
 			}
 			break;
 		}
-		case White:
+		case South:
 		{
-			if (m_automat.get().take(PlayerId.WHITE))
+			if (automat.take(southPlayer))
 			{
-				nextState = new WhiteCubeState(m_automat);
+				nextState = new SouthCubeState(m_automat);
 			}
 			break;
 		}
@@ -290,4 +306,15 @@ public class CubeAutomat implements ICubeAutomat
 	    return m_game.getCubeValue();
 	}
 
+    @Override
+    public PlayerId getNorthPlayer()
+    {
+        return m_game.getNorthPlayer();
+    }
+
+    @Override
+    public PlayerId getSouthPlayer()
+    {
+        return m_game.getSouthPlayer();
+    }
 }
