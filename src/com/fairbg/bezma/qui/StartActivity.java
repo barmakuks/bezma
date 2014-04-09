@@ -177,7 +177,7 @@ public class StartActivity extends Activity
 		params.bPlayerName = adapter.getString("PLAYER1", params.bPlayerName);
 		params.wPlayerName = adapter.getString("PLAYER2", params.wPlayerName);
 		params.calculateRolls = adapter.getBoolean("CALC_ROLLS", params.calculateRolls);
-		params.isCrawford = adapter.getBoolean("CRAWFORD", params.isCrawford);
+		params.useCrawfordRule = adapter.getBoolean("CRAWFORD", params.useCrawfordRule);
 		params.exactRolls = adapter.getBoolean("EXACT_ROLLS", params.exactRolls);
 		params.gameType = GameType.valueOf(adapter.getString("GAME_TYPE_NAME", params.gameType.name()));
 		params.matchLength = adapter.getInteger("MATCH_LEN", params.matchLength);
@@ -197,7 +197,7 @@ public class StartActivity extends Activity
 		adapter.putValue("PLAYER1", params.bPlayerName);
 		adapter.putValue("PLAYER2", params.wPlayerName);
 		adapter.putValue("CALC_ROLLS", params.calculateRolls);
-		adapter.putValue("CRAWFORD", params.isCrawford);
+		adapter.putValue("CRAWFORD", params.useCrawfordRule);
 		adapter.putValue("EXACT_ROLLS", params.exactRolls);
 		adapter.putValue("GAME_TYPE_NAME", params.gameType.name());
 		adapter.putValue("MATCH_LEN", params.matchLength);

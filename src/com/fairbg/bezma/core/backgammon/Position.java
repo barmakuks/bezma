@@ -24,17 +24,17 @@ public class Position implements Cloneable
 
 	public enum CubePosition {
 		/** No cube on board */
-		None,
+		None, 
 		/** Cube in the middle position */
 		Center,
-		/** Cube is proposed to the white player and placed into the left part of the board */
-		Left,
-		/** Cube is proposed to the black player and placed into the right part of the board */
-		Right,
-		/** White player owns the cube in the bottom of the board */
-		White,
-		/** Black player owns cube on the top of the board */
-		Black
+		/** Cube is proposed to the south player and placed into the west part of the board */
+		West,
+		/** Cube is proposed to the north player and placed into the east part of the board */
+		East,
+		/** South player owns the cube in the bottom of the board */
+		South,
+		/** North player owns cube on the top of the board */
+		North
 	}
 
 	public static final int MAX_CHECKERS_IN_POSITION = 5;
@@ -66,7 +66,8 @@ public class Position implements Cloneable
 		if (position <= 0)
 		{
 			return direction == PlayerId.BLACK ? 26 : 27;
-		} else
+		} 
+		else
 		{
 			return direction == PlayerId.BLACK ? position : BAR_POSITION - position;
 		}
@@ -236,8 +237,8 @@ public class Position implements Cloneable
 			}
 		}
 		pos.m_CubeValue = (new int[] { 2, 4, 8, 16, 32, 64 })[rnd.nextInt(6)];
-		pos.m_CubePosition = (new CubePosition[] { CubePosition.None, CubePosition.Center, CubePosition.Left,
-				CubePosition.Right, CubePosition.Black, CubePosition.White })[rnd.nextInt(6)];
+		pos.m_CubePosition = (new CubePosition[] { CubePosition.None, CubePosition.Center, CubePosition.West,
+				CubePosition.East, CubePosition.North, CubePosition.South })[rnd.nextInt(6)];
 		return pos;
 	}
 
@@ -370,6 +371,7 @@ public class Position implements Cloneable
 		if (currentDirection != destDirection)
 		{
 			m_Checkers = PositionUtils.ChangeDirection(currentDirection, destDirection, m_Checkers);
+//			m_CubePosition = PositionUtils.ChangeDirection(currentDirection, destDirection, m_CubePosition);
 		}
 	}
 }

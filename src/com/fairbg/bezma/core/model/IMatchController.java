@@ -9,4 +9,5 @@ public interface IMatchController
     boolean isMatchFinished();
     MatchParameters getMatchParameters();
     MatchScore   getScore();
+    boolean isCrawford();
 }

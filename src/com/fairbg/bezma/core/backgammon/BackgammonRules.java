@@ -2,6 +2,7 @@ package com.fairbg.bezma.core.backgammon;
 
 import java.util.ArrayList;
 
+import com.fairbg.bezma.core.backgammon.Position.CubePosition;
 import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaLog;
 
@@ -32,8 +33,17 @@ public class BackgammonRules
      * if it is not a start position returns BoardDirection.None
      * @param position Position to check
      */
-    public Position.Direction getStartPositionDirection(Position position)
+    public Position.Direction getStartPositionDirection(Position position, boolean isCrawford)
     {
+        if (isCrawford && position.getCubePosition() != CubePosition.None)        
+        {
+            return Position.Direction.None;
+        }
+        if (!isCrawford && position.getCubePosition() != CubePosition.Center)        
+        {
+            return Position.Direction.None;
+        }
+        
         int pos[] = position.getCheckers();
 
         for (Position.Direction direction : Position.Direction.values())
@@ -336,8 +346,12 @@ public class BackgammonRules
     {
         for (int i = start_from - 1; i >= 0; i--)
         {
-            if (from.getCheckerColor(i, player) == player
-                    && (from.getCheckerCount(i, player) > to.getCheckerCount(i, player) || from.getCheckerCount(i, player) >= Position.MAX_CHECKERS_IN_POSITION))
+            final PlayerId checkerColor = from.getCheckerColor(i, player);
+            final int checkerCountFrom = from.getCheckerCount(i, player);
+            final int checkerCountTo = to.getCheckerCount(i, player);
+            
+            if (checkerColor == player
+                && (checkerCountFrom > checkerCountTo || checkerCountFrom >= Position.MAX_CHECKERS_IN_POSITION))
             {
                 return i;
             }

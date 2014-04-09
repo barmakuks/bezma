@@ -8,6 +8,7 @@ public interface IGameController
     void appendMove(MoveAbstract move);
     BoardContext getModelSituation();
     
-    boolean processCommand(ModelCommand modelCommand);    
+    boolean processCommand(ModelCommand modelCommand);
+    boolean isCrawford();    
     
 }

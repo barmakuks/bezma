@@ -22,8 +22,6 @@ public class BgGameController implements IGameController
 
     private IGameAutomat                    m_GameAutomat;
     
-    private Object                          m_lastRawData;
-
     /** Current model */
     private WeakReference<IMatchController> m_MatchController;
 
@@ -42,7 +40,7 @@ public class BgGameController implements IGameController
 
     public boolean processCommand(ModelCommand modelCommand)
     {
-        m_lastRawData = modelCommand.getRawData();
+        modelCommand.getRawData();
         
 //        m_BoardContext = new BoardContext(null, "", m_lastRawData);
 
@@ -101,5 +99,11 @@ public class BgGameController implements IGameController
     public BoardContext getModelSituation()
     {
         return m_BoardContext;
+    }
+
+    @Override
+    public boolean isCrawford()
+    {
+        return m_MatchController.get().isCrawford();
     }
 }

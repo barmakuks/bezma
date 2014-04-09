@@ -220,10 +220,10 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
         private int    m_CubeMiddleY;
         private int    m_CubeMiddleX;
 
-        private int    m_CubeBlackX;
-        private int    m_CubeWhiteX;
-        private int    m_CubeRightY;
-        private int    m_CubeLeftY;
+        private int    m_CubeSouthX;
+        private int    m_CubeNorthX;
+        private int    m_CubeEastY;
+        private int    m_CubeWestY;
 
         private void initBitmaps()
         {
@@ -276,11 +276,11 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             m_CubeMiddleX = 230;
             m_CubeMiddleY = m_NestsY[12] + 5;
 
-            m_CubeBlackX = 365;
-            m_CubeWhiteX = 90;
+            m_CubeSouthX = 365;
+            m_CubeNorthX = 90;
 
-            m_CubeRightY = 350;
-            m_CubeLeftY = 90;
+            m_CubeEastY = 90;
+            m_CubeWestY = 350;
         }
 
         private void LoadLdpiValues()
@@ -295,10 +295,10 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             m_MaxBarX = 130;
             m_CubeMiddleY = 112;
             m_CubeMiddleX = m_NestsY[12] - 3;
-            m_CubeBlackX = 7;
-            m_CubeWhiteX = 7;
-            m_CubeRightY = m_NestsY[9] - 15;
-            m_CubeLeftY = m_NestsY[2] + 12;
+            m_CubeSouthX = 7;
+            m_CubeNorthX = 7;
+            m_CubeEastY = m_NestsY[9] - 15;
+            m_CubeWestY = m_NestsY[2] + 12;
         }
 
         public BoardView(int left, int top, AssetManager assets)
@@ -411,21 +411,21 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                     x = m_CubeMiddleX;
                     y = m_CubeMiddleY;
                     break;
-                case Black:
-                    x = m_CubeBlackX;
+                case North:
+                    x = m_CubeNorthX;
                     y = m_CubeMiddleY;
                     break;
-                case White:
-                    x = m_CubeWhiteX;
+                case South:
+                    x = m_CubeSouthX;
                     y = m_CubeMiddleY;
                     break;
-                case Right:
+                case East:
                     x = m_CubeMiddleX;
-                    y = m_CubeRightY;
+                    y = m_CubeEastY;
                     break;
-                case Left:
+                case West:
                     x = m_CubeMiddleX;
-                    y = m_CubeLeftY;
+                    y = m_CubeWestY;
                     break;
                 default:
                     return;
@@ -546,7 +546,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                     paint.setColor(0xFF00FFFF);
                     canvas.drawCircle(378, 522, size, paint);
                 }
-}
+            }
         }
 
     }
@@ -574,7 +574,6 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
         protected void onDraw(Canvas canvas)
         {
-
             canvas.drawBitmap(m_Background, 0, 0, null);
 
             // Players names
@@ -587,12 +586,6 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             DrawingUtils.drawText(canvas, Integer.toString(m_whiteScore), 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
             DrawingUtils.drawText(canvas, Integer.toString(m_blackScore), 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
-            // Test version
-            // int[] _checkers = new int[] {-3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, -4, -5, -6, -7, -8,
-            // -9,-10,-11,-12,-13,-14,-15, 3, 15, -1};
-            // m_BoardView.drawBoard(canvas, _checkers);
-
-            //
             if (m_current_position != null)
             {
                 m_BoardView.drawBoard(canvas, m_current_position.getCheckers());
@@ -604,19 +597,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             {
                 m_BoardView.drawRawData(canvas, m_lastRawData);
             }
-
-            /* Rect rect = new Rect(100, 100, 300, 150); Paint bar_paint = new Paint(); // параметры рисования основного
-             * // прямоугольника bar_paint.setShadowLayer(3, 3, 3, 0xBF000000); bar_paint.setColor(0xFFCAC8A9);
-             * canvas.drawRect(rect, bar_paint); */
-            /* Paint inner_light_paint = new Paint(); // параметры рисования основного прямоугольника
-             * inner_light_paint.setColor(0xFFFFFFBE); inner_light_paint.setStyle(Style.STROKE);
-             * inner_light_paint.setStrokeWidth(5); */
-
-            // canvas.drawRect(rect, inner_light_paint);
-
-            // canvas.drawBitmap(_cube, 100, 100, paint);
         }
-
     }
 
     public void setPosition(Position position)

@@ -133,7 +133,7 @@ public final class ModelCore implements IModelEventNotifier
     {
     }
 
-    public BoardContext getState()
+    public BoardContext getBoardContext()
     {
         return m_GameController.getModelSituation();
     }
