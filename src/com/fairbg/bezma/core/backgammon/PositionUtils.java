@@ -17,11 +17,12 @@ public class PositionUtils
         dest[commonPos] = srcCheckers[commonPos];
         dest[commonPos + 1] = srcCheckers[commonPos + 1];
 
-        if (srcDirection == Direction.BlackCCW && destDirection == Direction.BlackCW ||
-                srcDirection == Direction.BlackCW && destDirection == Direction.BlackCCW ||
-                srcDirection == Direction.WhiteCCW && destDirection == Direction.WhiteCW ||
-                srcDirection == Direction.WhiteCW && destDirection == Direction.WhiteCCW)
+        if (srcDirection == Direction.RedCW && destDirection == Direction.GrayCW ||
+                srcDirection == Direction.RedCCW && destDirection == Direction.GrayCCW ||
+                srcDirection == Direction.GrayCCW && destDirection == Direction.RedCCW ||
+                srcDirection == Direction.GrayCW && destDirection == Direction.RedCW)
         {
+            // inverse copying 
             for (int i = 0; i != commonPos; ++i)
             {
                 dest[i] = srcCheckers[commonPos - i];
@@ -29,17 +30,19 @@ public class PositionUtils
         }
         else
         {
+            // swap left and right parts
             for (int i = 1; i <= 12; ++i)
             {
                 dest[i + 12] = srcCheckers[i];
                 dest[i] = srcCheckers[i + 12];
             }
 
-            if (srcDirection == Direction.BlackCW && destDirection == Direction.WhiteCCW ||
-                    srcDirection == Direction.BlackCCW && destDirection == Direction.WhiteCW ||
-                    srcDirection == Direction.WhiteCW && destDirection == Direction.BlackCCW ||
-                    srcDirection == Direction.WhiteCCW && destDirection == Direction.BlackCW)
+            if (srcDirection == Direction.RedCW && destDirection == Direction.RedCCW ||
+                    srcDirection == Direction.RedCCW && destDirection == Direction.RedCW ||
+                    srcDirection == Direction.GrayCW && destDirection == Direction.GrayCCW ||
+                    srcDirection == Direction.GrayCCW && destDirection == Direction.GrayCW)
             {
+                // inverse copying
                 for (int i = 1; i <= 12; ++i)
                 {
                     int tmp = dest[i];
@@ -82,21 +85,21 @@ public class PositionUtils
 
     public static void main(String[] args)
     {
-        testChangeDirection(Direction.BlackCW, Direction.BlackCCW);
-        testChangeDirection(Direction.BlackCW, Direction.WhiteCW);
-        testChangeDirection(Direction.BlackCW, Direction.WhiteCCW);
+        testChangeDirection(Direction.RedCCW, Direction.RedCW);
+        testChangeDirection(Direction.RedCCW, Direction.GrayCW);
+        testChangeDirection(Direction.RedCCW, Direction.GrayCCW);
 
-        testChangeDirection(Direction.BlackCCW, Direction.BlackCW);
-        testChangeDirection(Direction.BlackCCW, Direction.WhiteCW);
-        testChangeDirection(Direction.BlackCCW, Direction.WhiteCCW);
+        testChangeDirection(Direction.RedCW, Direction.RedCCW);
+        testChangeDirection(Direction.RedCW, Direction.GrayCW);
+        testChangeDirection(Direction.RedCW, Direction.GrayCCW);
 
-        testChangeDirection(Direction.WhiteCW, Direction.BlackCW);
-        testChangeDirection(Direction.WhiteCW, Direction.BlackCCW);
-        testChangeDirection(Direction.WhiteCW, Direction.WhiteCCW);
+        testChangeDirection(Direction.GrayCW, Direction.RedCCW);
+        testChangeDirection(Direction.GrayCW, Direction.RedCW);
+        testChangeDirection(Direction.GrayCW, Direction.GrayCCW);
 
-        testChangeDirection(Direction.WhiteCCW, Direction.BlackCW);
-        testChangeDirection(Direction.WhiteCCW, Direction.BlackCCW);
-        testChangeDirection(Direction.WhiteCCW, Direction.WhiteCW);
+        testChangeDirection(Direction.GrayCCW, Direction.RedCCW);
+        testChangeDirection(Direction.GrayCCW, Direction.RedCW);
+        testChangeDirection(Direction.GrayCCW, Direction.GrayCW);
     }
 
     // public static CubePosition ChangeDirection(Direction srcDirection, Direction destDirection, CubePosition

@@ -76,12 +76,7 @@ public class BgGameController implements IGameController
     @Override
     public void startGame()
     {
-        Position pos = new Position();
-        pos.setCheckers(BackgammonRules.getStartPosition(Position.Direction.BlackCW));
-
-        m_MatchController.get().getMatchParameters();
-
-        m_BoardContext = new BoardContext(pos, "");
+        m_BoardContext = new BoardContext(m_GameAutomat.getCurrentPosition(), "");
     }
 
     @Override

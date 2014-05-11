@@ -335,11 +335,11 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             // draw checkers on board
             for (int i = 1; i <= 24; i++)
             {
-                x = (i >= 13) ? m_MinY : m_MaxY - m_CheckerSize;
-                y = (i < 13) ? m_NestsY[(i - 1) % 12] : m_NestsY[11 - (i - 1) % 12];
+                x = (i < 13) ? m_MinY : m_MaxY - m_CheckerSize;
+                y = (i >= 13) ? m_NestsY[(i - 1) % 12] : m_NestsY[11 - (i - 1) % 12];
                 Bitmap checker = checkers[i] > 0 ? m_checker_black_bmp : m_checker_white_bmp;
                 int checkersCount = Math.abs(checkers[i]);
-                DrawCheckersNest(canvas, checker, checkersCount, x, y, i < 13);
+                DrawCheckersNest(canvas, checker, checkersCount, x, y, i >= 13);
             }
 
             // draw checkers on bar
