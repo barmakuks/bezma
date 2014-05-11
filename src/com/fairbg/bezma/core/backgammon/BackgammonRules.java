@@ -15,14 +15,14 @@ public class BackgammonRules
     {
         switch (direction)
         {
-        case BlackCCW:
-            return new int[] { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
-        case BlackCW:
+        case RedCCW:
             return new int[] { 0, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 0, 0, 0 };
-        case WhiteCW:
-            return new int[] { 0, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, 0, 0, 0 };
-        case WhiteCCW:
+        case RedCW:
             return new int[] { 0, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 0, 0, 0 };
+        case GrayCCW:
+            return new int[] { 0, -2, 0, 0, 0, 0, 5, 0, 3, 0, 0, 0, -5, 5, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 2, 0, 0, 0 };
+        case GrayCW:
+            return new int[] { 0, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, 0, 0, 0 };
         default:
             return null;
         }
@@ -33,13 +33,13 @@ public class BackgammonRules
      * if it is not a start position returns BoardDirection.None
      * @param position Position to check
      */
-    public Position.Direction getStartPositionDirection(Position position, boolean isCrawford)
+    public Position.Direction getStartPositionDirection(Position position, boolean withCube)
     {
-        if (isCrawford && position.getCubePosition() != CubePosition.None)        
+        if (withCube && position.getCubePosition() != CubePosition.None)        
         {
             return Position.Direction.None;
         }
-        if (!isCrawford && position.getCubePosition() != CubePosition.Center)        
+        if (!withCube && position.getCubePosition() != CubePosition.Center)        
         {
             return Position.Direction.None;
         }

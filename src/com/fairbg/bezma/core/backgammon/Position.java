@@ -13,13 +13,13 @@ public class Position implements Cloneable
 		/** Board direction is not defined */
 		None,
 		/** Board for white player (player in the bottom place), movements counter clockwise */
-		WhiteCCW,
+		GrayCCW,
 		/** Board for white player, movements clockwise */
-		WhiteCW,
-		/** Board for black player, movements counter clockwise */
-		BlackCCW,
+		GrayCW,
 		/** Board for black player, movements clockwise */
-		BlackCW
+		RedCW,
+		/** Board for black player, movements counter clockwise */
+		RedCCW
 	}
 
 	public enum CubePosition {
