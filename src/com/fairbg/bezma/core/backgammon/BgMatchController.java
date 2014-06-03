@@ -5,8 +5,8 @@ import java.io.File;
 
 //import android.provider.MediaStore.Files;
 
+import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
-import com.fairbg.bezma.core.MatchParameters.MatchWinConditions;
 import com.fairbg.bezma.core.backgammon.generators.SnowieGenerator;
 import com.fairbg.bezma.core.model.IGenerator;
 import com.fairbg.bezma.core.model.IMatchController;
@@ -17,6 +17,7 @@ import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.MovesList;
 import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaLog;
+import com.fairbg.bezma.store.IModelSerializer;
 
 class BgScore implements MatchScore
 {
@@ -48,27 +49,27 @@ class BgScore implements MatchScore
 
 public class BgMatchController implements IMatchController
 {
-    private MovesList                          m_Moves = new MovesList();
+    private MovesList                          m_moves = new MovesList();
     private int                                m_gameNo;
-    private IModelEventNotifier                m_ModelNotifier;
+    private IModelEventNotifier                m_modelNotifier;
     private MatchParameters                    m_matchParameters;
     private BgScore                            m_score = new BgScore();
-    private boolean                            m_isCrawford; 
+    private boolean                            m_cubeInGame; 
 
     BgMatchController(MatchParameters matchParameters, IModelEventNotifier aModelNotifier)
     {
         m_matchParameters = matchParameters;
         m_gameNo = -1;
-        m_Moves.clear();
+        m_moves.clear();
         nextGame();
-        m_ModelNotifier = aModelNotifier;
-        m_isCrawford = false;
+        m_modelNotifier = aModelNotifier;
+        m_cubeInGame = !matchParameters.useCrawfordRule || matchParameters.matchLength != 1;
     }
 
     public void appendMove(MoveAbstract move)
     {
-        m_Moves.get(m_gameNo).add(move);
-        m_ModelNotifier.notifyAll(new IModelObserver.MoveEvent(move));
+        m_moves.get(m_gameNo).add(move);
+        m_modelNotifier.notifyAll(new IModelObserver.MoveEvent(move));
     }
 
     @Override
@@ -79,9 +80,9 @@ public class BgMatchController implements IMatchController
         
         m_score.setPlayerScore(winner, m_score.getPlayerScore(winner) + points);
         
-        m_isCrawford = m_score.getPlayerScore(winner) + points + 1 == m_matchParameters.matchLength;
+        m_cubeInGame = !m_matchParameters.useCrawfordRule || (m_score.getPlayerScore(winner) + 1 != m_matchParameters.matchLength);
 
-        m_ModelNotifier.notifyAll(new IModelObserver.ScoreChangedEvent(m_score));
+        m_modelNotifier.notifyAll(new IModelObserver.ScoreChangedEvent(m_score));
         
         if (!isMatchFinished())
         {
@@ -91,7 +92,7 @@ public class BgMatchController implements IMatchController
         else
         {
             saveMatch();
-            m_ModelNotifier.notifyAll(new IModelObserver.MatchFinishEvent());
+            m_modelNotifier.notifyAll(new IModelObserver.MatchFinishEvent());
         }
     }
 
@@ -124,7 +125,7 @@ public class BgMatchController implements IMatchController
 
     private void nextGame()
     {
-        m_Moves.add(new ArrayList<MoveAbstract>());
+        m_moves.add(new ArrayList<MoveAbstract>());
         m_gameNo++;
     }
     
@@ -132,7 +133,12 @@ public class BgMatchController implements IMatchController
     {
         String filename = getUniqueFilename(m_matchParameters.defaultDir, SnowieGenerator.getDefaultFileName(m_matchParameters));
      
-        processMoves(new SnowieGenerator(filename), m_matchParameters, m_Moves);
+        IGenerator generator = new SnowieGenerator(filename); 
+
+        generator.beginProccessing();
+        generator.processMatchParameters(m_matchParameters);
+        generator.processMoves(m_moves);
+        generator.finishProcessing();
     }
 
     private String getUniqueFilename(String directory, String defaultFileName)
@@ -164,21 +170,23 @@ public class BgMatchController implements IMatchController
         return path;//Paths.get(directory, filename).toString();
     }
 
-    private void processMoves(IGenerator generator, MatchParameters matchParameters, MovesList moves)
+    @Override
+    public boolean cubeInGame()
     {
-        generator.beginProccessing();
-        
-        generator.processMatchParameters(matchParameters);
-        
-        generator.processMoves(moves);
-        
-        generator.finishProcessing();
+        return m_cubeInGame;
     }
 
     @Override
-    public boolean isCrawford()
+    public void serialize(IModelSerializer serializer)
     {
-        return m_matchParameters.winConditions == MatchWinConditions.Scores && (!m_matchParameters.useCrawfordRule || m_isCrawford);
+        serializer.serialize(m_matchParameters, m_moves);
+    }
+
+    @Override
+    public void deserialize(IModelSerializer serializer, MatchIdentifier matchId)
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

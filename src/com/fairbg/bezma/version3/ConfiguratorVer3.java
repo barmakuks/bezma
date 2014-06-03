@@ -10,7 +10,7 @@ import com.fairbg.bezma.core.IConfigurator;
 import com.fairbg.bezma.core.WrongConfigurationException;
 import com.fairbg.bezma.core.backgammon.BgControllersFactory;
 import com.fairbg.bezma.core.model.IControllersFactory;
-import com.fairbg.bezma.store.IDatabase;
+import com.fairbg.bezma.store.IModelSerializer;
 
 /**
  * Реализация конфигуратора для 3- версии BEZMA
@@ -40,7 +40,7 @@ public class ConfiguratorVer3 implements IConfigurator
     }
 
     @Override
-    public IDatabase createDatabase(Configuration configuration) throws WrongConfigurationException
+    public IModelSerializer createDatabase(Configuration configuration) throws WrongConfigurationException
     {
         // TODO Auto-generated method stub
         return null;

@@ -9,6 +9,6 @@ public interface IGameController
     BoardContext getModelSituation();
     
     boolean processCommand(ModelCommand modelCommand);
-    boolean isCrawford();    
+    boolean cubeInGame();    
     
 }

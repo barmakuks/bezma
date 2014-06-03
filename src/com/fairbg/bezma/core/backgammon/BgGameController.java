@@ -8,7 +8,7 @@ import com.fairbg.bezma.core.model.BoardContext;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaDebug;
-import com.fairbg.bezma.store.IDatabase;
+import com.fairbg.bezma.store.IModelSerializer;
 
 /**
  * This class contains all game logic and rules To implement Rules for game
@@ -68,7 +68,7 @@ public class BgGameController implements IGameController
         // TODO Auto-generated method stub
     }
 
-    public void restore(IDatabase m_Storage)
+    public void restore(IModelSerializer m_Storage)
     {
         // TODO Auto-generated method stub
     }
@@ -97,8 +97,8 @@ public class BgGameController implements IGameController
     }
 
     @Override
-    public boolean isCrawford()
+    public boolean cubeInGame()
     {
-        return m_MatchController.get().isCrawford();
+        return m_MatchController.get().cubeInGame();
     }
 }
