@@ -87,7 +87,9 @@ class AutomatStateMove implements IAutomatState
         if (!result) // Cube position is changed?
         {
             // Cube position is not changed
-            if (gameAutomat.findAndAcceptMove(position))
+            result = gameAutomat.findAndAcceptMove(position);
+            
+            if (result)
             {
                 if (gameAutomat.isGameFinished())
                 {
@@ -120,9 +122,9 @@ class AutomatStateMove implements IAutomatState
 
 class AutomatStateStart implements IAutomatState
 {
-    public AutomatStateStart(boolean isCrawford)
+    public AutomatStateStart(boolean useCube)
     {
-        m_isCrawford = isCrawford;
+        m_gameWithCube = useCube;
     }
     
     @Override
@@ -131,11 +133,11 @@ class AutomatStateStart implements IAutomatState
         // Check if this is start position
         
         // TODO calculate if cube is needed in this game
-        Position.Direction direction = gameAutomat.getStartPositionDirection(command.getPosition(), m_isCrawford);
+        Position.Direction direction = gameAutomat.getStartPositionDirection(command.getPosition(), m_gameWithCube);
 
         if (direction != Position.Direction.None)
         {
-            gameAutomat.startGame(direction, !m_isCrawford);
+            gameAutomat.startGame(direction, m_gameWithCube);
             // Change current state to MOVE
             gameAutomat.setAutomatState(AutomatStates.MOVE);
 
@@ -145,7 +147,7 @@ class AutomatStateStart implements IAutomatState
         return false;
     }
     
-    private boolean m_isCrawford;
+    private boolean m_gameWithCube;
 }
 
 public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGameWithCube
@@ -328,7 +330,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
             m_CurrentState = new AutomatStateMove();
             break;
         case START:
-            m_CurrentState = new AutomatStateStart(m_GameController.isCrawford());
+            m_CurrentState = new AutomatStateStart(m_GameController.cubeInGame());
             break;
         case END:
             m_CurrentState = new AutomatStateEnd();

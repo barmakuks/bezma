@@ -1,6 +1,5 @@
 package com.fairbg.bezma.log;
 
-import android.annotation.SuppressLint;
 import java.util.HashSet;
 import java.util.Set;
 

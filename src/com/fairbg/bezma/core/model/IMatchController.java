@@ -1,6 +1,8 @@
 package com.fairbg.bezma.core.model;
 
+import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
+import com.fairbg.bezma.store.IModelSerializer;
 
 public interface IMatchController
 {
@@ -9,5 +11,8 @@ public interface IMatchController
     boolean isMatchFinished();
     MatchParameters getMatchParameters();
     MatchScore   getScore();
-    boolean isCrawford();
+    boolean cubeInGame();
+    
+    void serialize(IModelSerializer serializer);
+    void deserialize(IModelSerializer serializer, MatchIdentifier matchId);
 }

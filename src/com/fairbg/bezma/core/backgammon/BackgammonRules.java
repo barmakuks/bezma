@@ -35,11 +35,11 @@ public class BackgammonRules
      */
     public Position.Direction getStartPositionDirection(Position position, boolean withCube)
     {
-        if (withCube && position.getCubePosition() != CubePosition.None)        
+        if (!withCube && position.getCubePosition() != CubePosition.None)        
         {
             return Position.Direction.None;
         }
-        if (!withCube && position.getCubePosition() != CubePosition.Center)        
+        if (withCube && position.getCubePosition() != CubePosition.Center)        
         {
             return Position.Direction.None;
         }

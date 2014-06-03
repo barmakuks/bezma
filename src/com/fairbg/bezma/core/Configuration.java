@@ -27,4 +27,6 @@ public abstract class Configuration implements Serializable
 	}
 	
 	public abstract String getDefaultUserDirectory();
+	
+	public abstract String getUnfinishedMatchPath();
 }

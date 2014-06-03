@@ -8,12 +8,12 @@ import com.fairbg.bezma.communication.commands.CommunicationCommandRequest;
 import com.fairbg.bezma.core.model.IModelObserver;
 import com.fairbg.bezma.core.model.ModelCore;
 import com.fairbg.bezma.core.model.ModelCommand;
-import com.fairbg.bezma.store.IDatabase;
+import com.fairbg.bezma.store.IModelSerializer;
 
 public class Presenter implements ICommandObserver, IModelObserver
 {
     private ICommunicator   m_Communicator = null;
-    private IDatabase       m_Storage      = null;
+    private IModelSerializer       m_Storage      = null;
     private RequestViewLoop m_RequestLoop  = null;
     private ModelCore       m_Model        = new ModelCore();
 

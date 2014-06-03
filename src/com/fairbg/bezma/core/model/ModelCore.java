@@ -5,32 +5,32 @@ import java.util.ArrayList;
 
 import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
-import com.fairbg.bezma.store.IDatabase;
+import com.fairbg.bezma.store.IModelSerializer;
 
 /**
  * Main class for model in Model-View-Controller architecture
  */
 public final class ModelCore implements IModelEventNotifier
 {
-    private MatchParameters                          m_MatchParameters;
-    private IDatabase                                m_Storage;
+    private MatchParameters                          m_matchParameters;
+    private IModelSerializer                         m_storage;
 
-    private IMatchController                         m_MatchController;
-    private IGameController                          m_GameController;
+    private IMatchController                         m_matchController;
+    private IGameController                          m_gameController;
 
-    private ArrayList<WeakReference<IModelObserver>> m_Observers = new ArrayList<WeakReference<IModelObserver>>();
+    private ArrayList<WeakReference<IModelObserver>> m_observers = new ArrayList<WeakReference<IModelObserver>>();
 
     /**
      * Creates new match model
      * @param parameters Match parameters
      * @param storage
      */
-    public void create(MatchParameters parameters, IDatabase storage, IControllersFactory factory)
+    public void create(MatchParameters parameters, IModelSerializer storage, IControllersFactory factory)
     {
-        m_MatchParameters = parameters;
-        m_Storage = storage;
-        m_MatchController = factory.createMatchController(parameters, this);
-        m_GameController = factory.createGameController(m_MatchController);
+        m_matchParameters = parameters;
+        m_storage = storage;
+        m_matchController = factory.createMatchController(parameters, this);
+        m_gameController = factory.createGameController(m_matchController);
         initNotStoredObjects();
         store();
     }
@@ -40,11 +40,10 @@ public final class ModelCore implements IModelEventNotifier
      * @param matchId Match identifier
      * @param storage storage
      */
-    public void open(MatchIdentifier matchId, IDatabase storage)
+    public void open(MatchIdentifier matchId, IModelSerializer storage)
     {
-        m_MatchParameters = storage.readMatchParameters(matchId);
-        m_Storage = storage;
-        restore();
+        m_storage = storage;
+        m_matchController.deserialize(storage, matchId);
         initNotStoredObjects();
     }
 
@@ -56,30 +55,37 @@ public final class ModelCore implements IModelEventNotifier
     public boolean acceptCommand(ModelCommand command)
     {
         boolean result = processCommand(command);
-        if (result && m_Storage != null)
+        if (result && m_storage != null)
         {
-            m_Storage.writeCurrentState(m_MatchParameters.matchId, m_GameController.getModelSituation());
+            if (m_matchController.isMatchFinished())
+            {
+                m_storage.finishMatch();
+            }
+            else
+            {
+                m_matchController.serialize(m_storage);
+            }
         }
         return result;
     }
 
     public void addObserver(IModelObserver observer)
     {
-        if (!m_Observers.contains(observer))
+        if (!m_observers.contains(observer))
         {
-            m_Observers.add(new WeakReference<IModelObserver>(observer));
+            m_observers.add(new WeakReference<IModelObserver>(observer));
         }
     }
 
     public void removeObserver(IModelObserver observer)
     {
-        m_Observers.remove(observer);
+        m_observers.remove(observer);
     }
 
     @Override
     public void notifyAll(IModelObserver.Event event)
     {
-        for (WeakReference<IModelObserver> observer : m_Observers)
+        for (WeakReference<IModelObserver> observer : m_observers)
         {
             if (!observer.isEnqueued())
             {
@@ -93,26 +99,14 @@ public final class ModelCore implements IModelEventNotifier
      */
     private void store()
     {
-        if (m_Storage != null)
+        if (m_storage != null)
         {
-            if (m_MatchParameters.matchId == null
-                    || m_MatchParameters.matchId.isEmpty())
+            if (m_matchParameters.matchId == null
+                    || m_matchParameters.matchId.isEmpty())
             {
-                m_MatchParameters.matchId = MatchIdentifier.generateNew();
+                m_matchParameters.matchId = MatchIdentifier.generateNew();
             }
-            m_Storage.writeMatchParameters(m_MatchParameters);
-            m_Storage.writeMatch(m_MatchParameters.matchId, m_MatchController);
-        }
-    }
-
-    /**
-     * Restores all model from m_Storage
-     */
-    private void restore()
-    {
-        if (m_Storage != null)
-        {
-            // m_GameBox.restore(m_Storage);
+            m_matchController.serialize(m_storage);
         }
     }
 
@@ -123,7 +117,7 @@ public final class ModelCore implements IModelEventNotifier
      */
     private boolean processCommand(ModelCommand modelCommand)
     {
-        return m_GameController.processCommand(modelCommand);
+        return m_gameController.processCommand(modelCommand);
     }
 
     /**
@@ -135,6 +129,6 @@ public final class ModelCore implements IModelEventNotifier
 
     public BoardContext getBoardContext()
     {
-        return m_GameController.getModelSituation();
+        return m_gameController.getModelSituation();
     }
 }

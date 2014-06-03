@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.os.Environment;
-
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.backgammon.Move;
 import com.fairbg.bezma.core.backgammon.MoveCubeDouble;
