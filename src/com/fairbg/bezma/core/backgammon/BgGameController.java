@@ -1,14 +1,15 @@
 package com.fairbg.bezma.core.backgammon;
 
 import java.lang.ref.WeakReference;
+
 import com.fairbg.bezma.core.model.IGameController;
 import com.fairbg.bezma.core.model.IMatchController;
 import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.core.model.BoardContext;
 import com.fairbg.bezma.core.model.MoveAbstract;
+import com.fairbg.bezma.core.model.MovesList;
 import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaDebug;
-import com.fairbg.bezma.store.IModelSerializer;
 
 /**
  * This class contains all game logic and rules To implement Rules for game
@@ -18,24 +19,24 @@ import com.fairbg.bezma.store.IModelSerializer;
 public class BgGameController implements IGameController
 {
     /** Current game state */
-    private BoardContext                    m_BoardContext;
+    private BoardContext                    m_boardContext;
 
-    private IGameAutomat                    m_GameAutomat;
+    private IGameAutomat                    m_gameAutomat;
     
     /** Current model */
-    private WeakReference<IMatchController> m_MatchController;
+    private WeakReference<IMatchController> m_matchController;
 
     public BgGameController(IMatchController aMatchController)
     {
-        m_BoardContext = null;
-        m_MatchController = new WeakReference<IMatchController>(aMatchController);
+        m_boardContext = null;
+        m_matchController = new WeakReference<IMatchController>(aMatchController);
 
-        m_GameAutomat = new BackgammonAutomat(this);
+        m_gameAutomat = new BackgammonAutomat(this);
     }
 
     public void setModelState(BoardContext state)
     {
-        m_BoardContext = state;
+        m_boardContext = state;
     }
 
     public boolean processCommand(ModelCommand modelCommand)
@@ -47,58 +48,66 @@ public class BgGameController implements IGameController
         if (BezmaDebug.checkPositionMode)
         {
             Position position = modelCommand.getPosition();
-            m_BoardContext = new BoardContext(position, "");
+            m_boardContext = new BoardContext(position, "");
             return true;
         }
         else
         {
-            return m_GameAutomat.processCommand(this, modelCommand);
+            return m_gameAutomat.processCommand(this, modelCommand);
         }
     }
 
     @Override
     public void appendMove(MoveAbstract move)
     {
-        m_MatchController.get().appendMove(move);
-        m_BoardContext = new BoardContext(m_GameAutomat.getCurrentPosition(), "");
-    }
-
-    public void writeCurrentState()
-    {
-        // TODO Auto-generated method stub
-    }
-
-    public void restore(IModelSerializer m_Storage)
-    {
-        // TODO Auto-generated method stub
+        m_matchController.get().appendMove(move);
+        m_boardContext = new BoardContext(m_gameAutomat.getCurrentPosition(), "");
     }
 
     @Override
     public void startGame()
     {
-        m_BoardContext = new BoardContext(m_GameAutomat.getCurrentPosition(), "");
+        m_boardContext = new BoardContext(m_gameAutomat.getCurrentPosition(), "");
     }
 
     @Override
-    public void finishGame(PlayerId winner, int m_cubeValue)
+    public void finishGame(PlayerId winner, int cubeValue)
     {
-        m_BoardContext = new BoardContext(new Position(), "");
+        m_boardContext = new BoardContext(new Position(), "");
 
         // TODO calculate winner points
-        int points = m_cubeValue;
+        int points = cubeValue;
 
-        m_MatchController.get().finishGame(winner, points);
+        m_matchController.get().finishGame(winner, points);
     }
 
     @Override
     public BoardContext getModelSituation()
     {
-        return m_BoardContext;
+        return m_boardContext;
     }
 
     @Override
     public boolean cubeInGame()
     {
-        return m_MatchController.get().cubeInGame();
+        return m_matchController.get().cubeInGame();
+    }
+    
+    @Override
+    public void restoreLastGame()
+    {
+        // reset game automate
+        m_gameAutomat.init();
+
+        // replay last game
+        final MovesList moves = m_matchController.get().getMoves();
+        
+        if (moves != null && moves.size() > 0)
+        {
+            for (MoveAbstract move: moves.get(moves.size() - 1))
+            {
+                m_gameAutomat.playMove(move);                
+            }
+        }
     }
 }

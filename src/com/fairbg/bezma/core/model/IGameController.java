@@ -9,6 +9,7 @@ public interface IGameController
     BoardContext getModelSituation();
     
     boolean processCommand(ModelCommand modelCommand);
-    boolean cubeInGame();    
+    boolean cubeInGame();
     
+    void restoreLastGame();    
 }

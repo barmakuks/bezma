@@ -1,6 +1,5 @@
 package com.fairbg.bezma.store;
 
-import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.model.MovesList;
 
@@ -10,6 +9,12 @@ import com.fairbg.bezma.core.model.MovesList;
  */
 public interface IModelSerializer
 {
+    /** Check if last match was finished
+     * @return true if last match was finished  
+     * */
+    boolean isLastMatchFinished();
+    
+    /** Finishes current match*/
     void finishMatch();
     /**
      * Writes Match Parameters and moves into storage
@@ -24,5 +29,5 @@ public interface IModelSerializer
      * @param matchParameters match parameters
      * @param moves match list of moves
      */
-    void deserialize(MatchIdentifier matchId, MatchParameters matchParameters, MovesList moves);
+    void deserialize(MatchParameters matchParameters, MovesList moves);
 }

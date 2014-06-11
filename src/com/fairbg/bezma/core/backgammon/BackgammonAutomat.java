@@ -4,6 +4,7 @@ import com.fairbg.bezma.core.backgammon.IAutomatState.AutomatStates;
 import com.fairbg.bezma.core.backgammon.Position.CubePosition;
 import com.fairbg.bezma.core.backgammon.Position.Direction;
 import com.fairbg.bezma.core.model.IGameController;
+import com.fairbg.bezma.core.model.IMoveVisitor;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.ModelCommand;
 import com.fairbg.bezma.core.model.PlayerId;
@@ -150,7 +151,7 @@ class AutomatStateStart implements IAutomatState
     private boolean m_gameWithCube;
 }
 
-public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGameWithCube
+public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
 {
     private Position.Direction m_StartPositionDirection = Position.Direction.None;
     private Position.Direction DefaultDirection         = Position.Direction.RedCCW;
@@ -166,12 +167,21 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
 
     IAutomatState              m_CurrentState;
 
+    @Override
+    public void init()
+    {
+        m_CubeAutomat = new CubeAutomat(this);
+        setAutomatState(AutomatStates.START);        
+
+        m_LastPosition = new Position();
+        m_LastPosition.setCheckers(BackgammonRules.getStartPosition(Direction.RedCCW));
+        m_cubeValue = 1;
+    }
+    
     public BackgammonAutomat(IGameController gameController)
     {
         m_GameController = gameController;
-        m_CubeAutomat = new CubeAutomat(this);
-
-        setAutomatState(AutomatStates.START);
+        init();
     }
 
     @Override
@@ -505,4 +515,52 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat, IGam
         return PlayerId.getOppositeId(getSouthPlayer());
     }
 
+    
+    class MovePlayer implements IMoveVisitor
+    {
+        @Override
+        public void visit(Movement movement){}
+
+        @Override
+        public void visit(Move move)
+        {
+            setAutomatState(AutomatStates.MOVE);           
+            m_LastPosition.applyMove(move);
+        }
+
+        @Override
+        public void visit(MoveCubeDouble move)
+        {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void visit(MoveCubeTake move)
+        {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void visit(MoveCubePass move)
+        {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void visit(MoveFinishGame move)
+        {
+            // TODO Auto-generated method stub
+        }
+    };
+    
+    MovePlayer m_movePlayer = new MovePlayer();
+    
+    @Override
+    public void playMove(MoveAbstract move)
+    {
+        if (move != null)
+        {
+            move.accept(m_movePlayer);
+        }
+    }
 }

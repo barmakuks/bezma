@@ -1,11 +1,9 @@
 package com.fairbg.bezma.core.backgammon;
 
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 
-//import android.provider.MediaStore.Files;
-
-import com.fairbg.bezma.core.MatchIdentifier;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.backgammon.generators.SnowieGenerator;
 import com.fairbg.bezma.core.model.IGenerator;
@@ -45,6 +43,12 @@ class BgScore implements MatchScore
             break;
         }
     }
+    
+    void clear()
+    {
+        m_whiteScore = 0;
+        m_blackScore = 0;
+    }
 }
 
 public class BgMatchController implements IMatchController
@@ -77,10 +81,8 @@ public class BgMatchController implements IMatchController
     {
         MoveAbstract move = new MoveFinishGame(winner, points);
         appendMove(move);
-        
-        m_score.setPlayerScore(winner, m_score.getPlayerScore(winner) + points);
-        
-        m_cubeInGame = !m_matchParameters.useCrawfordRule || (m_score.getPlayerScore(winner) + 1 != m_matchParameters.matchLength);
+
+        updateScore(winner, points);
 
         m_modelNotifier.notifyAll(new IModelObserver.ScoreChangedEvent(m_score));
         
@@ -96,6 +98,13 @@ public class BgMatchController implements IMatchController
         }
     }
 
+    private void updateScore(PlayerId winner, int points)
+    {
+        m_score.setPlayerScore(winner, m_score.getPlayerScore(winner) + points);
+        
+        m_cubeInGame = !m_matchParameters.useCrawfordRule || (m_score.getPlayerScore(winner) + 1 != m_matchParameters.matchLength);
+    }
+    
     @Override
     public boolean isMatchFinished()
     {
@@ -183,10 +192,34 @@ public class BgMatchController implements IMatchController
     }
 
     @Override
-    public void deserialize(IModelSerializer serializer, MatchIdentifier matchId)
+    public void deserialize(IModelSerializer serializer)
     {
-        // TODO Auto-generated method stub
-        
+        if (serializer != null)
+        {
+            serializer.deserialize(m_matchParameters, m_moves);
+
+            // clear score
+            m_score.clear();
+
+            // set cube start position
+            m_cubeInGame = !m_matchParameters.useCrawfordRule || m_matchParameters.matchLength != 1;
+            m_gameNo = 0;
+            // update score and cube position
+            for (ArrayList<MoveAbstract> game: m_moves)
+            {
+                if (!game.isEmpty() && game.get(game.size() - 1) instanceof MoveFinishGame)
+                {
+                    m_gameNo++;
+                    MoveFinishGame finishGame = (MoveFinishGame)(game.get(game.size() - 1));
+                    updateScore(finishGame.getPlayer(), finishGame.getPoints());
+                }
+            }
+        }        
     }
 
+    @Override
+    public MovesList getMoves()
+    {
+        return m_moves;
+    }
 }

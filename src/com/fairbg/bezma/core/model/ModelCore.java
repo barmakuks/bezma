@@ -31,8 +31,21 @@ public final class ModelCore implements IModelEventNotifier
         m_storage = storage;
         m_matchController = factory.createMatchController(parameters, this);
         m_gameController = factory.createGameController(m_matchController);
-        initNotStoredObjects();
-        store();
+        
+        if (m_storage != null && m_storage.isLastMatchFinished())
+        {
+            if (m_matchParameters.matchId == null
+                || m_matchParameters.matchId.isEmpty())
+            {
+                m_matchParameters.matchId = MatchIdentifier.generateNew();
+            }
+            m_matchController.serialize(m_storage);
+        }
+        else
+        {
+            m_matchController.deserialize(m_storage);
+            m_gameController.restoreLastGame();
+        }
     }
 
     /**
@@ -43,8 +56,7 @@ public final class ModelCore implements IModelEventNotifier
     public void open(MatchIdentifier matchId, IModelSerializer storage)
     {
         m_storage = storage;
-        m_matchController.deserialize(storage, matchId);
-        initNotStoredObjects();
+        m_matchController.deserialize(storage);
     }
 
     /**
@@ -95,22 +107,6 @@ public final class ModelCore implements IModelEventNotifier
     }
 
     /**
-     * Stores all model in m_Storage
-     */
-    private void store()
-    {
-        if (m_storage != null)
-        {
-            if (m_matchParameters.matchId == null
-                    || m_matchParameters.matchId.isEmpty())
-            {
-                m_matchParameters.matchId = MatchIdentifier.generateNew();
-            }
-            m_matchController.serialize(m_storage);
-        }
-    }
-
-    /**
      * Converts user command to model command, processes it and changes model state
      * @param modelCommand user command to process
      * @return true, if command is valid and model was changed
@@ -118,13 +114,6 @@ public final class ModelCore implements IModelEventNotifier
     private boolean processCommand(ModelCommand modelCommand)
     {
         return m_gameController.processCommand(modelCommand);
-    }
-
-    /**
-     * Initializes all non stored objects
-     */
-    private void initNotStoredObjects()
-    {
     }
 
     public BoardContext getBoardContext()
