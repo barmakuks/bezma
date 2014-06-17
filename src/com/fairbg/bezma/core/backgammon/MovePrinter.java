@@ -95,4 +95,11 @@ public class MovePrinter implements IMoveVisitor
         }
         m_moveString = m_builder.toString();        
     }
+    
+    @Override
+    public void visit(MoveStartGame move)
+    {
+        // TODO Auto-generated method stub  
+        m_moveString = "start game";
+    }
 }

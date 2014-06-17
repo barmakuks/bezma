@@ -4,6 +4,8 @@ import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
 
 import com.fairbg.bezma.core.backgammon.Position.CubePosition;
+import com.fairbg.bezma.core.model.IMoveVisitor;
+import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.PlayerId;
 
 interface ICubeState
@@ -28,6 +30,8 @@ interface IGameWithCube
     public PlayerId getSouthPlayer();
 
     public PlayerId getNorthPlayer();
+
+    public void playMove(MoveAbstract move);
 }
 
 interface ICubeAutomat extends IGameWithCube
@@ -317,4 +321,74 @@ public class CubeAutomat implements ICubeAutomat
     {
         return m_game.getSouthPlayer();
     }
+
+    class CubePlayer implements IMoveVisitor
+    {
+        private WeakReference<IGameWithCube> m_automat;
+
+        CubePlayer(IGameWithCube automat)
+        {
+            m_automat = new WeakReference<IGameWithCube>(automat);
+        }
+        
+        @Override
+        public void visit(Movement movement)
+        {            
+        }
+
+        @Override
+        public void visit(Move move)
+        {
+        }
+
+        @Override
+        public void visit(MoveCubeDouble move)
+        {
+            m_currentState = new NoCubeState(m_automat);
+        }
+
+        @Override
+        public void visit(MoveCubeTake move)
+        {
+            if (m_game.getSouthPlayer() == move.getPlayer())
+            {
+                m_currentState = new SouthCubeState(m_automat);
+            }
+            else
+            {
+                m_currentState = new NorthCubeState(m_automat);
+            }
+        }
+
+        @Override
+        public void visit(MoveCubePass move)
+        {
+            m_currentState = new MiddleCubeState(m_automat);
+        }
+
+        @Override
+        public void visit(MoveFinishGame move)
+        {
+        }
+
+        @Override
+        public void visit(MoveStartGame move)
+        {
+        }
+    }
+    
+    @Override
+    public void playMove(MoveAbstract move)
+    {
+        if (m_movePlayer == null)
+        {
+            m_movePlayer = new CubePlayer(this);            
+        }
+        if (move != null)
+        {
+            move.accept(m_movePlayer);
+        }
+    }
+    
+    private IMoveVisitor m_movePlayer = null;
 }

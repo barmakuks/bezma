@@ -9,12 +9,14 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
+
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.backgammon.Move;
 import com.fairbg.bezma.core.backgammon.MoveCubeDouble;
 import com.fairbg.bezma.core.backgammon.MoveCubePass;
 import com.fairbg.bezma.core.backgammon.MoveCubeTake;
 import com.fairbg.bezma.core.backgammon.MoveFinishGame;
+import com.fairbg.bezma.core.backgammon.MoveStartGame;
 import com.fairbg.bezma.core.backgammon.Movement;
 import com.fairbg.bezma.core.model.IGenerator;
 import com.fairbg.bezma.core.model.IMoveVisitor;
@@ -169,6 +171,13 @@ class MoveGenerator implements IMoveVisitor
         m_moveNo = 1;
         blackMove = "";
         whiteMove = "";
+    }
+
+    @Override
+    public void visit(MoveStartGame move)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }
 

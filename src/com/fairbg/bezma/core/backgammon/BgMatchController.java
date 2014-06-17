@@ -2,7 +2,6 @@ package com.fairbg.bezma.core.backgammon;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.backgammon.generators.SnowieGenerator;
