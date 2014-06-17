@@ -5,6 +5,7 @@ import com.fairbg.bezma.core.backgammon.MoveCubeDouble;
 import com.fairbg.bezma.core.backgammon.MoveCubePass;
 import com.fairbg.bezma.core.backgammon.MoveCubeTake;
 import com.fairbg.bezma.core.backgammon.MoveFinishGame;
+import com.fairbg.bezma.core.backgammon.MoveStartGame;
 import com.fairbg.bezma.core.backgammon.Movement;
 
 public interface IMoveVisitor
@@ -16,5 +17,6 @@ public interface IMoveVisitor
     void visit(MoveCubeTake move);
     void visit(MoveCubePass move);
     void visit(MoveFinishGame move);
+    void visit(MoveStartGame move);
     
 }

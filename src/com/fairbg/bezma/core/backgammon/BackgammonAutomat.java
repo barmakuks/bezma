@@ -209,6 +209,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         }
 
         m_StartPositionDirection = direction;
+        m_GameController.appendMove(new MoveStartGame(direction));
         m_GameController.startGame();
     }
 
@@ -367,6 +368,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
             ModelCommand normalizedCommand = NormalizePosition(modelCommand);
             BezmaLog.i("BEZMA", "processCommand in BackgammonAutomat" + modelCommand.getPosition().toString());
             res = m_CurrentState.processCommand(this, normalizedCommand);
+            System.out.println("found:\n" + m_LastPosition);
         }
 
         return res;
@@ -435,7 +437,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
             m_CurrentPlayer = PlayerId.getOppositeId(player);
             m_cubeValue = m_cubeValue * 2;
             m_LastPosition.setCubeValue(m_cubeValue);
-            MoveCubeDouble move = new MoveCubeDouble(m_CurrentPlayer, m_cubeValue);
+            MoveCubeDouble move = new MoveCubeDouble(player, m_cubeValue);
             move.setPlayer(player);
             m_GameController.appendMove(move);
         }
@@ -462,7 +464,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         if (result)
         {
             m_CurrentPlayer = PlayerId.getOppositeId(player);
-            MoveCubeTake move = new MoveCubeTake(m_CurrentPlayer, m_cubeValue);
+            MoveCubeTake move = new MoveCubeTake(player, m_cubeValue);
             move.setPlayer(player);
             m_GameController.appendMove(move);
         }
@@ -526,30 +528,39 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         {
             setAutomatState(AutomatStates.MOVE);           
             m_LastPosition.applyMove(move);
+            System.out.println(m_LastPosition.toString());
+            m_CurrentPlayer = PlayerId.getOppositeId(move.getPlayer());
         }
 
         @Override
         public void visit(MoveCubeDouble move)
         {
-            // TODO Auto-generated method stub
+            m_CubeAutomat.playMove(move);
+            m_cubeValue *= 2;
         }
 
         @Override
         public void visit(MoveCubeTake move)
         {
-            // TODO Auto-generated method stub
+            m_CubeAutomat.playMove(move);
         }
 
         @Override
         public void visit(MoveCubePass move)
         {
-            // TODO Auto-generated method stub
+            m_CubeAutomat.playMove(move);
         }
 
         @Override
         public void visit(MoveFinishGame move)
         {
             // TODO Auto-generated method stub
+        }
+        
+        @Override
+        public void visit(MoveStartGame move)
+        {
+            m_StartPositionDirection = move.getDirection();
         }
     };
     

@@ -26,7 +26,9 @@ import com.fairbg.bezma.core.backgammon.MoveCubeDouble;
 import com.fairbg.bezma.core.backgammon.MoveCubePass;
 import com.fairbg.bezma.core.backgammon.MoveCubeTake;
 import com.fairbg.bezma.core.backgammon.MoveFinishGame;
+import com.fairbg.bezma.core.backgammon.MoveStartGame;
 import com.fairbg.bezma.core.backgammon.Movement;
+import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.model.IMoveVisitor;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.MovesList;
@@ -37,6 +39,7 @@ class MoveKeys
 {
     public static final char Black = 'B';
     public static final char White = 'W';
+    public static final String StartGame = "SG:";
 
     public static final char Double = '*';
     public static final char Take = '+';
@@ -72,6 +75,11 @@ class MoveSerializerGenerator implements IMoveVisitor
         return m_builder.toString();
     }
 
+    private void finishMove()
+    {
+        m_builder.append(";\n");
+    }
+    
     @Override
     public void visit(Movement movement)
     {
@@ -91,31 +99,50 @@ class MoveSerializerGenerator implements IMoveVisitor
         {
             move.getMovements()[i].accept(this);
         }
-        m_builder.append(";\n");
+        finishMove();
     }
 
     @Override
     public void visit(MoveCubeDouble move)
     {
-        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()) + MoveKeys.Double + move.getCubeValue() + ";\n"); 
+        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()));
+        m_builder.append(MoveKeys.Double);
+        m_builder.append(move.getCubeValue());
+        finishMove();        
     }
 
     @Override
     public void visit(MoveCubeTake move)
     {
-        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()) + MoveKeys.Take + move.getCubeValue() + ";\n"); 
+        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()));
+        m_builder.append(MoveKeys.Take);
+        m_builder.append(move.getCubeValue());
+        finishMove();
     }
 
     @Override
     public void visit(MoveCubePass move)
     {
-        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()) + MoveKeys.Pass + move.getCubeValue() + ";\n"); 
+        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()));
+        m_builder.append(MoveKeys.Pass);
+        m_builder.append(move.getCubeValue()); 
+        finishMove();
     }
 
     @Override
     public void visit(MoveFinishGame move)
     {
-        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()) + MoveKeys.Finish + move.getPoints() + ";\n"); 
+        m_builder.append(MoveKeys.getPlayerKey(move.getPlayer()));
+        m_builder.append(MoveKeys.Finish);
+        m_builder.append(move.getPoints()); 
+        finishMove();
+    }
+
+    @Override
+    public void visit(MoveStartGame move)
+    {
+        m_builder.append(MoveKeys.StartGame + move.getDirection().name());
+        finishMove();
     }
 }
 
@@ -141,7 +168,6 @@ class ParamKeys
     public static final String KeyPrefix         = ";";
     public static final String KeySuffix         = ":";
     public static final String DateFormat        = "yyyyMMddHHmm";
-
 
     public static String formatedKey(String key)
     {
@@ -408,6 +434,8 @@ public class MatchSerializer implements IModelSerializer
             return;            
         }
         final char pl = line.charAt(0); 
+
+        MoveAbstract move = null;
         
         PlayerId player = PlayerId.NONE;
 
@@ -419,6 +447,11 @@ public class MatchSerializer implements IModelSerializer
         {
             player = PlayerId.WHITE;
         }
+        else if (line.startsWith(MoveKeys.StartGame))
+        {
+            final Position.Direction direction = Position.Direction.valueOf(line.substring(MoveKeys.StartGame.length(), line.length() - 1));
+            move = new MoveStartGame(direction);
+        }
         else
         {
             return;
@@ -426,59 +459,60 @@ public class MatchSerializer implements IModelSerializer
 
         final char operation = line.charAt(1);
 
-        MoveAbstract move = null;
-
-        switch (operation)
+        if (move == null)
         {
-        case MoveKeys.Double:
-        {
-            final int cubeValue = Integer.parseInt(line.substring(2, line.length() - 1));            
-            move = new MoveCubeDouble(player, cubeValue);
-            break;
-        }
-        case MoveKeys.Take:
-        {
-            final int cubeValue = Integer.parseInt(line.substring(2, line.length() - 1));            
-            move = new MoveCubeTake(player, cubeValue);
-            break;
-        }
-        case MoveKeys.Pass:
-        {
-            final int cubeValue = Integer.parseInt(line.substring(2, line.length() - 1));            
-            move = new MoveCubePass(player, cubeValue);
-            break;
-        }
-        case MoveKeys.Finish:
-        {
-            final int points = Integer.parseInt(line.substring(2, line.length() - 1));            
-            move = new MoveFinishGame(player, points);
-            break;
-        }
-        default:
-        {
-            final char die1 = line.charAt(1);            
-            final char die2 = line.charAt(2);
-            Move mv = new Move();
-            mv.setDice(die1 - '0', die2 - '0');
-            mv.setPlayer(player);
-            
-            String movements = line.substring(3, line.length()-1);
-            while (!movements.isEmpty())
+            switch (operation)
             {
-                boolean strike = false;
-                int from_index = movements.charAt(0) - 'a';
-                int to_index = movements.charAt(1) - 'a';
-                if (movements.charAt(1) < 'a')
-                {
-                    to_index = movements.charAt(1) - 'A';
-                    strike = true;
-                }                
-                mv.appendMovement(from_index, to_index, strike);
-                movements = movements.substring(2);
+            case MoveKeys.Double:
+            {
+                final int cubeValue = Integer.parseInt(line.substring(2, line.length() - 1));            
+                move = new MoveCubeDouble(player, cubeValue);
+                break;
             }
-            move = mv;
-            break;
-        }
+            case MoveKeys.Take:
+            {
+                final int cubeValue = Integer.parseInt(line.substring(2, line.length() - 1));            
+                move = new MoveCubeTake(player, cubeValue);
+                break;
+            }
+            case MoveKeys.Pass:
+            {
+                final int cubeValue = Integer.parseInt(line.substring(2, line.length() - 1));            
+                move = new MoveCubePass(player, cubeValue);
+                break;
+            }
+            case MoveKeys.Finish:
+            {
+                final int points = Integer.parseInt(line.substring(2, line.length() - 1));            
+                move = new MoveFinishGame(player, points);
+                break;
+            }
+            default:
+            {
+                final char die1 = line.charAt(1);            
+                final char die2 = line.charAt(2);
+                Move mv = new Move();
+                mv.setDice(die1 - '0', die2 - '0');
+                mv.setPlayer(player);
+                
+                String movements = line.substring(3, line.length()-1);
+                while (!movements.isEmpty())
+                {
+                    boolean strike = false;
+                    int from_index = movements.charAt(0) - 'a';
+                    int to_index = movements.charAt(1) - 'a';
+                    if (movements.charAt(1) <= 'Z')
+                    {
+                        to_index = movements.charAt(1) - 'A';
+                        strike = true;
+                    }                
+                    mv.appendMovement(from_index, to_index, strike);
+                    movements = movements.substring(2);
+                }
+                move = mv;
+                break;
+            }
+            }
         }
 
         if (move != null)
