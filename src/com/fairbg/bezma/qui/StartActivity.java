@@ -1,5 +1,7 @@
 package com.fairbg.bezma.qui;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +14,6 @@ import com.fairbg.bezma.R;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.MatchParameters.RollTypes;
 import com.fairbg.bezma.core.MatchParameters.GameType;
-
 import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.store.DBAdapter;
 import com.fairbg.bezma.version3.ConfigurationVer3;
@@ -36,6 +37,14 @@ public class StartActivity extends Activity
 		registerButton(R.id.btn_match_store);
 		registerButton(R.id.btn_settings);
 		registerButton(R.id.btn_exit);
+		
+        ConfigurationVer3 c3 = new ConfigurationVer3();
+        File file = new File(c3.getUnfinishedMatchPath());
+        // Get button from mock up
+        Button btn = (Button) findViewById(R.id.btn_match_continue);
+        // Set callback for OnClick
+        btn.setEnabled(file.exists());
+        file = null;
 	}
 
 	private void registerButton(int id)
@@ -57,6 +66,7 @@ public class StartActivity extends Activity
 													 startMatchParamsActivity();
 													 break;
 												 case R.id.btn_match_continue:
+												     continueMatch();
 													 break;
 												 case R.id.btn_match_store:
 													 break;
@@ -96,6 +106,18 @@ public class StartActivity extends Activity
 		}
 	}
 
+	protected void continueMatch()
+    {
+        Intent intent = new Intent(this, PlayActivity.class);
+        ConfigurationVer3 c3 = new ConfigurationVer3();
+        
+        c3.configureMatchParameters(getMatchParameters());
+        c3.setUserSettings(getUserSettings());
+        
+        intent.putExtra(ConfigurationVer3.class.getCanonicalName(), c3);
+        startActivity(intent);
+    }
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
@@ -131,6 +153,14 @@ public class StartActivity extends Activity
 	{
 		Intent intent = new Intent(this, PlayActivity.class);
 		ConfigurationVer3 c3 = new ConfigurationVer3();
+		
+		File file = new File(c3.getUnfinishedMatchPath());
+		if (file.exists())
+		{
+	        file.delete();
+		}
+		file = null;
+		
 		c3.configureMatchParameters(getMatchParameters());
 		c3.setUserSettings(getUserSettings());
 		
