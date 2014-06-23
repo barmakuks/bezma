@@ -9,6 +9,7 @@ import com.fairbg.bezma.core.Configuration;
 import com.fairbg.bezma.core.IConfigurator;
 import com.fairbg.bezma.core.WrongConfigurationException;
 import com.fairbg.bezma.core.backgammon.BgControllersFactory;
+import com.fairbg.bezma.core.backgammon.generators.MatchSerializer;
 import com.fairbg.bezma.core.model.IControllersFactory;
 import com.fairbg.bezma.store.IModelSerializer;
 
@@ -42,8 +43,7 @@ public class ConfiguratorVer3 implements IConfigurator
     @Override
     public IModelSerializer createDatabase(Configuration configuration) throws WrongConfigurationException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new MatchSerializer(configuration.getUnfinishedMatchPath());
     }
 
     @Override

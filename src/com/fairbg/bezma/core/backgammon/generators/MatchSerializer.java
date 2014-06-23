@@ -33,6 +33,7 @@ import com.fairbg.bezma.core.model.IMoveVisitor;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.MovesList;
 import com.fairbg.bezma.core.model.PlayerId;
+import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.store.IModelSerializer;
 
 class MoveKeys
@@ -271,6 +272,9 @@ public class MatchSerializer implements IModelSerializer
                 parentFile.mkdirs();
             }
 
+
+            BezmaLog.allowTag("STORAGE");
+            BezmaLog.i("STORAGE", "Write to file: " + m_fileName);
             FileWriter m_out = new FileWriter(file, true);
 
             System.out.println("Ser:" + m_generator.getData());
