@@ -36,7 +36,7 @@ public class ConfigurationVer3 extends Configuration
     public String getUnfinishedMatchPath()
     {
         File sdCard = Environment.getExternalStorageDirectory();
-        return sdCard.getAbsolutePath() + "/bezma-files/.unfunished";
+        return sdCard.getAbsolutePath() + "/bezma-files/.unfinished";
     }
     
 }

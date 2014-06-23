@@ -38,7 +38,14 @@ public class StartActivity extends Activity
 		registerButton(R.id.btn_settings);
 		registerButton(R.id.btn_exit);
 		
-        ConfigurationVer3 c3 = new ConfigurationVer3();
+	}
+	
+	@Override
+	protected void onStart()
+	{
+	    super.onStart();
+
+	    ConfigurationVer3 c3 = new ConfigurationVer3();
         File file = new File(c3.getUnfinishedMatchPath());
         // Get button from mock up
         Button btn = (Button) findViewById(R.id.btn_match_continue);

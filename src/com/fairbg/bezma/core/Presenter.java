@@ -31,6 +31,7 @@ public class Presenter implements ICommandObserver, IModelObserver
 
             m_Model.create(configuration.getMatchParameters(), m_Storage, configurator.createControllersFactory());
             m_Model.addObserver(this);
+            
         } catch (WrongConfigurationException e)
         {
             e.printStackTrace();
@@ -53,6 +54,8 @@ public class Presenter implements ICommandObserver, IModelObserver
 
         if (result) // && BezmaDebug.requestPositions)
         {
+            displayResults();
+
             m_RequestLoop.start();
         }
 

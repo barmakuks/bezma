@@ -109,5 +109,6 @@ public class BgGameController implements IGameController
                 m_gameAutomat.playMove(move);                
             }
         }
+        m_boardContext = new BoardContext(m_gameAutomat.getCurrentPosition(), "");
     }
 }
