@@ -213,6 +213,11 @@ public class BgMatchController implements IMatchController
                     updateScore(finishGame.getPlayer(), finishGame.getPoints());
                 }
             }
+            
+          if (m_moves.size() == m_gameNo)
+          {
+              m_moves.add(new ArrayList<MoveAbstract>());
+          }            
         }        
     }
 

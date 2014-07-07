@@ -151,8 +151,10 @@ public class Runner
         { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // B: 13: 8/5  6/5 
         { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0, 0 }, // W: 12: 8/7 6/4
         { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0,-1 }, // B: double
-        { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0, 0 }, // W: pass 
-
+        { 0, 2, 0, 0, 0, -2,-4, 0,-2, 0, 0, 0, 5,-5, 0, 0, 0, 2, 1, 4, 0, 1, 0, 0,-2, 0, 0, 0, 0 }, // W: pass
+    };
+    
+    static short[][] testGame4Part1_end = { // Three games match (part 1)
         // Second game [W:0 B:1]
         { 0, 2, 0, 0, 0, 0,-5, 0,-3, 0, 0, 0, 5,-5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0,-2, 0, 0, 0, 0 }, // Start position
 
@@ -308,8 +310,8 @@ public class Runner
 
 	public static short[][] getDatagrams()
 	{
-//		return testGame4Part3;
-	    return testGameDoubleTakeDoublePassPart2;
+		return testGame4Part1_end;
+//	    return testGameDoubleTakeDoublePassPart2;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package com.fairbg.bezma.core.backgammon;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import com.fairbg.bezma.core.model.IGameController;
 import com.fairbg.bezma.core.model.IMatchController;
@@ -104,7 +105,14 @@ public class BgGameController implements IGameController
         
         if (moves != null && moves.size() > 0)
         {
-            for (MoveAbstract move: moves.get(moves.size() - 1))
+            ArrayList<MoveAbstract> lastGame = moves.get(moves.size() - 1); 
+            
+            if (lastGame.isEmpty() || lastGame.get(lastGame.size() - 1) instanceof MoveFinishGame)
+            {
+                return;
+            }
+
+            for (MoveAbstract move: lastGame)
             {
                 m_gameAutomat.playMove(move);                
             }
