@@ -416,74 +416,100 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         return m_LastPosition != null && m_LastPosition.getCubePosition() == CubePosition.Center && m_LastPosition.getCubeValue() != 64;
     }
 
-    @Override
-    public boolean proposeDouble(PlayerId player)
+    private boolean proposeCube(PlayerId player)
     {
-        boolean result = false;
-
         if (player == this.getNorthPlayer())
         {
             m_LastPosition.setCubePosition(CubePosition.West);
-            result = true;
         }
         else if (player == this.getSouthPlayer())
         {
             m_LastPosition.setCubePosition(CubePosition.East);
-            result = true;
+        }
+        else
+        {
+            return false;        
         }
 
-        if (result)
+        m_CurrentPlayer = PlayerId.getOppositeId(player);
+        m_cubeValue = m_cubeValue * 2;
+        m_LastPosition.setCubeValue(m_cubeValue);
+        
+        return true;
+    } 
+    
+    @Override
+    public boolean proposeDouble(PlayerId player)
+    {
+        if (proposeCube(player))
         {
-            m_CurrentPlayer = PlayerId.getOppositeId(player);
-            m_cubeValue = m_cubeValue * 2;
-            m_LastPosition.setCubeValue(m_cubeValue);
             MoveCubeDouble move = new MoveCubeDouble(player, m_cubeValue);
             move.setPlayer(player);
             m_GameController.appendMove(move);
+            
+            return true;
         }
 
-        return result;
+        return false;
     }
 
-    @Override
-    public boolean take(PlayerId player)
+    private boolean takeCube(PlayerId player)
     {
-        boolean result = false;
         if (player == this.getNorthPlayer())
         {
-            
             m_LastPosition.setCubePosition(CubePosition.North);
-            result = true;
         }
         else if (player == this.getSouthPlayer())
         {
             m_LastPosition.setCubePosition(CubePosition.South);
-            result = true;
         }
-
-        if (result)
+        else
         {
-            m_CurrentPlayer = PlayerId.getOppositeId(player);
+            return false;
+        }
+        
+        m_CurrentPlayer = PlayerId.getOppositeId(player);
+
+        return true;
+    } 
+
+    @Override
+    public boolean take(PlayerId player)
+    {
+        if (takeCube(player))
+        {
             MoveCubeTake move = new MoveCubeTake(player, m_cubeValue);
             move.setPlayer(player);
             m_GameController.appendMove(move);
+            
+            return true;
         }
 
-        return result;
+        return false;
     }
 
+    private boolean passCube(PlayerId player)
+    {
+        m_cubeValue = m_cubeValue / 2;
+        m_CurrentPlayer = PlayerId.getOppositeId(player);
+        
+        return true;        
+    }
+    
     @Override
     public boolean pass(PlayerId player)
     {
-        m_cubeValue = m_cubeValue / 2;
-        MoveCubePass move = new MoveCubePass(player, m_cubeValue);
-        move.setPlayer(player);
-        m_GameController.appendMove(move);
-        m_CurrentPlayer = PlayerId.getOppositeId(player);
-
-        finishGame();
-
-        return true;
+        if (passCube(player))
+        {
+            MoveCubePass move = new MoveCubePass(player, m_cubeValue);
+            move.setPlayer(player);
+            m_GameController.appendMove(move);
+            finishGame();
+            
+            return true;
+        }
+        
+        return false;
     }
 
     @Override
@@ -516,7 +542,6 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
     {
         return PlayerId.getOppositeId(getSouthPlayer());
     }
-
     
     class MovePlayer implements IMoveVisitor
     {
@@ -535,6 +560,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         @Override
         public void visit(MoveCubeDouble move)
         {
+            proposeCube(move.getPlayer());
             m_CubeAutomat.playMove(move);
             m_cubeValue *= 2;
         }
@@ -542,6 +568,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         @Override
         public void visit(MoveCubeTake move)
         {
+            takeCube(move.getPlayer());
             m_CubeAutomat.playMove(move);
         }
 

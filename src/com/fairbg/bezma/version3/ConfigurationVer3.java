@@ -10,6 +10,8 @@ import com.fairbg.bezma.core.Configuration;
 public class ConfigurationVer3 extends Configuration
 {
     private static final long serialVersionUID = -2509360009329099420L;
+    private static String BezmaDir = "/bezma-files";
+    private static String UnfinishedFile = "/.unfinished";
 
     public UserSettings getUserSettings()
     {
@@ -27,7 +29,7 @@ public class ConfigurationVer3 extends Configuration
 	public String getDefaultUserDirectory()
 	{
         File sdCard = Environment.getExternalStorageDirectory();
-        return sdCard.getAbsolutePath() + "/bezma-files";
+        return sdCard.getAbsolutePath() + BezmaDir;
 	}
 //    private String m_deviceMAC = "00:12:6F:22:46:2C"; 
 //    private String m_deviceMAC = "00:12:6F:22:45:98";
@@ -36,7 +38,7 @@ public class ConfigurationVer3 extends Configuration
     public String getUnfinishedMatchPath()
     {
         File sdCard = Environment.getExternalStorageDirectory();
-        return sdCard.getAbsolutePath() + "/bezma-files/.unfinished";
+        return sdCard.getAbsolutePath() + BezmaDir + UnfinishedFile;
     }
     
 }
