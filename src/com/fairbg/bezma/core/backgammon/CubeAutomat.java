@@ -78,7 +78,7 @@ class SouthCubeState implements ICubeState
 		{
 			if (automat.proposeDouble(southPlayer))
 			{
-				nextState = new NoCubeState(m_automat);
+				nextState = new ProposeCubeState(m_automat);
 			}
 			break;
 		}
@@ -129,7 +129,7 @@ class NorthCubeState implements ICubeState
 		{
 			if (automat.proposeDouble(northPlayer))
 			{
-				nextState = new NoCubeState(m_automat);
+				nextState = new ProposeCubeState(m_automat);
 			}
 			break;
 		}
@@ -180,7 +180,7 @@ class MiddleCubeState implements ICubeState
 		{
 			if (automat.proposeDouble(automat.getCurrentPlayer()))
 			{
-				nextState = new NoCubeState(m_automat);
+				nextState = new ProposeCubeState(m_automat);
 			}
 			break;
 		}
@@ -192,11 +192,11 @@ class MiddleCubeState implements ICubeState
 	}
 }
 
-class NoCubeState implements ICubeState
+class ProposeCubeState implements ICubeState
 {
 	private WeakReference<IGameWithCube> m_automat;
 
-	NoCubeState(WeakReference<IGameWithCube> automat)
+	ProposeCubeState(WeakReference<IGameWithCube> automat)
 	{
 		m_automat = automat;
 	}
@@ -344,7 +344,7 @@ public class CubeAutomat implements ICubeAutomat
         @Override
         public void visit(MoveCubeDouble move)
         {
-            m_currentState = new NoCubeState(m_automat);
+            m_currentState = new ProposeCubeState(m_automat);
         }
 
         @Override

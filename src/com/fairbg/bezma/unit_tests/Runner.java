@@ -310,8 +310,8 @@ public class Runner
 
 	public static short[][] getDatagrams()
 	{
-		return testGame4Part1_end;
-//	    return testGameDoubleTakeDoublePassPart2;
+//		return testGameDoubleTakeDoublePassPart1;
+	    return testGameDoubleTakeDoublePassPart2;
 	}
 
 	/**
