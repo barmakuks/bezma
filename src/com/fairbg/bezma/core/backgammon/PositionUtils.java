@@ -16,6 +16,7 @@ public class PositionUtils
         int commonPos = srcCheckers.length - 3;
         dest[commonPos] = srcCheckers[commonPos];
         dest[commonPos + 1] = srcCheckers[commonPos + 1];
+        dest[0] = srcCheckers[0];
 
         if (srcDirection == Direction.RedCW && destDirection == Direction.GrayCW ||
                 srcDirection == Direction.RedCCW && destDirection == Direction.GrayCCW ||

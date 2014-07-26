@@ -108,9 +108,9 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
         m_Presenter = new Presenter(configurator, configuration);
 
-        m_Presenter.addView(this);
-
         initView();
+
+        m_Presenter.addView(this);
 
         DrawingUtils.setAssetManager(this.getAssets());
 
@@ -584,8 +584,8 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             // Game conditions
             DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.matchLength), 240, 78, 48, 0, 0xFF302f2f, "fonts/OpiumB.TTF");
             // Players scores
-            DrawingUtils.drawText(canvas, Integer.toString(m_whiteScore), 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
-            DrawingUtils.drawText(canvas, Integer.toString(m_blackScore), 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
+            DrawingUtils.drawText(canvas, Integer.toString(m_blackScore), 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
+            DrawingUtils.drawText(canvas, Integer.toString(m_whiteScore), 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
             if (m_current_position != null)
             {
