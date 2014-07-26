@@ -29,8 +29,8 @@ public class Presenter implements ICommandObserver, IModelObserver
 
             m_Storage = configurator.createDatabase(configuration);
 
-            m_Model.create(configuration.getMatchParameters(), m_Storage, configurator.createControllersFactory());
             m_Model.addObserver(this);
+            m_Model.build(configuration.getMatchParameters(), m_Storage, configurator.createControllersFactory());
             
         } catch (WrongConfigurationException e)
         {
@@ -41,6 +41,7 @@ public class Presenter implements ICommandObserver, IModelObserver
     public void addView(IModelView view)
     {
         m_Communicator.addView(view);
+        view.changeScore(m_Model.getScore());
     }
 
     public void removeView(IModelView view)
