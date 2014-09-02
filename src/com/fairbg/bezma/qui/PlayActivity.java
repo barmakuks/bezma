@@ -112,9 +112,9 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
         m_Presenter = new Presenter(configurator, configuration);
 
-        m_Presenter.addView(this);
-
         initView();
+
+        m_Presenter.addView(this);
 
         DrawingUtils.setAssetManager(this.getAssets());
 

@@ -289,7 +289,7 @@ public class Runner
 	{
 		System.out.println("*********** test model **************");
 		ModelCore model = new ModelCore();
-		model.create(null, null, null);
+		model.build(null, null, null);
 
 		CommunicationCommandState commCommand = new CommunicationCommandState();
 		ModelCommand command = ModelCommand.createCommand(commCommand);
