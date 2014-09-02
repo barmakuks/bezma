@@ -49,11 +49,11 @@ class MoveKeys
     
     public static char getPlayerKey(PlayerId player)
     {
-        if (player == PlayerId.BLACK)
+        if (player == PlayerId.RED)
         {
             return Black;
         }
-        else if (player == PlayerId.WHITE)
+        else if (player == PlayerId.SILVER)
         {
             return White;
         }
@@ -210,8 +210,8 @@ public class MatchSerializer implements IModelSerializer
             PrintWriter m_out = new PrintWriter(new PrintStream(file));
 
             m_out.println(ParamKeys.formatedKey(ParamKeys.MatchIdentifier) + matchParams.matchId.toString());
-            m_out.println(ParamKeys.formatedKey(ParamKeys.BlackPlayerName) + matchParams.bPlayerName);
-            m_out.println(ParamKeys.formatedKey(ParamKeys.WhitePlayerName) + matchParams.wPlayerName);
+            m_out.println(ParamKeys.formatedKey(ParamKeys.BlackPlayerName) + matchParams.redPlayerName);
+            m_out.println(ParamKeys.formatedKey(ParamKeys.WhitePlayerName) + matchParams.silverPlayerName);
             m_out.println(ParamKeys.formatedKey(ParamKeys.GameType) + matchParams.gameType.name());
             m_out.println(ParamKeys.formatedKey(ParamKeys.MatchWinCondition) + matchParams.winConditions.name());
             m_out.println(ParamKeys.formatedKey(ParamKeys.MatchLength) + matchParams.matchLength);
@@ -364,11 +364,11 @@ public class MatchSerializer implements IModelSerializer
         } 
         else if (key.equals(ParamKeys.BlackPlayerName))
         {
-            matchParams.bPlayerName = value;
+            matchParams.redPlayerName = value;
         }
         else if (key.equals(ParamKeys.WhitePlayerName))
         {
-            matchParams.wPlayerName = value;
+            matchParams.silverPlayerName = value;
         }
         else if (key.equals(ParamKeys.GameType))
         {
@@ -445,11 +445,11 @@ public class MatchSerializer implements IModelSerializer
 
         if (pl == MoveKeys.Black)
         {
-            player = PlayerId.BLACK;
+            player = PlayerId.RED;
         }
         else if (pl == MoveKeys.White)
         {
-            player = PlayerId.WHITE;
+            player = PlayerId.SILVER;
         }
         else if (line.startsWith(MoveKeys.StartGame))
         {

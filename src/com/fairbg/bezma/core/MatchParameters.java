@@ -38,9 +38,9 @@ public class MatchParameters implements Serializable
 
 	private static final long serialVersionUID = 5580660730954427945L;
 
-	public String			 bPlayerName	  = "White player";
+	public String			 redPlayerName	  = "White player";
 
-	public String			 wPlayerName	  = "Black player";
+	public String			 silverPlayerName	  = "Black player";
 
 	public GameType		   gameType		 = GameType.Backgammon;
 

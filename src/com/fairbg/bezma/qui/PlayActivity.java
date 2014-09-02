@@ -26,12 +26,12 @@ import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.IRawDataView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
-import com.fairbg.bezma.core.Configuration;
 import com.fairbg.bezma.core.IConfigurator;
 import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
+import com.fairbg.bezma.core.backgammon.Position.Direction;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.errors.ErrorWrongPosition;
 import com.fairbg.bezma.core.model.MatchScore;
@@ -40,7 +40,6 @@ import com.fairbg.bezma.core.model.BoardContext;
 import com.fairbg.bezma.core.model.PlayerId;
 import com.fairbg.bezma.log.BezmaLog;
 import com.fairbg.bezma.unit_tests.Runner;
-import com.fairbg.bezma.unit_tests.TestConfiguration;
 import com.fairbg.bezma.unit_tests.TestConfigurator;
 import com.fairbg.bezma.unit_tests.TestModelCommandsProvider;
 import com.fairbg.bezma.version3.ConfigurationVer3;
@@ -62,6 +61,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
     private ProgressDialog              pDialog;
     private String                      m_DeviceMAC        = "";
     private MatchParameters             m_MatchParameters  = null;
+    private MovePrinter                 m_movePrinter      = null;
 
     /** Initialize activity for receiving test commands from TestCommandProvider */
     protected void initDebug()
@@ -69,9 +69,12 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Configuration configuration = new ConfigurationVer3(); //TestConfiguration();
+        ConfigurationVer3 configuration = (ConfigurationVer3)
+                (getIntent().getExtras().getSerializable(ConfigurationVer3.class.getCanonicalName()));
 
-        m_MatchParameters = new MatchParameters();
+        m_MatchParameters = configuration.getMatchParameters();
+        m_movePrinter = new MovePrinter(m_MatchParameters);
+
 
         configuration.configureMatchParameters(m_MatchParameters);
 
@@ -103,6 +106,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
         m_DeviceMAC = configuration.getUserSettings().boardMAC;
         m_MatchParameters = configuration.getMatchParameters();
+        m_movePrinter = new MovePrinter(m_MatchParameters);
 
         ConfiguratorVer3 configurator = new ConfiguratorVer3();
 
@@ -180,7 +184,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
     {
         Context context = getApplicationContext();
         CharSequence text = message;
-        int duration = Toast.LENGTH_LONG;
+        int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
@@ -558,8 +562,8 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
         private Bitmap    m_Background;
         private BoardView m_BoardView;
 
-        public int        m_whiteScore = 0;
-        public int        m_blackScore = 0;
+        public int        m_silverScore = 0;
+        public int        m_redScore = 0;
 
         public PlayView(Context context)
         {
@@ -573,19 +577,42 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             m_Background = BitmapFactory.decodeResource(getResources(), R.drawable.bckg3bg_800x480);
         }
 
+        
+        private Direction m_lastDirection = Direction.None;
+        
         protected void onDraw(Canvas canvas)
         {
             canvas.drawBitmap(m_Background, 0, 0, null);
+            
+            if (m_current_position != null
+                    && m_current_position.getDirection() != Direction.None
+                    && m_lastDirection != m_current_position.getDirection())
+            {
+                m_lastDirection = m_current_position.getDirection();
+            }
 
-            // Players names
-            DrawingUtils.drawText(canvas, m_MatchParameters.bPlayerName, 32, 670, 22, 90, 0xFFA30101, "fonts/OpiumB.TTF");
-            DrawingUtils.drawText(canvas, m_MatchParameters.wPlayerName, 448, 670, 22, 270, 0xFF5b2b0a, "fonts/OpiumB.TTF");
+            String bottomPlayerName = m_MatchParameters.redPlayerName;
+            String topPlayerName = m_MatchParameters.silverPlayerName;
+            String bottomScore = Integer.toString(m_redScore);
+            String topScore = Integer.toString(m_silverScore);
+            
+            if (m_lastDirection == Direction.GrayCCW || m_lastDirection == Direction.GrayCW)
+            {
+                bottomPlayerName = m_MatchParameters.silverPlayerName;
+                topPlayerName = m_MatchParameters.redPlayerName;
+                bottomScore = Integer.toString(m_silverScore);
+                topScore = Integer.toString(m_redScore);
+            }
+
+            // player names
+            DrawingUtils.drawText(canvas, bottomPlayerName, 32, 670, 22, 90, 0xFF5b2b0a, "fonts/OpiumB.TTF");
+            DrawingUtils.drawText(canvas, topPlayerName, 448, 670, 22, 270, 0xFFA30101, "fonts/OpiumB.TTF");
+            // Players scores
+            DrawingUtils.drawText(canvas, bottomScore, 140, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
+            DrawingUtils.drawText(canvas, topScore, 340, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
 
             // Game conditions
             DrawingUtils.drawText(canvas, Integer.toString(m_MatchParameters.matchLength), 240, 78, 48, 0, 0xFF302f2f, "fonts/OpiumB.TTF");
-            // Players scores
-            DrawingUtils.drawText(canvas, Integer.toString(m_whiteScore), 140, 78, 48, 0, 0xFFA30101, "fonts/OpiumB.TTF");
-            DrawingUtils.drawText(canvas, Integer.toString(m_blackScore), 340, 78, 48, 0, 0xFF5b2b0a, "fonts/OpiumB.TTF");
 
             if (m_current_position != null)
             {
@@ -682,15 +709,18 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
     @Override
     public void appendMove(final MoveAbstract move)
     {
-        runOnUiThread(new Runnable()
+        if (m_movePrinter != null)
         {
-            @Override
-            public void run()
+            runOnUiThread(new Runnable()
             {
-                String moveString = MovePrinter.printMove(move);
-                showErrorMessage(moveString);
-            }
-        });
+                @Override
+                public void run()
+                {
+                    String moveString = m_movePrinter.printMove(move);
+                    showErrorMessage(moveString);
+                }
+            });
+        }
     }
 
     @Override
@@ -706,7 +736,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
     @Override
     public void changeScore(MatchScore score)
     {
-        m_view.m_blackScore = score.getPlayerScore(PlayerId.BLACK);
-        m_view.m_whiteScore = score.getPlayerScore(PlayerId.WHITE);
+        m_view.m_redScore = score.getPlayerScore(PlayerId.RED);
+        m_view.m_silverScore = score.getPlayerScore(PlayerId.SILVER);
     }
 }

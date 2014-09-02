@@ -29,8 +29,8 @@ public class MatchParametersActivity extends Activity
 	
 	private EditText	edtMatchLimit;
 	private EditText	edtMoveLimit;
-	private EditText	edtPlayer1;
-	private EditText	edtPlayer2;
+	private EditText	edtPlayerRed;
+	private EditText	edtPlayerSilver;
 	private CheckBox	cbxUseCrawford;
 	private CheckBox	cbxCalculateRolls;
 	private CheckBox	cbxUseTimer;
@@ -57,8 +57,8 @@ public class MatchParametersActivity extends Activity
 		edtFixedGames = (EditText) findViewById(R.id.edtFixedGames);
 		edtMatchLimit = (EditText) findViewById(R.id.edtMatchLimit);
 		edtMoveLimit = (EditText) findViewById(R.id.edtMoveLimit);
-		edtPlayer1 = (EditText) findViewById(R.id.edtPlayer1);
-		edtPlayer2 = (EditText) findViewById(R.id.edtPlayer2);
+		edtPlayerRed = (EditText) findViewById(R.id.edtPlayerRed);
+		edtPlayerSilver = (EditText) findViewById(R.id.edtPlayerSilver);
 		cbxUseCrawford = (CheckBox) findViewById(R.id.cbxUseCrawford);
 		cbxCalculateRolls = (CheckBox) findViewById(R.id.cbxCalculateRolls);
 		cbxCalculateRolls.setOnCheckedChangeListener(check_listener);
@@ -95,8 +95,8 @@ public class MatchParametersActivity extends Activity
 	{
 		Bundle extras = getIntent().getExtras();
 		MatchParameters params = (MatchParameters) extras.getSerializable(MatchParameters.class.getCanonicalName());
-		edtPlayer1.setText(params.bPlayerName, BufferType.EDITABLE);
-		edtPlayer2.setText(params.wPlayerName, BufferType.EDITABLE);
+		edtPlayerRed.setText(params.redPlayerName, BufferType.EDITABLE);
+		edtPlayerSilver.setText(params.silverPlayerName, BufferType.EDITABLE);
 
 		lstGameType.setSelection(m_gameTypeAdapter.getPosition(params.gameType), false);
 
@@ -161,8 +161,8 @@ public class MatchParametersActivity extends Activity
 		try
 		{
 			MatchParameters params = new MatchParameters();
-			params.bPlayerName = edtPlayer1.getText().toString();
-			params.wPlayerName = edtPlayer2.getText().toString();
+			params.redPlayerName = edtPlayerRed.getText().toString();
+			params.silverPlayerName = edtPlayerSilver.getText().toString();
 
 			params.gameType = m_gameTypeAdapter.getItem(lstGameType.getSelectedItemPosition());
 			if (rbxFixedGames.isChecked())

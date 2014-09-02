@@ -12,14 +12,25 @@
                 <LinearLayout android:orientation="vertical" android:id="@+id/match_parameters_box" android:layout_height="wrap_content" android:layout_width="match_parent">
                     <TextView android:id="@+id/textView2" android:text="@string/match_parameters" android:layout_height="wrap_content" android:gravity="center" android:layout_width="match_parent" android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
                     <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
-                        <TextView android:id="@+id/textView1" android:text="@string/player_1" android:layout_gravity="center_vertical" android:height="50px" android:width="120px" android:layout_height="50px" android:gravity="center_vertical" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
-                        <EditText android:inputType="textPersonName" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/edtPlayer1">
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50px"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:height="50px"
+                            android:text="@string/player_1"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:width="120px" >
+</TextView>
+                        <EditText android:inputType="textPersonName" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/edtPlayerSilver">
                             <requestFocus></requestFocus>
                         </EditText>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="match_parent">
                         <TextView android:id="@+id/TextView01" android:text="@string/player_2" android:layout_gravity="center_vertical" android:height="50px" android:width="120px" android:layout_height="50px" android:gravity="center_vertical" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
-                        <EditText android:inputType="textPersonName" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/edtPlayer2"></EditText>
+                        <EditText android:inputType="textPersonName" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/edtPlayerRed"></EditText>
                     </LinearLayout>
                     <LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="match_parent">
                         <TextView android:id="@+id/TextView02" android:text="@string/game_type" android:layout_gravity="center_vertical" android:height="50px" android:width="120px" android:layout_height="50px" android:gravity="center_vertical" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>

@@ -10,8 +10,8 @@
     <string name="owner_name">Owner Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="player_1">Player 1</string>
-    <string name="player_2">Player 2</string>
+    <string name="player_1">Silver Player</string>
+    <string name="player_2">Red Player</string>
     <string name="game_type">Game</string>
     <string name="start">Start</string>
     <string name="match_conditions">Match Conditions</string>

@@ -73,7 +73,7 @@ public class TestModelOut implements IModelView
     @Override
     public void appendMove(MoveAbstract move)
     {
-        System.out.println(MovePrinter.printMove(move));
+//        System.out.println(MovePrinter.printMove(move));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class TestModelOut implements IModelView
     public void changeScore(MatchScore score)
     {
         System.out.println("");
-        System.out.println("Black [" + score.getPlayerScore(PlayerId.BLACK) + " : " + score.getPlayerScore(PlayerId.WHITE) + "] White");
+        System.out.println("Black [" + score.getPlayerScore(PlayerId.RED) + " : " + score.getPlayerScore(PlayerId.SILVER) + "] White");
     }
 
 }

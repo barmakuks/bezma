@@ -79,7 +79,7 @@ class MoveGenerator implements IMoveVisitor
             }
         }
 
-        if (move.getPlayer() == PlayerId.BLACK)
+        if (move.getPlayer() == PlayerId.RED)
         {
             blackMove = m_builder.toString();            
         }
@@ -100,7 +100,7 @@ class MoveGenerator implements IMoveVisitor
     @Override
     public void visit(MoveCubeDouble move)
     {
-        if (move.getPlayer() == PlayerId.BLACK)
+        if (move.getPlayer() == PlayerId.RED)
         {
             blackMove = " Doubles => " + move.getCubeValue();            
         }
@@ -114,7 +114,7 @@ class MoveGenerator implements IMoveVisitor
     @Override
     public void visit(MoveCubeTake move)
     {
-        if (move.getPlayer() == PlayerId.BLACK)
+        if (move.getPlayer() == PlayerId.RED)
         {
             blackMove = " Takes";            
         }
@@ -128,7 +128,7 @@ class MoveGenerator implements IMoveVisitor
     @Override
     public void visit(MoveCubePass move)
     {
-        if (move.getPlayer() == PlayerId.BLACK)
+        if (move.getPlayer() == PlayerId.RED)
         {
             blackMove = " Drops";
         }
@@ -148,7 +148,7 @@ class MoveGenerator implements IMoveVisitor
             pts = pts + "s";
         }
 
-        if (move.getPlayer() == PlayerId.WHITE)
+        if (move.getPlayer() == PlayerId.SILVER)
         {
             whiteMove = " Wins " + pts;
             m_whiteScore += move.getPoints();
@@ -163,7 +163,7 @@ class MoveGenerator implements IMoveVisitor
             printLine();
         }
 
-        if (move.getPlayer() == PlayerId.BLACK)
+        if (move.getPlayer() == PlayerId.RED)
         {
             m_out.println("      Wins " + pts);
         }
@@ -192,8 +192,8 @@ public class SnowieGenerator implements IGenerator
     public static String getDefaultFileName(MatchParameters matchParameters)
     {
         return String.format("%s-%s-%dp-%s.txt", 
-                matchParameters.bPlayerName,
-                matchParameters.wPlayerName,
+                matchParameters.redPlayerName,
+                matchParameters.silverPlayerName,
                 matchParameters.matchLength,
                 new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(matchParameters.eventDate)).replace(' ', '_');
     }
@@ -214,8 +214,8 @@ public class SnowieGenerator implements IGenerator
         {            
             m_out.println(String.format("; [eventDate \"%s\"]", new SimpleDateFormat("yyyy.MM.dd", Locale.US).format(matchParameters.eventDate)));
 
-            m_out.println(String.format("; [Black \"%s\"]", matchParameters.bPlayerName));
-            m_out.println(String.format("; [White \"%s\"]", matchParameters.wPlayerName));
+            m_out.println(String.format("; [Black \"%s\"]", matchParameters.redPlayerName));
+            m_out.println(String.format("; [White \"%s\"]", matchParameters.silverPlayerName));
             m_out.println();
             m_out.println(String.format("%2d point match", matchParameters.matchLength));
         }
@@ -233,8 +233,8 @@ public class SnowieGenerator implements IGenerator
                 m_out.println();
                 m_out.println(" Game " + (i+1));
                 m_out.println(String.format(" %-30s %-30s",
-                                            m_matchParameters.bPlayerName + " : " + moveGenerator.getBlackScore(),
-                                            m_matchParameters.wPlayerName + " : " + moveGenerator.getWhiteScore()));
+                                            m_matchParameters.redPlayerName + " : " + moveGenerator.getBlackScore(),
+                                            m_matchParameters.silverPlayerName + " : " + moveGenerator.getWhiteScore()));
             
                 for (int j = 0; j < moves.get(i).size(); ++j)
                 {

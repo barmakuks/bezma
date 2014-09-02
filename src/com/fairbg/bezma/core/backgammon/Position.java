@@ -54,6 +54,8 @@ public class Position implements Cloneable
 
 	/** Current cube position */
 	private CubePosition	m_CubePosition		   = CubePosition.Center;
+	
+	private Direction       m_direction = Direction.None;
 
 	/**
 	 * Get normalized checker position (move direction from 1 to 24)
@@ -65,17 +67,17 @@ public class Position implements Cloneable
 	{
 		if (position <= 0)
 		{
-			return direction == PlayerId.BLACK ? 26 : 27;
+			return direction == PlayerId.RED ? 26 : 27;
 		} 
 		else
 		{
-			return direction == PlayerId.BLACK ? position : BAR_POSITION - position;
+			return direction == PlayerId.RED ? position : BAR_POSITION - position;
 		}
 	}
 
-	private int getPLayerSign(PlayerId player)
+	private int getPlayerSign(PlayerId player)
 	{
-		return player == PlayerId.WHITE ? 1 : player == PlayerId.BLACK ? -1 : 0;
+		return player == PlayerId.SILVER ? 1 : player == PlayerId.RED ? -1 : 0;
 	}
 
 	/**
@@ -252,6 +254,7 @@ public class Position implements Cloneable
 		}
 		clone.m_CubePosition = this.m_CubePosition;
 		clone.m_CubeValue = this.m_CubeValue;
+		clone.m_direction = this.m_direction;
 		return clone;
 	}
 
@@ -271,7 +274,7 @@ public class Position implements Cloneable
 		moveTo = getIndex(moveTo, player);
 		final int OPP_BAR_POSITION = getIndex(Position.BAR_POSITION, PlayerId.getOppositeId(player));
 
-		final int ONE_CHECKER = getPLayerSign(player);
+		final int ONE_CHECKER = getPlayerSign(player);
 
 		m_Checkers[moveFrom] -= ONE_CHECKER; // убираем одну фишку с позиции
 
@@ -313,9 +316,9 @@ public class Position implements Cloneable
 	public PlayerId getCheckerColor(int position, PlayerId player)
 	{
 		final int index = getIndex(position, player);
-		int color = m_Checkers[index] * getPLayerSign(PlayerId.WHITE);
+		int color = m_Checkers[index] * getPlayerSign(PlayerId.SILVER);
 
-		return color == 0 ? PlayerId.NONE : color > 0 ? PlayerId.WHITE : PlayerId.BLACK;
+		return color == 0 ? PlayerId.NONE : color > 0 ? PlayerId.SILVER : PlayerId.RED;
 	}
 
 	/** Return true if all checkers has the same position */
@@ -337,10 +340,10 @@ public class Position implements Cloneable
 
 		for (int i = 0; equals && i <= 25; i++)
 		{
-			int count = getCheckerCount(i, PlayerId.BLACK);
-			int other_count = other.getCheckerCount(i, PlayerId.BLACK);
-			PlayerId color = getCheckerColor(i, PlayerId.BLACK);
-			PlayerId other_color = other.getCheckerColor(i, PlayerId.BLACK);
+			int count = getCheckerCount(i, PlayerId.RED);
+			int other_count = other.getCheckerCount(i, PlayerId.RED);
+			PlayerId color = getCheckerColor(i, PlayerId.RED);
+			PlayerId other_color = other.getCheckerColor(i, PlayerId.RED);
 
 			equals = equals && (other_color == color || other_color == PlayerId.NONE || color == PlayerId.NONE);
 
@@ -373,5 +376,12 @@ public class Position implements Cloneable
 			m_Checkers = PositionUtils.ChangeDirection(currentDirection, destDirection, m_Checkers);
 //			m_CubePosition = PositionUtils.ChangeDirection(currentDirection, destDirection, m_CubePosition);
 		}
+		
+		m_direction = destDirection;
+	}
+	
+	public Direction getDirection()
+	{
+	    return m_direction;
 	}
 }

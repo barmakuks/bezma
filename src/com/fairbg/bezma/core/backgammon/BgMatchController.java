@@ -24,7 +24,7 @@ class BgScore implements MatchScore
     @Override
     public int getPlayerScore(PlayerId playerId)
     {
-        return playerId == PlayerId.BLACK ? m_blackScore : m_whiteScore;
+        return playerId == PlayerId.RED ? m_blackScore : m_whiteScore;
     }
 
     @Override
@@ -32,10 +32,10 @@ class BgScore implements MatchScore
     {
         switch (playerId)
         {
-        case WHITE:
+        case SILVER:
             m_whiteScore = score;
             break;
-        case BLACK:
+        case RED:
             m_blackScore = score;
             break;
         default:
@@ -112,8 +112,8 @@ public class BgMatchController implements IMatchController
         case FixedGames:
             return m_gameNo + 1 >= m_matchParameters.matchLength;
         case Scores:
-            return m_score.getPlayerScore(PlayerId.BLACK) >= m_matchParameters.matchLength
-                    || m_score.getPlayerScore(PlayerId.WHITE) >= m_matchParameters.matchLength;
+            return m_score.getPlayerScore(PlayerId.RED) >= m_matchParameters.matchLength
+                    || m_score.getPlayerScore(PlayerId.SILVER) >= m_matchParameters.matchLength;
         default:
             return false;
         }

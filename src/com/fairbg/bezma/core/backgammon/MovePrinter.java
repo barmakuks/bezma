@@ -1,5 +1,6 @@
 package com.fairbg.bezma.core.backgammon;
 
+import com.fairbg.bezma.core.MatchParameters;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.IMoveVisitor;
 import com.fairbg.bezma.core.model.PlayerId;
@@ -7,14 +8,22 @@ import com.fairbg.bezma.core.model.PlayerId;
 public class MovePrinter implements IMoveVisitor
 {
     private StringBuilder m_builder = new StringBuilder();
-    private String        m_moveString;
+    private String        m_moveString = null;
+    private MatchParameters m_matchParameters = null;
 
+    public MovePrinter(MatchParameters matchParameters)
+    {
+        m_matchParameters = matchParameters;
+    }
+    
     @Override
     public void visit(Move move)
     {
         m_builder = new StringBuilder();
 
-        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
+        m_builder.append(move.getPlayer() == PlayerId.SILVER ? m_matchParameters.silverPlayerName : m_matchParameters.redPlayerName);
+        m_builder.append(System.getProperty("line.separator"));
+        
         m_builder.append("[" + move.getDie1() + ":" + move.getDie2() + "]");
 
         if (move.getMovements().length == 0)
@@ -44,21 +53,21 @@ public class MovePrinter implements IMoveVisitor
         return m_moveString;
     }
 
-    public static String printMove(MoveAbstract move)
+    public String printMove(MoveAbstract move)
     {
-        MovePrinter printer = new MovePrinter();
+        m_moveString = null;
+        
+        move.accept(this);
 
-        move.accept(printer);
-
-        return printer.getMoveString();
+        return getMoveString();
     }
 
     @Override
     public void visit(MoveCubeDouble move)
     {
         m_builder = new StringBuilder();
-        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
-        m_builder.append(" double " + move.getCubeValue());
+        m_builder.append(move.getPlayer() == PlayerId.SILVER ? m_matchParameters.silverPlayerName : m_matchParameters.redPlayerName);
+        m_builder.append(": double " + move.getCubeValue());
 
         m_moveString = m_builder.toString();        
     }
@@ -67,8 +76,8 @@ public class MovePrinter implements IMoveVisitor
     public void visit(MoveCubeTake move)
     {
         m_builder = new StringBuilder();
-        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
-        m_builder.append(" take " + move.getCubeValue());
+        m_builder.append(move.getPlayer() == PlayerId.SILVER ? m_matchParameters.silverPlayerName : m_matchParameters.redPlayerName);
+        m_builder.append(": take " + move.getCubeValue());
 
         m_moveString = m_builder.toString();        
     }
@@ -77,8 +86,8 @@ public class MovePrinter implements IMoveVisitor
     public void visit(MoveCubePass move)
     {
         m_builder = new StringBuilder();
-        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "W: " : "B: ");
-        m_builder.append(" pass " + move.getCubeValue());
+        m_builder.append(move.getPlayer() == PlayerId.SILVER ? m_matchParameters.silverPlayerName : m_matchParameters.redPlayerName);
+        m_builder.append(": pass " + move.getCubeValue());
 
         m_moveString = m_builder.toString();        
     }
@@ -87,19 +96,20 @@ public class MovePrinter implements IMoveVisitor
     public void visit(MoveFinishGame move)
     {
         m_builder = new StringBuilder();
-        m_builder.append(move.getPlayer() == PlayerId.WHITE ? "White " : "Black ");
-        m_builder.append(" wins " + move.getPoints() + " point");
+        m_builder.append(move.getPlayer() == PlayerId.SILVER ? m_matchParameters.silverPlayerName : m_matchParameters.redPlayerName);
+        m_builder.append(" won " + move.getPoints() + " point");
+
         if (move.getPoints() > 1)
         {
             m_builder.append("s");
         }
+
         m_moveString = m_builder.toString();        
     }
     
     @Override
     public void visit(MoveStartGame move)
     {
-        // TODO Auto-generated method stub  
         m_moveString = "start game";
     }
 }

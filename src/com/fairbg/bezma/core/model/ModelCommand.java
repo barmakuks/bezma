@@ -25,7 +25,7 @@ public class ModelCommand
         {
             CommunicationCommandState stateCommand = (CommunicationCommandState) command;
 
-            modelCommand.player = (stateCommand.playerId == 0) ? PlayerId.NONE : (stateCommand.playerId > 0) ? PlayerId.BLACK : PlayerId.WHITE;
+            modelCommand.player = (stateCommand.playerId == 0) ? PlayerId.NONE : (stateCommand.playerId > 0) ? PlayerId.RED : PlayerId.SILVER;
 
             int[] pos = modelCommand.m_Position.getCheckers();
 

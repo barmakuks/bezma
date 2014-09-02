@@ -241,7 +241,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
     public boolean isGameFinished()
     {
         // TODO Implement if continuing game become meaningless
-        return m_LastPosition.getPips(PlayerId.BLACK) == 0 || m_LastPosition.getPips(PlayerId.WHITE) == 0;
+        return m_LastPosition.getPips(PlayerId.RED) == 0 || m_LastPosition.getPips(PlayerId.SILVER) == 0;
     }
 
     @Override
@@ -281,14 +281,14 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         Move move = null;
         if (m_CurrentPlayer == null || m_CurrentPlayer == PlayerId.NONE)
         {
-            m_CurrentPlayer = PlayerId.BLACK;
+            m_CurrentPlayer = PlayerId.RED;
 
             move = m_Rules.findMove(die1, die2, m_LastPosition, position, m_CurrentPlayer);
 
             if (move == null)
             {
-                m_CurrentPlayer = PlayerId.WHITE;
-                move = m_Rules.findMove(die1, die2, m_LastPosition, position, PlayerId.WHITE);
+                m_CurrentPlayer = PlayerId.SILVER;
+                move = m_Rules.findMove(die1, die2, m_LastPosition, position, PlayerId.SILVER);
             }
 
             if (move == null)
@@ -529,11 +529,11 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
     {
         if (m_StartPositionDirection == Direction.RedCW || m_StartPositionDirection == Direction.RedCCW)
         {
-            return PlayerId.WHITE;
+            return PlayerId.SILVER;
         }
         else
         {
-            return PlayerId.BLACK;
+            return PlayerId.RED;
         }
     }
 

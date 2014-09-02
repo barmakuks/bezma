@@ -211,8 +211,8 @@ public class StartActivity extends Activity
 		MatchParameters params = new MatchParameters();
 		DBAdapter adapter = new DBAdapter(this);
 		adapter.open();
-		params.bPlayerName = adapter.getString("PLAYER1", params.bPlayerName);
-		params.wPlayerName = adapter.getString("PLAYER2", params.wPlayerName);
+		params.redPlayerName = adapter.getString("PLAYER1", params.redPlayerName);
+		params.silverPlayerName = adapter.getString("PLAYER2", params.silverPlayerName);
 		params.calculateRolls = adapter.getBoolean("CALC_ROLLS", params.calculateRolls);
 		params.useCrawfordRule = adapter.getBoolean("CRAWFORD", params.useCrawfordRule);
 		params.exactRolls = adapter.getBoolean("EXACT_ROLLS", params.exactRolls);
@@ -231,8 +231,8 @@ public class StartActivity extends Activity
 		// write parameters into Database
 		DBAdapter adapter = new DBAdapter(this);
 		adapter.open();
-		adapter.putValue("PLAYER1", params.bPlayerName);
-		adapter.putValue("PLAYER2", params.wPlayerName);
+		adapter.putValue("PLAYER1", params.redPlayerName);
+		adapter.putValue("PLAYER2", params.silverPlayerName);
 		adapter.putValue("CALC_ROLLS", params.calculateRolls);
 		adapter.putValue("CRAWFORD", params.useCrawfordRule);
 		adapter.putValue("EXACT_ROLLS", params.exactRolls);

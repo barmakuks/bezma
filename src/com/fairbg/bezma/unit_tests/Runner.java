@@ -258,6 +258,13 @@ public class Runner
 		from.setCheckers(testData[0].position);
 
 		Position to = new Position();
+		
+		MatchParameters  params = new MatchParameters();
+        params.silverPlayerName = "W";
+        params.redPlayerName = "R";
+		
+		MovePrinter movePrinter = new MovePrinter(params);
+		
 
 		for (int i = 1; i < testData.length; i++)
 		{
@@ -269,7 +276,7 @@ public class Runner
 			if (move != null)
 			{
 				System.out.print(String.format("%2d: ", i));
-				System.out.println(MovePrinter.printMove(move));
+				System.out.println(movePrinter.printMove(move));
 				from.applyMove(move);
 			} else
 			{
@@ -311,7 +318,9 @@ public class Runner
 	public static short[][] getDatagrams()
 	{
 //		return testGameDoubleTakeDoublePassPart1;
-	    return testGameDoubleTakeDoublePassPart2;
+//	    return testGameDoubleTakeDoublePassPart2;
+//	    return TestData_FullMatch.data;
+	    return TestData_DifferentDirections.dataGrayCW;
 	}
 
 	/**
@@ -321,7 +330,7 @@ public class Runner
 	{
 		BezmaLog.allowTag("Generator");
 		IModelView view = new TestModelOut();
-		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 200);
+		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 2000);
 
 		TestConfiguration configuration = new TestConfiguration();
 
