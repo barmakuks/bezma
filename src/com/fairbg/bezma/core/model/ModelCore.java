@@ -25,7 +25,7 @@ public final class ModelCore implements IModelEventNotifier
      * @param parameters Match parameters
      * @param storage
      */
-    public void create(MatchParameters parameters, IModelSerializer storage, IControllersFactory factory)
+    public void build(MatchParameters parameters, IModelSerializer storage, IControllersFactory factory)
     {
         m_matchParameters = parameters;
         m_storage = storage;
@@ -119,5 +119,10 @@ public final class ModelCore implements IModelEventNotifier
     public BoardContext getBoardContext()
     {
         return m_gameController.getModelSituation();
+    }
+    
+    public  MatchScore getScore()
+    {
+        return m_matchController.getScore();
     }
 }
