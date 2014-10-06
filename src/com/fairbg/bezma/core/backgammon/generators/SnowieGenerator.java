@@ -248,7 +248,6 @@ public class SnowieGenerator implements IGenerator
     public void beginProccessing()
     {
         finishProcessing();
-        BezmaLog.allowTag("Generator");
 //        BezmaLog.i("Generator", "Start write to file:" + m_filename);
         try
         {
@@ -259,11 +258,9 @@ public class SnowieGenerator implements IGenerator
             m_out = new PrintWriter(new PrintStream(file));
         } catch (FileNotFoundException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

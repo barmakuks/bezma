@@ -9,3 +9,5 @@ tests/*.err
 bin
 gen/*
 docs/html
+bezma-files/*
+.unfinished*
