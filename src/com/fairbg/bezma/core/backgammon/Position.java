@@ -364,6 +364,52 @@ public class Position implements Cloneable
 		return m_Checkers[getIndex(BAR_POSITION, player)] != 0;
 	}
 
+	public enum LossType{Normal, Gammon, Backgammon};
+	public LossType getLossType(PlayerId player)
+	{
+	    final PlayerId opponent = PlayerId.getOppositeId(player);
+	    int count = 0;
+	    for (int i = 0; i < 25; ++i)
+	    {
+	        if (getCheckerColor(i, opponent) == opponent)
+	        {
+	            return LossType.Normal;
+	        }
+	        if (getCheckerColor(i, player) == player)
+	        {
+	            count += getCheckerCount(i, player);
+	        }	        
+	    }
+	    
+	    if (count < 15)
+	    {
+	        return LossType.Normal;
+	    }
+
+        for (int i = 0; i <= 6; ++i)
+        {
+            if (getCheckerColor(i, player) == player)
+            {
+                return LossType.Backgammon;
+            }           
+        }
+	    
+	    return LossType.Gammon;	    
+	}
+	
+    public int checkersLeft(PlayerId player)
+    {
+        int count = 0;
+        for (int i = 0; i < 25; ++i)
+        {
+            if (getCheckerColor(i, player) == player)
+            {
+                count += getCheckerCount(i, player);
+            }           
+        }
+        return count;       
+    }	
+	
 	public void ChangeDirection(Direction currentDirection, Direction destDirection)
 	{
 		if (currentDirection == Direction.None)
