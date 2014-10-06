@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_device" />
+
+<LinearLayout android:orientation="vertical" android:id="@+id/linearLayout1" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1">
+
+    <ListView
+        android:id="@+id/lst_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+</ListView>
+</LinearLayout>
+
+<LinearLayout
+    android:id="@+id/layout_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0" >
+
+    <Button
+        android:id="@+id/btn_update_devices"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.50"
+        android:enabled="false"
+        android:text="@string/update_devices" >
+
+    </Button>
+</LinearLayout>
+    
+</LinearLayout>

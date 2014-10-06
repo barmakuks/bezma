@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="@string/owner_name"></TextView>
+    <EditText android:id="@+id/edtOwnerName" android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="text">
+        <requestFocus></requestFocus>
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/board_id" />
+
+    <Spinner
+        android:id="@+id/chbxBoardMac"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:entries="@array/registered_boards" />
+
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_gravity="center|right" android:gravity="right">
+        <Button android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:id="@+id/btn_ok" android:text="@string/ok" android:layout_width="100dp"></Button>
+        <Button android:layout_gravity="right" android:layout_height="wrap_content" android:id="@+id/btn_cancel" android:text="@string/cancel" android:layout_width="100dp"></Button>
+    </LinearLayout>
+    
+</LinearLayout>

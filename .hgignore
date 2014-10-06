@@ -1,0 +1,13 @@
+syntax: glob
+.hgignore
+*.class
+*.rej
+*~
+*.o
+*.log
+tests/*.err
+bin
+gen/*
+docs/html
+bezma-files/*
+.unfinished*

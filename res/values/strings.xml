@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BezmaAndroid</string>
+    <string name="new_match">Start new match</string>
+    <string name="match_continue">Continue last match</string>
+    <string name="match_store">Match store</string>
+    <string name="settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="owner_name">Owner Name</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="player_1">Silver Player</string>
+    <string name="player_2">Red Player</string>
+    <string name="game_type">Game</string>
+    <string name="start">Start</string>
+    <string name="match_conditions">Match Conditions</string>
+    <string name="number_of_points">Number of Points</string>
+    <string name="fixed_number_of_games">Fixed Number of Games</string>
+    <string name="use_crawford">Use Crawford Rule</string>
+    <string name="match_parameters">Match Parameters</string>
+    <string name="rolling_dice">Rolling Dice</string>
+    <string name="manual_rolls">Players rolls</string>
+    <string name="random_rolls">Computer Rolls</string>
+    <string name="calculate_rools">Calculate Rolls</string>
+    <string name="exactly">Exactly</string>
+    <string name="approximately">Approximately</string>
+    <string name="minutes_per_match">Match Limit (min)</string>
+    <string name="seconds_per_move">Move Limit (sec)</string>
+    <string name="use_timer">Use Timer</string>
+    <string name="timer_params">Timer Parameters</string>
+    <string name="backgammon">Backgammon</string>
+    <string name="gulbara">Gul Bara</string>
+
+    <string-array name="game_type_strings">
+        <item>Backgammon</item>
+        <item>Gul Bara</item>
+    </string-array>
+
+    <string-array name="registered_boards">
+        <item>00:12:6F:22:46:2C</item>
+        <item>00:12:6F:22:45:98</item>
+    </string-array>
+    
+    <string name="select_device">Select device</string>
+    <string name="update_devices">Find Devices</string>
+    <string name="bezma_logo">BEZMA</string>
+    <string name="board_id">Board ID</string>
+
+</resources>
