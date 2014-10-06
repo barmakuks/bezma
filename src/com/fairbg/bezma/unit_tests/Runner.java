@@ -323,7 +323,7 @@ public class Runner
 //	    return testGameDoubleTakeDoublePassPart2;
 //	    return TestData_FullMatch.data;
 //	    return TestData_DifferentDirections.dataGrayCW;
-	    return TestData_Gammon_Backgammon.dataGammon;
+	    return TestData_Gammon_Backgammon.dataBackGammon;
 	}
 
 	/**
@@ -332,7 +332,7 @@ public class Runner
 	public static void main(String[] args)
 	{
 //		BezmaLog.allowTag("Generator");
-		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 250);
+		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 100);
 
 		TestConfiguration configuration = new TestConfiguration();
 

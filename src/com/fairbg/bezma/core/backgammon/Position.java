@@ -365,19 +365,19 @@ public class Position implements Cloneable
 	}
 
 	public enum LossType{Normal, Gammon, Backgammon};
-	public LossType getLossType(PlayerId player)
+	public LossType getLossType(PlayerId looser)
 	{
-	    final PlayerId opponent = PlayerId.getOppositeId(player);
+	    final PlayerId winner = PlayerId.getOppositeId(looser);
 	    int count = 0;
-	    for (int i = 0; i < 25; ++i)
+	    for (int i = 0; i <= 25; ++i)
 	    {
-	        if (getCheckerColor(i, opponent) == opponent)
+	        if (getCheckerColor(i, winner) == winner)
 	        {
 	            return LossType.Normal;
 	        }
-	        if (getCheckerColor(i, player) == player)
+	        if (getCheckerColor(i, looser) == looser)
 	        {
-	            count += getCheckerCount(i, player);
+	            count += getCheckerCount(i, looser);
 	        }	        
 	    }
 	    
@@ -386,9 +386,9 @@ public class Position implements Cloneable
 	        return LossType.Normal;
 	    }
 
-        for (int i = 0; i <= 6; ++i)
+        for (int i = 19; i <= 25; ++i)
         {
-            if (getCheckerColor(i, player) == player)
+            if (getCheckerColor(i, looser) == looser)
             {
                 return LossType.Backgammon;
             }           
