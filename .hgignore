@@ -1,4 +1,5 @@
 syntax: glob
+.unfinished*
 .hgignore
 *.class
 *.rej
