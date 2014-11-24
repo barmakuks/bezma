@@ -12,3 +12,6 @@ gen/*
 docs/html
 bezma-files/*
 .unfinished*
+.idea/*
+out/production/*
+bezma.iml
