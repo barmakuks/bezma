@@ -70,7 +70,8 @@ public class DBAdapter {
 	/**записывает в БД параметр типа String*/
 	public void putValue(String key, String value) {
 		try {
-			if (getString(key, "").equals("")) {
+			final String keyStr = getString(key, "");
+			if (keyStr == null || keyStr.equals("")) {
 				ContentValues content = new ContentValues();
 				content.put(KEY_ROWID, key);
 				content.put(KEY_VALUE, value);
