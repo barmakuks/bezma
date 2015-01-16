@@ -272,12 +272,9 @@ public class MatchSerializer implements IModelSerializer
                 parentFile.mkdirs();
             }
 
-
-            BezmaLog.allowTag("STORAGE");
             BezmaLog.i("STORAGE", "Write to file: " + m_fileName);
             FileWriter m_out = new FileWriter(file, true);
 
-            System.out.println("Ser:" + m_generator.getData());
             m_out.write(m_generator.getData());
             m_out.close();
 

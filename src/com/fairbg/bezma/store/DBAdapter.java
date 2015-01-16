@@ -1,5 +1,6 @@
 package com.fairbg.bezma.store;
 
+import android.text.TextUtils;
 import com.fairbg.bezma.log.BezmaLog;
 
 import android.content.ContentValues;
@@ -70,7 +71,8 @@ public class DBAdapter {
 	/**записывает в БД параметр типа String*/
 	public void putValue(String key, String value) {
 		try {
-			if (getString(key, "").equals("")) {
+			final String keyStr = getString(key, "");
+			if (TextUtils.isEmpty(keyStr)) {
 				ContentValues content = new ContentValues();
 				content.put(KEY_ROWID, key);
 				content.put(KEY_VALUE, value);

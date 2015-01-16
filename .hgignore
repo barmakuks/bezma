@@ -1,4 +1,5 @@
 syntax: glob
+.unfinished*
 .hgignore
 *.class
 *.rej
@@ -9,3 +10,8 @@ tests/*.err
 bin
 gen/*
 docs/html
+bezma-files/*
+.unfinished*
+.idea/*
+out/production/*
+bezma.iml

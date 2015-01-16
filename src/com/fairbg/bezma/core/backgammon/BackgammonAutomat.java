@@ -368,7 +368,6 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
             ModelCommand normalizedCommand = NormalizePosition(modelCommand);
             BezmaLog.i("BEZMA", "processCommand in BackgammonAutomat" + modelCommand.getPosition().toString());
             res = m_CurrentState.processCommand(this, normalizedCommand);
-            System.out.println("found:\n" + m_LastPosition);
         }
 
         return res;
