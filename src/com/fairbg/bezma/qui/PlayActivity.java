@@ -112,9 +112,9 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
         m_Presenter = new Presenter(configurator, configuration);
 
-        m_Presenter.addView(this);
-
         initView();
+
+        m_Presenter.addView(this);
 
         DrawingUtils.setAssetManager(this.getAssets());
 
@@ -350,14 +350,29 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
             for (int j = 0; j > checkers[25]; j--)
             {
-                canvas.drawBitmap(m_checker_white_bmp, m_MaxBarX - j * m_CheckerSize, y, null);
-//                canvas.drawBitmap(m_checker_white_bmp, m_MinBarX + j * m_CheckerSize - m_CheckerSize, y, null);
+                if (m_current_position.getDirection() == Direction.GrayCCW 
+                    || m_current_position.getDirection() == Direction.GrayCW)
+                {
+                    canvas.drawBitmap(m_checker_white_bmp, m_MinBarX + j * m_CheckerSize - m_CheckerSize, y, null);
+                }
+                else
+                {
+                    canvas.drawBitmap(m_checker_white_bmp, m_MaxBarX - j * m_CheckerSize, y, null);
+                }
+                
             }
 
             for (int j = 0; j < checkers[0]; j++)
             {
-              canvas.drawBitmap(m_checker_black_bmp, m_MinBarX - j * m_CheckerSize - m_CheckerSize, y, null);
-//                canvas.drawBitmap(m_checker_black_bmp, m_MaxBarX - j * m_CheckerSize, y, null);
+                if (m_current_position.getDirection() == Direction.GrayCCW 
+                        || m_current_position.getDirection() == Direction.GrayCW)
+                {
+                    canvas.drawBitmap(m_checker_black_bmp, m_MaxBarX + j * m_CheckerSize, y, null);                    
+                }
+                else
+                {
+                    canvas.drawBitmap(m_checker_black_bmp, m_MinBarX - j * m_CheckerSize - m_CheckerSize, y, null);                    
+                }    
             }
 
             // draw checkers on off-side

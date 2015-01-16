@@ -146,9 +146,10 @@ public class BluetoothBoardDevice implements IDatagramObservable
      */
     public void sendDatagram(Datagram datagram)
     {
-        if (datagram != null)
+        if (datagram != null && m_CommunicationThread != null)
         {
             byte[] bytes = datagram.toByteArray();
+            
             m_CommunicationThread.write(bytes);
         }
 

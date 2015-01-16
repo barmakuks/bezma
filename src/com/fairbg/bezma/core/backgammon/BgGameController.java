@@ -76,8 +76,19 @@ public class BgGameController implements IGameController
     {
         m_boardContext = new BoardContext(new Position(), "");
 
-        // TODO calculate winner points
         int points = cubeValue;
+        
+        switch (m_gameAutomat.getCurrentPosition().getLossType(PlayerId.getOppositeId(winner)))
+        {
+        case Backgammon:
+            points *= 3;
+            break;
+        case Gammon:
+            points *= 2;
+            break;
+        default:
+            break;
+        }
 
         m_matchController.get().finishGame(winner, points);
     }

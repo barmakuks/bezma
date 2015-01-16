@@ -1,5 +1,7 @@
 package com.fairbg.bezma.unit_tests;
 
+import java.io.File;
+
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommandState;
 import com.fairbg.bezma.core.MatchParameters;
@@ -289,7 +291,7 @@ public class Runner
 	{
 		System.out.println("*********** test model **************");
 		ModelCore model = new ModelCore();
-		model.create(null, null, null);
+		model.build(null, null, null);
 
 		CommunicationCommandState commCommand = new CommunicationCommandState();
 		ModelCommand command = ModelCommand.createCommand(commCommand);
@@ -320,7 +322,8 @@ public class Runner
 //		return testGameDoubleTakeDoublePassPart1;
 //	    return testGameDoubleTakeDoublePassPart2;
 //	    return TestData_FullMatch.data;
-	    return TestData_DifferentDirections.dataGrayCW;
+//	    return TestData_DifferentDirections.dataGrayCW;
+	    return TestData_Gammon_Backgammon.dataBackGammon;
 	}
 
 	/**
@@ -328,17 +331,22 @@ public class Runner
 	 */
 	public static void main(String[] args)
 	{
-		BezmaLog.allowTag("Generator");
-		IModelView view = new TestModelOut();
-		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 2000);
+//		BezmaLog.allowTag("Generator");
+		IModelView commandsProvider = new TestModelCommandsProvider(getDatagrams(), 100);
 
 		TestConfiguration configuration = new TestConfiguration();
 
+		// remove not finished match file
+		File file = new File(configuration.getUnfinishedMatchPath());
+		file.delete();		
+		
 		MatchParameters params = new MatchParameters();
 		params.matchLength = 3;
 		
 		configuration.configureMatchParameters(params);
 
+        IModelView view = new TestModelOut(params);
+		
 		TestConfigurator configurator = new TestConfigurator();
 
 		Presenter presenter = new Presenter(configurator, configuration);
