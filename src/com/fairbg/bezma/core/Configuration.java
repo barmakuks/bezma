@@ -1,5 +1,7 @@
 package com.fairbg.bezma.core;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
 /** Match configuration */
@@ -15,7 +17,7 @@ public abstract class Configuration implements Serializable
 	{
 		m_MatchParameters = matchParameters;
 		
-		if (m_MatchParameters.defaultDir == null)
+		if (TextUtils.isEmpty(m_MatchParameters.defaultDir))
 		{
 		    m_MatchParameters.defaultDir = getDefaultUserDirectory();
 		}
