@@ -485,7 +485,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                     if (positions[i] != 0)
                     {
                         paint.setColor((positions[i] == 2) ? white : black);
-                        canvas.drawCircle(214 - (i % 5) * gapX, 740 - (i / 5) * gapY, size, paint);
+                        canvas.drawCircle(70 + (i % 5) * gapX, 740 - (i / 5) * gapY, size, paint);
                     }
                 }
                 
@@ -515,7 +515,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                     {
                         int index = i - 96;
                         paint.setColor((positions[i] == 2) ? white : black);
-                        canvas.drawCircle(264 + (index % 5) * gapX, 303 + (index / 5) * gapY, size, paint);
+                        canvas.drawCircle(408 - (index % 5) * gapX, 303 + (index / 5) * gapY, size, paint);
                     }
                 }
                 
