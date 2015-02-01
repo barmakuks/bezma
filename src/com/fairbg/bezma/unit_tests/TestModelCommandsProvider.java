@@ -2,6 +2,7 @@ package com.fairbg.bezma.unit_tests;
 
 import java.util.ArrayList;
 
+import com.fairbg.bezma.bluetooth.StateDatagram;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.CommunicationCommand;
 import com.fairbg.bezma.communication.commands.CommunicationCommandState;
@@ -54,6 +55,25 @@ public class TestModelCommandsProvider implements IModelView
         m_Observers.remove(aCommandObserver);
     }
 
+
+    private static StateDatagram.CubeState getCubeState(int value)
+    {
+        if (value == 0)
+        {
+            return StateDatagram.CubeState.Center;
+        }
+        if (value < 0)
+        {
+            return StateDatagram.CubeState.South;
+        }
+        if (value > 0)
+        {
+            return StateDatagram.CubeState.North;
+        }
+
+        return StateDatagram.CubeState.NoCube;
+    }
+
     @Override
     public boolean start()
     {
@@ -66,7 +86,7 @@ public class TestModelCommandsProvider implements IModelView
                 {
                     CommunicationCommandState command = new CommunicationCommandState();
                     command.checkers = m_datagrams[i];
-                    command.cubePosition = m_datagrams[i][m_datagrams[i].length - 1];
+                    command.cubePosition = getCubeState(m_datagrams[i][m_datagrams[i].length - 1]);
                     command.playerId = -1;
                     notifyObservers(command);
 
