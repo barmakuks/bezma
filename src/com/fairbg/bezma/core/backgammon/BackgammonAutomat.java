@@ -249,6 +249,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
     {
         m_GameController.finishGame(m_CurrentPlayer, m_cubeValue);
         m_CurrentPlayer = null;
+        m_StartPositionDirection = Direction.None;
 
         setAutomatState(AutomatStates.START);
     }

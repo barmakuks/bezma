@@ -33,14 +33,17 @@ public class ModelCommand
 
             switch (stateCommand.cubePosition)
             {
-            case 0:
+            case Center:
                 cubePosition = CubePosition.Center;
                 break;
-            case 1:
+            case North:
                 cubePosition = CubePosition.North;
                 break;
-            case 2:
+            case South:
                 cubePosition = CubePosition.South;
+                break;
+            case Error:
+                cubePosition = CubePosition.Error;
                 break;
             default:
                 cubePosition = CubePosition.None;

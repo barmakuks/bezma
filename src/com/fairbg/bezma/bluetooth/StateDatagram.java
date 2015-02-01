@@ -22,13 +22,13 @@ public class StateDatagram extends Datagram
 
     /** Button pressed: 0-no button; >0 - white player; <0 - black player */
     public short button = 0;
-    /** Is cube on the board */
-    public boolean has_cube = true;
+
+    public enum CubeState{South, Center, North, NoCube, Error};
     /**
      * Cube: 0 - cube in center; >0 - white player has cube; <0 - black player
      * has cube
      */
-    public short cube = 0;
+    public CubeState cube = CubeState.Center;
 
     @Override
     public DatagramType getDatagramType()
@@ -209,22 +209,29 @@ public class StateDatagram extends Datagram
         if (dg.sensors.get(139) != 0)
             dg.button = 1;
         // Parse cube
-        dg.has_cube = false;
-        dg.cube = 0;
+        int cube_count = 0; // to prevent cubes on several positions
+
+        dg.cube = CubeState.NoCube;
+
         if (dg.sensors.get(135) != 0)
         {
-            dg.has_cube = true;
-            dg.cube = 1;
+            dg.cube = CubeState.North;
+            cube_count++;
         }
         if (dg.sensors.get(137) != 0)
         {
-            dg.has_cube = true;
-            dg.cube = -1;
+            dg.cube = CubeState.South;
+            cube_count++;
         }
         if (dg.sensors.get(136) != 0)
         {
-            dg.has_cube = true;
-            dg.cube = 0;
+            dg.cube = CubeState.Center;
+            cube_count++;
+        }
+
+        if (cube_count > 1)
+        {
+            dg.cube = CubeState.Error;
         }
 
     }

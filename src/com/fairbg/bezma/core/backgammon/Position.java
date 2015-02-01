@@ -23,18 +23,13 @@ public class Position implements Cloneable
 	}
 
 	public enum CubePosition {
-		/** No cube on board */
-		None, 
-		/** Cube in the middle position */
-		Center,
-		/** Cube is proposed to the south player and placed into the west part of the board */
-		West,
-		/** Cube is proposed to the north player and placed into the east part of the board */
-		East,
-		/** South player owns the cube in the bottom of the board */
-		South,
-		/** North player owns cube on the top of the board */
-		North
+		None, //> No cube on board
+		Center, //> Cube in the middle position
+		West, //>Cube is proposed to the south player and placed into the west part of the board
+		East, //> Cube is proposed to the north player and placed into the east part of the board
+		South, //> South player owns the cube in the bottom of the board
+		North, //> North player owns cube on the top of the board
+        Error //> Error position (more then one cube on board)
 	}
 
 	public static final int MAX_CHECKERS_IN_POSITION = 5;
