@@ -588,6 +588,7 @@ public class BackgammonAutomat implements IBackgammonAutomat, IGameAutomat
         public void visit(MoveStartGame move)
         {
             m_StartPositionDirection = move.getDirection();
+            setAutomatState(AutomatStates.MOVE);
         }
     };
     
