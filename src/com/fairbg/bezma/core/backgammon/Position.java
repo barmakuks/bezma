@@ -295,12 +295,20 @@ public class Position implements Cloneable
 	/** Calculate current PIPs for player */
 	public int getPips(PlayerId forPlayer)
 	{
+		int [] pos = PositionUtils.ChangeDirection(Direction.RedCCW, m_direction, m_Checkers);
 	    int pips = 0;
-	    for (int i = 0; i < 25; ++i)
+
+	    for (int i = 1; i < 25; ++i)
 	    {
-	        if (getCheckerColor(i, forPlayer) == forPlayer)
+			int index = getIndex(i, forPlayer);
+
+			int color = pos[index] * getPlayerSign(PlayerId.SILVER);
+
+			PlayerId player = color == 0 ? PlayerId.NONE : color > 0 ? PlayerId.SILVER : PlayerId.RED;
+
+	        if (player == forPlayer)
 	        {
-	            int cnt = getCheckerCount(i, forPlayer);
+	            int cnt = Math.abs(pos[index]);
 	            pips += i * cnt;
 	        }
 	    }

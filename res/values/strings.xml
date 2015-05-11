@@ -42,6 +42,9 @@
         <item>00:12:6F:22:45:98</item>
         <item>00:12:6F:22:45:9C</item>
         <item>00:12:6F:73:E6:43</item>
+        <item>00:12:6F:73:E6:54</item>
+        <item>00:12:6F:84:20:B7</item>
+        <item>00:12:6F:84:22:3A</item>
         </string-array>
     
     <string name="select_device">Select device</string>
