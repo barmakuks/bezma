@@ -32,6 +32,7 @@ import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.backgammon.Position.Direction;
+import com.fairbg.bezma.core.backgammon.PositionUtils;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.errors.ErrorWrongPosition;
 import com.fairbg.bezma.core.model.MatchScore;
@@ -598,6 +599,9 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
         protected void onDraw(Canvas canvas)
         {
             canvas.drawBitmap(m_Background, 0, 0, null);
+
+            String redPips = "", silverPips = "";
+
             
             if (m_current_position != null
                     && m_current_position.getDirection() != Direction.None
@@ -606,17 +610,24 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                 m_lastDirection = m_current_position.getDirection();
             }
 
-            String bottomPlayerName = m_MatchParameters.redPlayerName;
-            String topPlayerName = m_MatchParameters.silverPlayerName;
+            if (m_current_position != null)
+            {
+                redPips = " : " + m_current_position.getPips(PlayerId.RED);
+                silverPips = " : " + m_current_position.getPips(PlayerId.SILVER);
+            }
+
+            String bottomPlayerName = m_MatchParameters.redPlayerName + redPips;
+            String topPlayerName = m_MatchParameters.silverPlayerName + silverPips;
             String bottomScore = Integer.toString(m_redScore);
             String topScore = Integer.toString(m_silverScore);
             
             if (m_lastDirection == Direction.GrayCCW || m_lastDirection == Direction.GrayCW)
             {
-                bottomPlayerName = m_MatchParameters.silverPlayerName;
-                topPlayerName = m_MatchParameters.redPlayerName;
+                bottomPlayerName = m_MatchParameters.silverPlayerName + silverPips;
+                topPlayerName = m_MatchParameters.redPlayerName + redPips;
                 bottomScore = Integer.toString(m_silverScore);
                 topScore = Integer.toString(m_redScore);
+
             }
 
             // player names
