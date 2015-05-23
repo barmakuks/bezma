@@ -4,8 +4,10 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="@string/owner_name"></TextView>
-    <EditText android:id="@+id/edtOwnerName" android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="text">
+    <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="@string/owner_name"
+              android:visibility="gone"></TextView>
+    <EditText android:id="@+id/edtOwnerName" android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="text"
+              android:visibility="gone">
         <requestFocus></requestFocus>
     </EditText>
 
