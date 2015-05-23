@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothDevice;
 import com.fairbg.bezma.bluetooth.Datagram;
 import com.fairbg.bezma.bluetooth.DatagramConverter;
 import com.fairbg.bezma.bluetooth.IDatagramObserver;
+import com.fairbg.bezma.bluetooth.LedDatagram;
 import com.fairbg.bezma.bluetooth.android.BluetoothBoardDevice;
 import com.fairbg.bezma.communication.IModelView;
 import com.fairbg.bezma.communication.commands.ICommandObserver;
@@ -16,6 +17,7 @@ import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.model.MatchScore;
 import com.fairbg.bezma.core.model.MoveAbstract;
 import com.fairbg.bezma.core.model.BoardContext;
+import com.fairbg.bezma.log.BezmaLog;
 
 /** Имплементация устройства 3-го покоения со связью через bluetooth */
 public class DeviceImpl implements IModelView, IDatagramObserver
@@ -34,8 +36,26 @@ public class DeviceImpl implements IModelView, IDatagramObserver
     @Override
     public void setModelState(BoardContext modelState)
     {
-        Datagram datagram = null;
-        m_BoardDevice.sendDatagram(datagram);
+//        {
+//            BezmaLog.i("BEZMA", "Switch off 0x8B");
+//            Datagram datagram = new LedDatagram(0x8B, true);
+//            m_BoardDevice.sendDatagram(datagram);
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        {
+//            BezmaLog.i("BEZMA", "Switch off 0x8C");
+//            Datagram datagram = new LedDatagram(0x8A, true);
+//            m_BoardDevice.sendDatagram(datagram);
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override

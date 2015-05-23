@@ -3,6 +3,7 @@ package com.fairbg.bezma.qui;
 import java.io.File;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,8 @@ public class StartActivity extends Activity
 {
 	static final int REQUEST_MATCH_PARAMETERS = 100;
 	static final int REQUEST_BLUETOOTH_DEVICE = 101;
-	static final int REQUEST_SETTINGS		 = 102;
+	static final int REQUEST_SETTINGS		  = 102;
+	static final int REQUEST_ENABLE_BT        = 103;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -136,16 +138,21 @@ public class StartActivity extends Activity
 		{
 			switch (requestCode)
 			{
-			case REQUEST_MATCH_PARAMETERS:
-				saveMatchParameters((MatchParameters) data.getSerializableExtra(MatchParameters.class.getCanonicalName()));
-				startPlayActivity(null);
-				// startSelectDeviceActivity();
-				break;
-			case REQUEST_BLUETOOTH_DEVICE:
-				startPlayActivity((DeviceInfo) data.getSerializableExtra(DeviceInfo.class.getCanonicalName()));
-			case REQUEST_SETTINGS:
-				setUserSettings((UserSettings) data.getSerializableExtra(UserSettings.class.getCanonicalName()));
-				break;
+                case REQUEST_MATCH_PARAMETERS:
+                    saveMatchParameters((MatchParameters) data.getSerializableExtra(MatchParameters.class.getCanonicalName()));
+                    enableBluetooth();
+				    // startSelectDeviceActivity();
+				    break;
+//			case REQUEST_BLUETOOTH_DEVICE:
+//				startPlayActivity((DeviceInfo) data.getSerializableExtra(DeviceInfo.class.getCanonicalName()));
+//              break;
+    			case REQUEST_SETTINGS:
+	    			setUserSettings((UserSettings) data.getSerializableExtra(UserSettings.class.getCanonicalName()));
+		    		break;
+                case REQUEST_ENABLE_BT:
+                    startPlayActivity(null);
+                    break;
+
 			default:
 				// unknown data source
 				break;
@@ -154,6 +161,28 @@ public class StartActivity extends Activity
 		{
 			// operation is canceled by user
 		}
+	}
+
+	private void enableBluetooth()
+	{
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (mBluetoothAdapter != null)
+		{
+            if (!mBluetoothAdapter.isEnabled())
+            {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+            else
+            {
+                startPlayActivity(null);
+            }
+		}
+        else
+        {
+            // Device does not support Bluetooth
+        }
+
 	}
 
 	private void startPlayActivity(DeviceInfo deviceInfo)
