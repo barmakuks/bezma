@@ -5,10 +5,17 @@ import com.fairbg.bezma.log.BezmaLog;
 /**Датаграммы для включения/выключения лампочки на внешнем устройстве*/
 public class LedDatagram extends Datagram {
 
+	public LedDatagram(int button, boolean on)
+	{
+		this.button = (byte)button;
+		this.state = on ? (byte)1 : (byte)0;
+	}
+
 	@Override
 	public DatagramType getDatagramType() {
 		return DatagramType.L;
 	}
+
 	/** Идентификатор кнопки, на которой расположена лампочка*/
 	public byte button = 0;
 	
@@ -31,7 +38,7 @@ public class LedDatagram extends Datagram {
 	
 	public static Datagram parse(byte[] array){
 		BezmaLog.i("PARSE", "LED DATAGRAM");		
-		return new LedDatagram();		
+		return new LedDatagram(0, true);
 	}
 	
 	@Override

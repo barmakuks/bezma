@@ -28,9 +28,9 @@ final public class DatagramConverter {
 		if (command instanceof CommunicationCommandLed)
 		{
 			CommunicationCommandLed led_command = (CommunicationCommandLed)command;
-			LedDatagram dg = new LedDatagram();
-			dg.button = led_command.button;
-			dg.state = led_command.state;
+			LedDatagram dg = new LedDatagram(led_command.button, led_command.state == 1);
+//			dg.button = led_command.button;
+//			dg.state = led_command.state;
 			BezmaLog.i("LED", Byte.toString(dg.button) + " STATE : " + Byte.toString(dg.state));
 			return dg;
 		}

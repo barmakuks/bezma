@@ -280,6 +280,7 @@ public class BluetoothBoardDevice implements IDatagramObservable
             try
             {
                 mmOutStream.write(bytes);
+                mmOutStream.flush();
             }
             catch (IOException e)
             {
