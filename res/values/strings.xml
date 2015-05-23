@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">BezmaAndroid</string>
-    <string name="new_match">Start new match</string>
-    <string name="match_continue">Continue last match</string>
+    <string name="new_match">New match</string>
+    <string name="match_continue">Continue match</string>
     <string name="match_store">Match store</string>
     <string name="settings">Settings</string>
     <string name="exit">Exit</string>

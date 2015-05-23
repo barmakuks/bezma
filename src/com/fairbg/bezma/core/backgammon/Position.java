@@ -298,7 +298,7 @@ public class Position implements Cloneable
 		int [] pos = PositionUtils.ChangeDirection(Direction.RedCCW, m_direction, m_Checkers);
 	    int pips = 0;
 
-	    for (int i = 1; i < 25; ++i)
+	    for (int i = 1; i < 26; ++i)
 	    {
 			int index = getIndex(i, forPlayer);
 
