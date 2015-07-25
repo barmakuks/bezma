@@ -1,0 +1,1 @@
+This program allows playing backgammon on special sensor board. All moves will be written in file and can be analysed with special program.
