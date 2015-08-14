@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -32,7 +31,6 @@ import com.fairbg.bezma.core.Presenter;
 import com.fairbg.bezma.core.backgammon.MovePrinter;
 import com.fairbg.bezma.core.backgammon.Position;
 import com.fairbg.bezma.core.backgammon.Position.Direction;
-import com.fairbg.bezma.core.backgammon.PositionUtils;
 import com.fairbg.bezma.core.errors.Error;
 import com.fairbg.bezma.core.errors.ErrorWrongPosition;
 import com.fairbg.bezma.core.model.MatchScore;
@@ -198,129 +196,133 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
         super.onDestroy();
     }
 
-    private class BoardView
+    private class DrawPrimitives
     {
 
-        private Bitmap m_cube_bmp_2;
-        private Bitmap m_cube_bmp_4;
-        private Bitmap m_cube_bmp_8;
-        private Bitmap m_cube_bmp_16;
-        private Bitmap m_cube_bmp_32;
-        private Bitmap m_cube_bmp_64;
+        public final Bitmap background;
 
-        private Bitmap m_checker_black_bmp;
-        private Bitmap m_checker_white_bmp;
-        private Bitmap m_checker_white_side_bmp;
-        private Bitmap m_checker_black_side_bmp;
-        private int    m_Left, m_Top;
+        public final Bitmap cube_bmp_2;
+        public final Bitmap cube_bmp_4;
+        public final Bitmap cube_bmp_8;
+        public final Bitmap cube_bmp_16;
+        public final Bitmap cube_bmp_32;
+        public final Bitmap cube_bmp_64;
 
-        private int[]  m_NestsY;
-        private int    m_CheckerSize;
-        private int    m_CheckerSideSize;
-        private int    m_MinY;
-        private int    m_MaxY;
-        private int    m_MinBarX;
-        private int    m_MaxBarX;
-        private int    m_CubeMiddleY;
-        private int    m_CubeMiddleX;
+        public final Bitmap checker_black_bmp;
+        public final Bitmap checker_white_bmp;
+        public final Bitmap checker_white_side_bmp;
+        public final Bitmap checker_black_side_bmp;
 
-        private int    m_CubeSouthX;
-        private int    m_CubeNorthX;
-        private int    m_CubeEastY;
-        private int    m_CubeWestY;
-
-        private void initBitmaps()
+        private DrawPrimitives(int screen_size)
         {
-            m_checker_black_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_black);
-            m_checker_white_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_white);
-            m_checker_black_side_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_black_side);
-            m_checker_white_side_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_white_side);
-            m_cube_bmp_2 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_2);
-            m_cube_bmp_4 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_4);
-            m_cube_bmp_8 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_8);
-            m_cube_bmp_16 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_16);
-            m_cube_bmp_32 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_32);
-            m_cube_bmp_64 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_64);
+            if (screen_size >= 1024)
+            {
+                background = BitmapFactory.decodeResource(getResources(), R.drawable.bg_m);
+                checker_black_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_black_m);
+                checker_white_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_white_m);
+                checker_black_side_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_black_side_m);
+                checker_white_side_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_white_side_m);
+                cube_bmp_2 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_2_m);
+                cube_bmp_4 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_4_m);
+                cube_bmp_8 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_8_m);
+                cube_bmp_16 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_16_m);
+                cube_bmp_32 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_32_m);
+                cube_bmp_64 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_64_m);
+            }
+            else
+            {
+                background = BitmapFactory.decodeResource(getResources(), R.drawable.bg_m);
+                checker_black_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_black_m);
+                checker_white_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_white_m);
+                checker_black_side_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_black_side_m);
+                checker_white_side_bmp = BitmapFactory.decodeResource(getResources(), R.drawable.checker_white_side_m);
+                cube_bmp_2 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_2_m);
+                cube_bmp_4 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_4_m);
+                cube_bmp_8 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_8_m);
+                cube_bmp_16 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_16_m);
+                cube_bmp_32 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_32_m);
+                cube_bmp_64 = BitmapFactory.decodeResource(getResources(), R.drawable.cube_64_m);
+            }
         }
+    };
+
+    private class DrawDimensions
+    {
+        public final int    left;
+        public final int    top;
+
+        public final int[]  nestsY;
+        public final int    checkerSize;
+        public final int    checkerSideSize;
+        public final int    minY;
+        public final int    maxY;
+        public final int    minBarX;
+        public final int    maxBarX;
+        public final int    cubeMiddleY;
+        public final int    cubeMiddleX;
+
+        public final int    cubeSouthX;
+        public final int    cubeNorthX;
+        public final int    cubeEastY;
+        public final int    cubeWestY;
+
+        private DrawDimensions(int screen_size)
+        {
+            top = 0;
+            left = 250;
+            nestsY = new int[] { 0, 36, 72, 108, 144, 180, 257, 293, 329, 365, 401, 437,
+                    /* BAR */218,
+                    /* OUT */-52 };
+            checkerSize = 36;
+            checkerSideSize = 11;
+            minY = 53;
+            maxY = 427;
+            minBarX = 226;
+            maxBarX = 257;
+
+            cubeMiddleX = 230;
+            cubeMiddleY = nestsY[12] + 5;
+
+            cubeSouthX = 365;
+            cubeNorthX = 90;
+
+            cubeEastY = 90;
+            cubeWestY = 350;
+        }
+    };
+
+    private class BoardView
+    {
+        private final DrawPrimitives m_drawPrimitives;
+        private final DrawDimensions m_drawDimensions;
 
         private Bitmap getCubeBitmap(int index)
         {
             switch (index)
             {
             case 2:
-                return m_cube_bmp_2;
+                return m_drawPrimitives.cube_bmp_2;
             case 4:
-                return m_cube_bmp_4;
+                return m_drawPrimitives.cube_bmp_4;
             case 8:
-                return m_cube_bmp_8;
+                return m_drawPrimitives.cube_bmp_8;
             case 16:
-                return m_cube_bmp_16;
+                return m_drawPrimitives.cube_bmp_16;
             case 32:
-                return m_cube_bmp_32;
+                return m_drawPrimitives.cube_bmp_32;
             case 1:
             case 64:
-                return m_cube_bmp_64;
+                return m_drawPrimitives.cube_bmp_64;
             }
 
             return null;
         }
 
-        private void LoadHdpiValues()
+
+        public BoardView(DrawPrimitives drawPrimitives, DrawDimensions drawDimensions)
         {
-            m_NestsY = new int[] { 0, 36, 72, 108, 144, 180, 257, 293, 329, 365, 401, 437,
-                    /* BAR */218,
-                    /* OUT */-52 };
-            m_CheckerSize = 36;
-            m_CheckerSideSize = 11;
-            m_MinY = 53;
-            m_MaxY = 427;
-            m_MinBarX = 226;
-            m_MaxBarX = 257;
-
-            m_CubeMiddleX = 230;
-            m_CubeMiddleY = m_NestsY[12] + 5;
-
-            m_CubeSouthX = 365;
-            m_CubeNorthX = 90;
-
-            m_CubeEastY = 90;
-            m_CubeWestY = 350;
-        }
-
-        private void LoadLdpiValues()
-        {
-            m_NestsY = new int[] { 0, 41, 82, 123, 164, 205, 287, 328, 369, 410, 451,
-                    /* BAR */246, /* OUT */630 };
-
-            m_CheckerSize = 14;
-            m_MinY = 29;
-            m_MaxY = 212;
-            m_MinBarX = 111;
-            m_MaxBarX = 130;
-            m_CubeMiddleY = 112;
-            m_CubeMiddleX = m_NestsY[12] - 3;
-            m_CubeSouthX = 7;
-            m_CubeNorthX = 7;
-            m_CubeEastY = m_NestsY[9] - 15;
-            m_CubeWestY = m_NestsY[2] + 12;
-        }
-
-        public BoardView(int left, int top, AssetManager assets)
-        {
-            DisplayMetrics dm = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-            if (dm.heightPixels <= 240 || dm.widthPixels <= 240)
-            {
-                LoadLdpiValues();
-            } else
-            {
-                LoadHdpiValues();
-            }
-
-            m_Left = left;
-            m_Top = top;
-            initBitmaps();
+            m_drawPrimitives = drawPrimitives;
+            m_drawDimensions = drawDimensions;
         }
 
         public void drawBoard(Canvas canvas, int[] checkers)
@@ -331,7 +333,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                 return;
             }
 
-            canvas.translate(m_Left, m_Top);
+            canvas.translate(m_drawDimensions.left, m_drawDimensions.top);
 
             int y = 0;
             int x = 0;
@@ -339,26 +341,26 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
             // draw checkers on board
             for (int i = 1; i <= 24; i++)
             {
-                x = (i < 13) ? m_MinY : m_MaxY - m_CheckerSize;
-                y = (i >= 13) ? m_NestsY[(i - 1) % 12] : m_NestsY[11 - (i - 1) % 12];
-                Bitmap checker = checkers[i] > 0 ? m_checker_black_bmp : m_checker_white_bmp;
+                x = (i < 13) ? m_drawDimensions.minY : m_drawDimensions.maxY - m_drawDimensions.checkerSize;
+                y = (i >= 13) ? m_drawDimensions.nestsY[(i - 1) % 12] : m_drawDimensions.nestsY[11 - (i - 1) % 12];
+                Bitmap checker = checkers[i] > 0 ? m_drawPrimitives.checker_black_bmp : m_drawPrimitives.checker_white_bmp;
                 int checkersCount = Math.abs(checkers[i]);
                 DrawCheckersNest(canvas, checker, checkersCount, x, y, i >= 13);
             }
 
             // draw checkers on bar
-            y = m_NestsY[12];
+            y = m_drawDimensions.nestsY[12];
 
             for (int j = 0; j > checkers[25]; j--)
             {
                 if (m_current_position.getDirection() == Direction.GrayCCW 
                     || m_current_position.getDirection() == Direction.GrayCW)
                 {
-                    canvas.drawBitmap(m_checker_white_bmp, m_MinBarX + j * m_CheckerSize - m_CheckerSize, y, null);
+                    canvas.drawBitmap(m_drawPrimitives.checker_white_bmp, m_drawDimensions.minBarX + j * m_drawDimensions.checkerSize - m_drawDimensions.checkerSize, y, null);
                 }
                 else
                 {
-                    canvas.drawBitmap(m_checker_white_bmp, m_MaxBarX - j * m_CheckerSize, y, null);
+                    canvas.drawBitmap(m_drawPrimitives.checker_white_bmp, m_drawDimensions.maxBarX - j * m_drawDimensions.checkerSize, y, null);
                 }
                 
             }
@@ -368,29 +370,29 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                 if (m_current_position.getDirection() == Direction.GrayCCW 
                         || m_current_position.getDirection() == Direction.GrayCW)
                 {
-                    canvas.drawBitmap(m_checker_black_bmp, m_MaxBarX + j * m_CheckerSize, y, null);                    
+                    canvas.drawBitmap(m_drawPrimitives.checker_black_bmp, m_drawDimensions.maxBarX + j * m_drawDimensions.checkerSize, y, null);
                 }
                 else
                 {
-                    canvas.drawBitmap(m_checker_black_bmp, m_MinBarX - j * m_CheckerSize - m_CheckerSize, y, null);                    
+                    canvas.drawBitmap(m_drawPrimitives.checker_black_bmp, m_drawDimensions.minBarX - j * m_drawDimensions.checkerSize - m_drawDimensions.checkerSize, y, null);
                 }    
             }
 
             // draw checkers on off-side
-            x = m_MaxY - m_CheckerSideSize;
+            x = m_drawDimensions.maxY - m_drawDimensions.checkerSideSize;
 
             for (int j = 0; j < checkers[26]; j++)
             {
-                canvas.drawBitmap(m_checker_white_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5, m_NestsY[13], null);
+                canvas.drawBitmap(m_drawPrimitives.checker_white_side_bmp, x - j * m_drawDimensions.checkerSideSize - j / 5 * 5, m_drawDimensions.nestsY[13], null);
             }
 
-            x = m_MinY;
+            x = m_drawDimensions.minY;
 
             for (int j = 0; j > checkers[27]; j--)
             {
-                canvas.drawBitmap(m_checker_black_side_bmp, x - j * m_CheckerSideSize - j / 5 * 5, m_NestsY[13], null);
+                canvas.drawBitmap(m_drawPrimitives.checker_black_side_bmp, x - j * m_drawDimensions.checkerSideSize - j / 5 * 5, m_drawDimensions.nestsY[13], null);
             }
-            canvas.translate(-m_Left, -m_Top);
+            canvas.translate(-m_drawDimensions.left, -m_drawDimensions.top);
         }
 
         public void DrawCheckersNest(Canvas canvas, Bitmap checker, int checkersCount, int nestX, int nestY, boolean direction)
@@ -399,18 +401,18 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
             int checkers_on_line = 0;
             int shift = 0;
-            int mult = direction ? -1 : 1;
+            final int mult = direction ? -1 : 1;
 
             for (int j = 0; j < checkersCount; j++)
             {
                 if (checkers_on_line >= max_checkers)
                 {
                     checkers_on_line = 0;
-                    shift = m_CheckerSize / 2;
+                    shift = m_drawDimensions.checkerSize / 2;
                     max_checkers--;
                 }
 
-                int posX = nestX + mult * (shift + checkers_on_line * m_CheckerSize);
+                int posX = nestX + mult * (shift + checkers_on_line * m_drawDimensions.checkerSize);
 
                 canvas.drawBitmap(checker, posX, nestY, null);
                 checkers_on_line++;
@@ -429,33 +431,33 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
                 case None:
                     return;
                 case Center:
-                    x = m_CubeMiddleX;
-                    y = m_CubeMiddleY;
+                    x = m_drawDimensions.cubeMiddleX;
+                    y = m_drawDimensions.cubeMiddleY;
                     break;
                 case North:
-                    x = m_CubeNorthX;
-                    y = m_CubeMiddleY;
+                    x = m_drawDimensions.cubeNorthX;
+                    y = m_drawDimensions.cubeMiddleY;
                     break;
                 case South:
-                    x = m_CubeSouthX;
-                    y = m_CubeMiddleY;
+                    x = m_drawDimensions.cubeSouthX;
+                    y = m_drawDimensions.cubeMiddleY;
                     break;
                 case East:
-                    x = m_CubeMiddleX;
-                    y = m_CubeEastY;
+                    x = m_drawDimensions.cubeMiddleX;
+                    y = m_drawDimensions.cubeEastY;
                     break;
                 case West:
-                    x = m_CubeMiddleX;
-                    y = m_CubeWestY;
+                    x = m_drawDimensions.cubeMiddleX;
+                    y = m_drawDimensions.cubeWestY;
                     break;
                 default:
                     return;
                 }
 
-                canvas.translate(m_Left, m_Top);
+                canvas.translate(m_drawDimensions.left, m_drawDimensions.top);
                 // canvas.rotate(angle);
                 canvas.drawBitmap(getCubeBitmap(cubeValue), x, y, null);
-                canvas.translate(-m_Left, -m_Top);
+                canvas.translate(-m_drawDimensions.left, -m_drawDimensions.top);
             }
         }
 
@@ -574,8 +576,8 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
     private class PlayView extends View
     {
+        private final DrawPrimitives m_drawPrimitives;
 
-        private Bitmap    m_Background;
         private BoardView m_BoardView;
 
         public int        m_silverScore = 0;
@@ -584,21 +586,19 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
         public PlayView(Context context)
         {
             super(context);
-            initBitmaps();
-            m_BoardView = new BoardView(0, 286, context.getAssets());
+            DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+            m_drawPrimitives = new DrawPrimitives(dm.heightPixels);
+
+            m_BoardView = new BoardView(m_drawPrimitives, new DrawDimensions(dm.heightPixels));
         }
 
-        private void initBitmaps()
-        {
-            m_Background = BitmapFactory.decodeResource(getResources(), R.drawable.bckg3bg_800x480);
-        }
-
-        
         private Direction m_lastDirection = Direction.None;
         
         protected void onDraw(Canvas canvas)
         {
-            canvas.drawBitmap(m_Background, 0, 0, null);
+            canvas.drawBitmap(m_drawPrimitives.background, 0, 0, null);
 
             String redPips = "", silverPips = "";
 
@@ -672,15 +672,7 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
 
     private void invalidate()
     {
-        runOnUiThread(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-                m_view.invalidate();
-            }
-        });
+        runOnUiThread(m_view::invalidate);
     }
 
     @Override
@@ -737,14 +729,9 @@ public class PlayActivity extends Activity implements IModelView, IRawDataView
     {
         if (m_movePrinter != null)
         {
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    String moveString = m_movePrinter.printMove(move);
-                    showErrorMessage(moveString);
-                }
+            runOnUiThread(() -> {
+                String moveString = m_movePrinter.printMove(move);
+                showErrorMessage(moveString);
             });
         }
     }
